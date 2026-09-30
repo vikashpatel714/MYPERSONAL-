@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="hi" data-theme="neon">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Unit 1: Qubits, Superposition & Measurement</title>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;800&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+[data-theme=neon]{--bg:#070b1a;--card:#0f1630;--tx:#e8ecff;--mut:#8b95c4;--ac:#00e5ff;--ac2:#b06cff;--bd:#1e2a55}
+[data-theme=ocean]{--bg:#04202e;--card:#093247;--tx:#e3f6ff;--mut:#7fb3c9;--ac:#2ee6c8;--ac2:#4aa3ff;--bd:#14506d}
+[data-theme=sunset]{--bg:#1d0f1a;--card:#2e1726;--tx:#ffeee6;--mut:#c79a9a;--ac:#ff7a59;--ac2:#ffc145;--bd:#512a3c}
+[data-theme=forest]{--bg:#0b1a12;--card:#12291c;--tx:#e9fbe9;--mut:#8fb99a;--ac:#7ddf64;--ac2:#c6f36b;--bd:#245237}
+[data-theme=grape]{--bg:#14091f;--card:#21113a;--tx:#f5e9ff;--mut:#b497d1;--ac:#d36bff;--ac2:#ff6bb5;--bd:#45246b}
+[data-theme=terminal]{--bg:#000;--card:#07140b;--tx:#c8ffd9;--mut:#4fb574;--ac:#00ff6a;--ac2:#00b34a;--bd:#0f4a25}
+[data-theme=chalk]{--bg:#eef3fb;--card:#fff;--tx:#121a33;--mut:#5b6686;--ac:#1f5fd6;--ac2:#7b3fe4;--bd:#d3dcef}
+[data-theme=rose]{--bg:#fff1f3;--card:#fff;--tx:#2b1017;--mut:#8a5a66;--ac:#d6336c;--ac2:#f08c00;--bd:#f3cdd6}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--tx);font:17px/1.7 Nunito,system-ui,sans-serif;transition:background .4s,color .4s}
+h1,h2,h3{font-family:Sora,sans-serif;line-height:1.2;margin:0 0 .5em}
+h1{font-size:clamp(2rem,6vw,3.6rem);font-weight:800}
+h2{font-size:clamp(1.4rem,3.5vw,2rem);margin-top:0}
+h3{font-size:1.1rem;color:var(--ac)}
+a{color:var(--ac)}
+nav{position:sticky;top:0;z-index:9;display:flex;gap:12px;align-items:center;justify-content:space-between;flex-wrap:wrap;padding:10px 18px;background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:blur(8px);border-bottom:1px solid var(--bd)}
+nav .links{display:flex;gap:14px;flex-wrap:wrap;font-size:.9rem}
+nav .links a{text-decoration:none;color:var(--mut)}nav .links a:hover{color:var(--ac)}
+.dots{display:flex;gap:7px;align-items:center}
+.dots b{font-size:.8rem;color:var(--mut);font-weight:600;margin-right:4px}
+.dots button{width:22px;height:22px;border-radius:50%;border:2px solid var(--bd);cursor:pointer;padding:0}
+.dots button.on{outline:2px solid var(--tx);outline-offset:2px}
+main{max-width:1050px;margin:auto;padding:0 18px 80px}
+.hero{display:grid;grid-template-columns:1.2fr 1fr;gap:20px;align-items:center;padding:50px 0 30px}
+.hero p{color:var(--mut);max-width:52ch}
+.grad{background:linear-gradient(90deg,var(--ac),var(--ac2));-webkit-background-clip:text;background-clip:text;color:transparent}
+section{padding:34px 0;border-top:1px solid var(--bd)}
+.card{background:var(--card);border:1px solid var(--bd);border-radius:14px;padding:20px;margin:14px 0}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:18px;align-items:start}
+.eq{font-family:Sora,monospace;background:var(--bg);border-left:4px solid var(--ac);padding:10px 14px;border-radius:6px;margin:10px 0;overflow-x:auto}
+.tip{border-left:4px solid var(--ac2);padding:8px 14px;background:color-mix(in srgb,var(--ac2) 10%,transparent);border-radius:6px;margin:10px 0}
+canvas{width:100%;max-width:420px;aspect-ratio:1;display:block;margin:auto}
+button.b,.b{background:var(--card);color:var(--tx);border:1px solid var(--ac);border-radius:8px;padding:8px 14px;font:600 .95rem Nunito;cursor:pointer;margin:3px}
+button.b:hover{background:var(--ac);color:var(--bg)}
+button.b:focus-visible,.dots button:focus-visible,input:focus-visible,summary:focus-visible{outline:2px solid var(--ac2);outline-offset:2px}
+input[type=range]{width:100%;accent-color:var(--ac)}
+label{font-size:.9rem;color:var(--mut)}
+.bar{height:26px;background:var(--bg);border-radius:6px;overflow:hidden;margin:6px 0;border:1px solid var(--bd)}
+.bar i{display:block;height:100%;background:linear-gradient(90deg,var(--ac),var(--ac2));color:var(--bg);font:700 .85rem/26px Nunito;padding-left:8px;white-space:nowrap;transition:width .4s}
+.coinbox{display:flex;gap:20px;align-items:center;flex-wrap:wrap}
+.coin{width:110px;height:110px;border-radius:50%;background:radial-gradient(circle at 35% 30%,var(--ac2),var(--ac));color:var(--bg);display:grid;place-items:center;font:800 2.2rem Sora;animation:spin 1.1s linear infinite;box-shadow:0 0 30px color-mix(in srgb,var(--ac) 50%,transparent)}
+.coin.stop{animation:none}
+@keyframes spin{to{transform:rotateY(360deg)}}
+details{background:var(--card);border:1px solid var(--bd);border-radius:10px;padding:10px 16px;margin:10px 0}
+summary{cursor:pointer;font-weight:700}
+table{border-collapse:collapse;width:100%;font-size:.95rem}th,td{border:1px solid var(--bd);padding:6px 10px;text-align:left}th{color:var(--ac)}
+#log{font:.85rem/1.5 Sora,monospace;color:var(--mut);max-height:90px;overflow:auto}
+.big{font-family:Sora;font-size:1.05rem}
+@media(max-width:760px){.hero,.g2{grid-template-columns:1fr}}
+@media(prefers-reduced-motion:reduce){.coin{animation:none}html{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+<nav>
+  <div class="links"><a href="#bit">Bit vs Qubit</a><a href="#state">State</a><a href="#sim">Bloch Sim</a><a href="#meas">Measurement</a><a href="#ex">Numericals</a><a href="#sum">Summary</a></div>
+  <div class="dots" id="dots"><b>Theme</b></div>
+</nav>
+<main>
+
+<div class="hero">
+  <div>
+    <h1>Qubits, <span class="grad">Superposition</span> &amp; Measurement</h1>
+    <p>Introduction to Quantum Computing &middot; Unit 1. Bilkul beginner se start: real-life examples, step-by-step numericals, aur live simulation jise aap khud chala sakte hain.</p>
+    <p><a class="b" href="#sim" style="text-decoration:none">Simulation try karein</a></p>
+  </div>
+  <canvas id="hero" width="420" height="420" aria-label="Rotating Bloch sphere"></canvas>
+</div>
+
+<section id="bit">
+  <h2>1. Classical bit vs Qubit</h2>
+  <p>Aapke phone/laptop me har cheez <b>bits</b> se bani hai. Ek bit sirf <b>0</b> ya <b>1</b> ho sakta hai, jaise light ka switch: ya ON ya OFF. Ek <b>qubit</b> (quantum bit) bhi measure karne par 0 ya 1 hi dikhata hai, lekin measure karne se <i>pehle</i> woh dono ka mixture (superposition) ho sakta hai.</p>
+  <div class="card">
+    <h3>Real-life example 1: Ghoomta hua sikka (spinning coin)</h3>
+    <div class="coinbox">
+      <div class="coin" id="coin">?</div>
+      <div>
+        <p>Table par ghoomta sikka na sirf Heads hai na sirf Tails, woh "dono ka mix" jaisa hai. Jaise hi aap use haath se rokte hain (measure), woh Heads ya Tails ban jata hai. Niche click karke dekhein.</p>
+        <button class="b" id="stopCoin">Sikka roko (measure)</button>
+        <button class="b" id="spinCoin">Phir ghumao</button>
+      </div>
+    </div>
+  </div>
+  <div class="g2">
+    <div class="card"><h3>Real-life example 2: Switch vs Dimmer</h3><p>Classical bit = normal switch (sirf ON/OFF). Qubit = dimmer jaisa, jo 0% se 100% tak kisi bhi "mix" me ho sakta hai. Farak: qubit ko dekhte hi (measure) woh sirf ON ya OFF milta hai.</p></div>
+    <div class="card"><h3>Real-life example 3: Polarized sunglasses</h3><p>Ek photon ka polarization qubit ki tarah hai. Filter ke angle &theta; par photon pass hone ki probability <b>cos&sup2;&theta;</b> hoti hai, bilkul Born rule jaisa (neeche padhein).</p></div>
+  </div>
+  <table>
+    <tr><th></th><th>Classical bit</th><th>Qubit</th></tr>
+    <tr><td>Values</td><td>0 ya 1</td><td>&alpha;|0&rang; + &beta;|1&rang;</td></tr>
+    <tr><td>Padhne par</td><td>Wahi value, koi badlav nahi</td><td>State collapse ho jati hai</td></tr>
+    <tr><td>Copy</td><td>Aasani se</td><td>Unknown qubit copy nahi ho sakta (no-cloning)</td></tr>
+  </table>
+</section>
+
+<section id="state">
+  <h2>2. Qubit ki state (Dirac notation)</h2>
+  <p>Do basic states hain: <b>|0&rang;</b> ("ket zero") aur <b>|1&rang;</b> ("ket one"). Vector form me:</p>
+  <div class="eq">|0&rang; = [1, 0]&#7488; &nbsp;&nbsp; |1&rang; = [0, 1]&#7488;</div>
+  <p>Koi bhi qubit in dono ka <b>superposition</b> ho sakta hai:</p>
+  <div class="eq big">|&psi;&rang; = &alpha;|0&rang; + &beta;|1&rang; &nbsp;&nbsp; jahan &nbsp; |&alpha;|&sup2; + |&beta;|&sup2; = 1</div>
+  <ul>
+    <li>&alpha;, &beta; ko <b>amplitudes</b> kehte hain (complex numbers ho sakte hain).</li>
+    <li>|&alpha;|&sup2; = |0&rang; milne ki probability, |&beta;|&sup2; = |1&rang; milne ki probability.</li>
+    <li><b>Normalization:</b> total probability hamesha 1 (100%) honi chahiye.</li>
+  </ul>
+  <div class="tip"><b>Yaad rakhein:</b> Amplitude probability nahi hai. Probability = amplitude ka <i>modulus squared</i>. Amplitude negative ya complex ho sakta hai, probability kabhi negative nahi.</div>
+  <h3>Bloch sphere</h3>
+  <p>Ek qubit ki state ko ek gole (sphere) par ek point/arrow se dikhate hain. North pole = |0&rang;, South pole = |1&rang;. Equator par 50-50 superposition wali states hain.</p>
+  <div class="eq">|&psi;&rang; = cos(&theta;/2)|0&rang; + e<sup>i&phi;</sup> sin(&theta;/2)|1&rang;</div>
+</section>
+
+<section id="sim">
+  <h2>3. Live Simulation: Bloch sphere aur gates</h2>
+  <p>Sphere ko mouse/ungli se ghumayein (drag). Gates lagayein aur dekhein arrow kaise ghoomta hai aur amplitudes kaise badalte hain.</p>
+  <div class="g2">
+    <div class="card"><canvas id="bloch" width="420" height="420" aria-label="Bloch sphere simulator"></canvas></div>
+    <div class="card">
+      <h3>Gates lagayein</h3>
+      <button class="b" data-g="X">X (NOT)</button>
+      <button class="b" data-g="H">H (Hadamard)</button>
+      <button class="b" data-g="Z">Z (phase flip)</button>
+      <button class="b" data-g="S">S (90&deg; phase)</button>
+      <button class="b" id="reset">Reset |0&rang;</button>
+      <p style="margin:10px 0 4px"><label>&theta; (upar-neeche): <span id="thv">0</span>&deg;</label><input type="range" id="th" min="0" max="180" value="0"></p>
+      <p style="margin:4px 0"><label>&phi; (ghumav): <span id="phv">0</span>&deg;</label><input type="range" id="ph" min="0" max="360" value="0"></p>
+      <div class="eq" id="stxt"></div>
+      <label>P(0)</label><div class="bar"><i id="b0"></i></div>
+      <label>P(1)</label><div class="bar"><i id="b1"></i></div>
+    </div>
+  </div>
+  <div class="card">
+    <h3>Gates ka matlab</h3>
+    <ul>
+      <li><b>X gate:</b> |0&rang;&harr;|1&rang; (classical NOT jaisa). North pole se South pole.</li>
+      <li><b>H gate:</b> |0&rang; &rarr; (|0&rang;+|1&rang;)/&radic;2. Yahi superposition banane ka sabse common tareeka hai.</li>
+      <li><b>Z gate:</b> |1&rang; ka sign ulta (&beta; &rarr; &minus;&beta;). Probability nahi badalti, sirf phase.</li>
+      <li><b>S gate:</b> |1&rang; ka phase i se multiply (90&deg; ghumav equator par).</li>
+    </ul>
+    <div class="tip">Experiment: Reset karein &rarr; H dabayein (50-50) &rarr; dubara H dabayein. Wapas |0&rang; aa gaya! Yeh <b>interference</b> hai, quantum computing ki asli taqat.</div>
+  </div>
+</section>
+
+<section id="meas">
+  <h2>4. Measurement aur Born rule</h2>
+  <div class="eq">P(0) = |&alpha;|&sup2; &nbsp;&nbsp; P(1) = |&beta;|&sup2;</div>
+  <p>Measure karte hi state <b>collapse</b> ho jati hai: agar result 0 aaya to state ab pakka |0&rang; hai, aur dobara measure karne par hamesha 0 hi milega. Superposition wapas nahi milta.</p>
+  <div class="card">
+    <h3>Measurement simulator (upar wali state use hoti hai)</h3>
+    <button class="b" id="m1">1 baar measure karein (collapse hoga)</button>
+    <button class="b" id="m1000">1000 shots chalayein</button>
+    <div id="log">Abhi koi measurement nahi hua.</div>
+    <label>Simulated counts (1000 shots)</label>
+    <div class="bar"><i id="h0" style="width:0"></i></div>
+    <div class="bar"><i id="h1" style="width:0"></i></div>
+    <p id="hn" style="color:var(--mut);font-size:.9rem">Har shot me qubit fresh prepare hota hai, isliye shots measure ki tarah collapse nahi karte. Real quantum computer me bhi aise hi "shots" chalte hain.</p>
+  </div>
+  <div class="tip"><b>Dhyan:</b> |+&rang; aur |&minus;&rang; dono ki measurement probabilities 50-50 hoti hain, lekin phase alag hai. Phase direct measurement me nahi dikhta, par H lagakar dikh jata hai.</div>
+</section>
+
+<section id="ex">
+  <h2>5. Worked examples (numericals)</h2>
+  <details open><summary>Example 1: Normalize karo |&psi;&rang; = 3|0&rang; + 4|1&rang;</summary>
+    <p><b>Step 1:</b> Norm nikalo: &radic;(3&sup2;+4&sup2;) = &radic;25 = 5.<br><b>Step 2:</b> Sabko 5 se divide: |&psi;&rang; = (3/5)|0&rang; + (4/5)|1&rang;.<br><b>Step 3:</b> P(0) = 9/25 = <b>36%</b>, P(1) = 16/25 = <b>64%</b>. Sum = 100%. &#10003;</p></details>
+  <details><summary>Example 2: Equal superposition |+&rang; = (|0&rang;+|1&rang;)/&radic;2</summary>
+    <p>&alpha; = &beta; = 1/&radic;2 &approx; 0.707.<br>P(0) = (1/&radic;2)&sup2; = 1/2 = <b>50%</b>, P(1) = <b>50%</b>. Yeh "perfect quantum coin flip" hai.</p></details>
+  <details><summary>Example 3: Agar &alpha; = 1/2 ho to &beta; kya hoga?</summary>
+    <p>|&alpha;|&sup2; = 1/4. Normalization se |&beta;|&sup2; = 1 &minus; 1/4 = 3/4, to |&beta;| = &radic;3/2 &approx; 0.866.<br>P(0) = 25%, P(1) = <b>75%</b>.</p></details>
+  <details><summary>Example 4: H gate |0&rang; par lagao (matrix se)</summary>
+    <p>H = (1/&radic;2) [[1, 1],[1, &minus;1]], |0&rang; = [1, 0]&#7488;.<br>H|0&rang; = (1/&radic;2)[1&middot;1 + 1&middot;0, 1&middot;1 &minus; 1&middot;0]&#7488; = (1/&radic;2)[1, 1]&#7488; = |+&rang;.<br>Ab H|+&rang; = (1/2)[1+1, 1&minus;1]&#7488; = [1, 0]&#7488; = |0&rang;. Do baar H = identity.</p></details>
+  <details><summary>Example 5: Measure karne ke baad dobara measure</summary>
+    <p>Qubit (3/5)|0&rang; + (4/5)|1&rang; ko measure kiya, result 1 aaya. Ab state = |1&rang;.<br>Dobara measure: P(1) = 1 = <b>100%</b>. Collapse ke baad result repeat hota hai.</p></details>
+  <details><summary>Example 6: 1000 shots me kitne 0 aayenge? (P(0) = 0.36)</summary>
+    <p>Expected zeros = 1000 &times; 0.36 = <b>360</b>.<br>Spread (standard deviation) = &radic;(1000 &times; 0.36 &times; 0.64) &approx; 15.2. Yaani result aksar 345 se 375 ke beech aayega. Upar simulator me khud check karein.</p></details>
+  <details><summary>Example 7: Polarized sunglasses (real life)</summary>
+    <p>Photon filter se 30&deg; ke angle par hai. P(pass) = cos&sup2;30&deg; = (&radic;3/2)&sup2; = 3/4 = <b>75%</b>. Yeh Example 3 wali hi state hai (&alpha;=1/2 wali state ka mirror).</p></details>
+
+  <h3 style="margin-top:22px">Khud try karein (practice)</h3>
+  <details><summary>Q1. |&psi;&rang; = (1/&radic;3)|0&rang; + &radic;(2/3)|1&rang; me P(0) aur P(1)?</summary><p>P(0) = 1/3 &approx; 33.3%, P(1) = 2/3 &approx; 66.7%.</p></details>
+  <details><summary>Q2. |&psi;&rang; = 5|0&rang; + 12|1&rang; ko normalize karo.</summary><p>Norm = &radic;(25+144) = 13. State = (5/13)|0&rang; + (12/13)|1&rang;. P(0) = 25/169 &approx; 14.8%.</p></details>
+  <details><summary>Q3. X gate |1&rang; par lagane se kya milta hai?</summary><p>X|1&rang; = |0&rang;. Matrix: [[0,1],[1,0]]&middot;[0,1]&#7488; = [1,0]&#7488;.</p></details>
+</section>
+
+<section id="app">
+  <h2>6. Real-life me kahan kaam aata hai?</h2>
+  <div class="g2">
+    <div class="card"><h3>Dawai khoj (drug discovery)</h3><p>Molecules khud quantum rules follow karte hain, isliye qubits unhe simulate karne me natural fit hain.</p></div>
+    <div class="card"><h3>Cryptography</h3><p>Quantum key distribution me koi chhupke measure kare to state collapse hoti hai aur tamper pakda jata hai.</p></div>
+    <div class="card"><h3>Optimization</h3><p>Delivery routes, flight schedules jaise problems me superposition bahut saare options ek saath explore karne me madad karta hai.</p></div>
+    <div class="card"><h3>Search</h3><p>Grover's algorithm unsorted data me search karne ko classical se tez bana deta hai.</p></div>
+  </div>
+</section>
+
+<section id="sum">
+  <h2>7. Quick summary (revision)</h2>
+  <ul>
+    <li>Qubit state: |&psi;&rang; = &alpha;|0&rang; + &beta;|1&rang;, |&alpha;|&sup2; + |&beta;|&sup2; = 1.</li>
+    <li>Superposition = 0 aur 1 ka combination, measure hone se pehle.</li>
+    <li>Born rule: P(0) = |&alpha;|&sup2;, P(1) = |&beta;|&sup2;.</li>
+    <li>Measurement state ko collapse kar deta hai; dobara measure karne par same result.</li>
+    <li>Gates X, H, Z, S Bloch sphere par rotations hain.</li>
+    <li>Bloch sphere: North = |0&rang;, South = |1&rang;, equator = equal superposition.</li>
+  </ul>
+</section>
+</main>
+
+<script>
+const $=id=>document.getElementById(id);
+/* ---------- Themes ---------- */
+const themes=[['neon','#00e5ff'],['ocean','#2ee6c8'],['sunset','#ff7a59'],['forest','#7ddf64'],['grape','#d36bff'],['terminal','#00ff6a'],['chalk','#1f5fd6'],['rose','#d6336c']];
+const dots=$('dots');
+function setTheme(t){document.documentElement.dataset.theme=t;[...dots.querySelectorAll('button')].forEach(b=>b.classList.toggle('on',b.title===t));try{localStorage.setItem('q1theme',t)}catch(e){}}
+themes.forEach(([t,c])=>{const b=document.createElement('button');b.title=t;b.setAttribute('aria-label','Theme '+t);b.style.background=c;b.onclick=()=>setTheme(t);dots.appendChild(b)});
+let saved;try{saved=localStorage.getItem('q1theme')}catch(e){}
+setTheme(saved||'neon');
+
+/* ---------- Coin ---------- */
+const coin=$('coin');
+$('stopCoin').onclick=()=>{coin.classList.add('stop');coin.textContent=Math.random()<.5?'H':'T'};
+$('spinCoin').onclick=()=>{coin.classList.remove('stop');coin.textContent='?'};
+
+/* ---------- Complex math & qubit state ---------- */
+const C=(r,i=0)=>[r,i],cm=(p,q)=>[p[0]*q[0]-p[1]*q[1],p[0]*q[1]+p[1]*q[0]],ca=(p,q)=>[p[0]+q[0],p[1]+q[1]],s=Math.SQRT1_2;
+const G={X:[[C(0),C(1)],[C(1),C(0)]],Z:[[C(1),C(0)],[C(0),C(-1)]],H:[[C(s),C(s)],[C(s),C(-s)]],S:[[C(1),C(0)],[C(0),C(0,1)]]};
+let st={a:C(1),b:C(0)};
+const sq=c=>c[0]*c[0]+c[1]*c[1];
+function bl(){const ab=cm([st.a[0],-st.a[1]],st.b);return[2*ab[0],2*ab[1],sq(st.a)-sq(st.b)]}
+function fc(c){const r=c[0],i=c[1];if(Math.abs(i)<1e-9)return r.toFixed(3);if(Math.abs(r)<1e-9)return i.toFixed(3)+'i';return'('+r.toFixed(2)+(i<0?'-':'+')+Math.abs(i).toFixed(2)+'i)'}
+function bar(el,p){el.style.width=(p*100)+'%';el.textContent=(p*100).toFixed(1)+'%'}
+function upd(sync){
+  const p0=sq(st.a);
+  $('stxt').innerHTML='|&psi;&rang; = '+fc(st.a)+'|0&rang; + '+fc(st.b)+'|1&rang;';
+  bar($('b0'),p0);bar($('b1'),1-p0);
+  if(sync!==false){const v=bl();const th=Math.acos(Math.max(-1,Math.min(1,v[2])))*180/Math.PI;let ph=Math.atan2(v[1],v[0])*180/Math.PI;if(ph<0)ph+=360;if(th<1e-6||th>179.99)ph=+$('ph').value;$('th').value=th;$('ph').value=ph;$('thv').textContent=Math.round(th);$('phv').textContent=Math.round(ph)}
+}
+function apply(g){const M=G[g];st={a:ca(cm(M[0][0],st.a),cm(M[0][1],st.b)),b:ca(cm(M[1][0],st.a),cm(M[1][1],st.b))};go(bl());upd()}
+document.querySelectorAll('[data-g]').forEach(b=>b.onclick=()=>apply(b.dataset.g));
+$('reset').onclick=()=>{st={a:C(1),b:C(0)};go(bl());upd()};
+function fromSliders(){const t=$('th').value*Math.PI/180,p=$('ph').value*Math.PI/180;st={a:C(Math.cos(t/2)),b:[Math.cos(p)*Math.sin(t/2),Math.sin(p)*Math.sin(t/2)]};$('thv').textContent=Math.round($('th').value);$('phv').textContent=Math.round($('ph').value);disp=bl();from=disp;to=disp;upd(false)}
+$('th').oninput=$('ph').oninput=fromSliders;
+
+/* ---------- Measurement ---------- */
+let n=0;
+$('m1').onclick=()=>{const r=Math.random()<sq(st.a)?0:1;st=r?{a:C(0),b:C(1)}:{a:C(1),b:C(0)};go(bl());upd();n++;$('log').innerHTML='#'+n+': result = <b>'+r+'</b> &rarr; state ab |'+r+'&rang; ho gayi (collapse)<br>'+$('log').innerHTML.replace(/^Abhi.*$/,'')};
+$('m1000').onclick=()=>{const p=sq(st.a);let k=0;for(let i=0;i<1000;i++)if(Math.random()<p)k++;
+  $('h0').style.width=k/10+'%';$('h0').textContent='|0&#10217;: '+k;$('h0').innerHTML='|0&rang; : '+k;
+  $('h1').style.width=(1000-k)/10+'%';$('h1').innerHTML='|1&rang; : '+(1000-k);
+  $('hn').textContent='Theory ke hisaab se expected |0>: '+(p*1000).toFixed(0)+', mila: '+k+'. Thoda farak normal hai (statistical noise).'};
+
+/* ---------- Bloch sphere drawing ---------- */
+const css=v=>getComputedStyle(document.documentElement).getPropertyValue(v).trim();
+function draw(cv,v,ry){
+  const c=cv.getContext('2d'),W=cv.width,R=W*.36,cx=W/2,cy=W/2,tilt=.4;
+  const P=(x,y,z)=>{const X=x*Math.cos(ry)-y*Math.sin(ry),D=x*Math.sin(ry)+y*Math.cos(ry);return[cx+R*X,cy-R*(z*Math.cos(tilt)-D*Math.sin(tilt)),D]};
+  c.clearRect(0,0,W,W);c.lineWidth=1.5;c.font='600 18px Sora,sans-serif';
+  const ac=css('--ac'),ac2=css('--ac2'),bd=css('--bd'),mut=css('--mut'),tx=css('--tx');
+  const g=c.createRadialGradient(cx-R*.3,cy-R*.3,R*.1,cx,cy,R);g.addColorStop(0,ac+'33');g.addColorStop(1,ac2+'11');
+  c.fillStyle=g;c.beginPath();c.arc(cx,cy,R,0,7);c.fill();
+  c.strokeStyle=mut;c.beginPath();c.arc(cx,cy,R,0,7);c.stroke();
+  const ring=f=>{c.beginPath();for(let i=0;i<=64;i++){const a=i/64*6.2832,p=f(a);i?c.lineTo(p[0],p[1]):c.moveTo(p[0],p[1])}c.stroke()};
+  c.strokeStyle=bd;ring(a=>P(Math.cos(a),Math.sin(a),0));ring(a=>P(Math.cos(a),0,Math.sin(a)));ring(a=>P(0,Math.cos(a),Math.sin(a)));
+  c.strokeStyle=mut;c.setLineDash([4,4]);[[1.15,0,0],[0,1.15,0]].forEach(a=>{const p=P(...a),q=P(-a[0],-a[1],0);c.beginPath();c.moveTo(q[0],q[1]);c.lineTo(p[0],p[1]);c.stroke()});
+  const t=P(0,0,1.15),bt=P(0,0,-1.15);c.beginPath();c.moveTo(t[0],t[1]);c.lineTo(bt[0],bt[1]);c.stroke();c.setLineDash([]);
+  c.fillStyle=tx;c.fillText('|0\u27E9',t[0]-14,t[1]-6);c.fillText('|1\u27E9',bt[0]-14,bt[1]+20);
+  c.fillStyle=mut;const xp=P(1.25,0,0),yp=P(0,1.25,0);c.fillText('x',xp[0],xp[1]);c.fillText('y',yp[0],yp[1]);
+  const e=P(v[0],v[1],v[2]),o=P(0,0,0);
+  const fl=P(v[0],v[1],0);c.strokeStyle=ac2;c.setLineDash([3,4]);c.beginPath();c.moveTo(o[0],o[1]);c.lineTo(fl[0],fl[1]);c.lineTo(e[0],e[1]);c.stroke();c.setLineDash([]);
+  c.strokeStyle=ac;c.lineWidth=4;c.lineCap='round';c.beginPath();c.moveTo(o[0],o[1]);c.lineTo(e[0],e[1]);c.stroke();
+  c.fillStyle=ac;c.shadowColor=ac;c.shadowBlur=16;c.beginPath();c.arc(e[0],e[1],9,0,7);c.fill();c.shadowBlur=0;c.lineWidth=1.5;
+}
+/* slerp animation */
+let disp=[0,0,1],from=disp,to=disp,t0=0,ry=.6,drag=null;
+function go(v){from=disp.slice();to=v;t0=performance.now()}
+function slerp(a,b,p){
+  const d=Math.max(-1,Math.min(1,a[0]*b[0]+a[1]*b[1]+a[2]*b[2])),w=Math.acos(d);
+  if(w<1e-4)return b.slice();
+  if(Math.PI-w<1e-3){let u=[a[1]*0-a[2]*0,a[2]*1-a[0]*0,-a[1]*1];let L=Math.hypot(...u);if(L<.1){u=[a[2]*0-a[1]*1,0,a[0]*1];L=Math.hypot(...u)}u=u.map(x=>x/L);const k=Math.PI*p;return a.map((x,i)=>x*Math.cos(k)+u[i]*Math.sin(k))}
+  const s1=Math.sin((1-p)*w)/Math.sin(w),s2=Math.sin(p*w)/Math.sin(w);return a.map((x,i)=>x*s1+b[i]*s2)
+}
+const cb=$('bloch'),ch=$('hero');
+cb.addEventListener('pointerdown',e=>{drag=e.clientX;cb.setPointerCapture(e.pointerId)});
+cb.addEventListener('pointermove',e=>{if(drag!==null){ry+=(e.clientX-drag)*.01;drag=e.clientX}});
+cb.addEventListener('pointerup',()=>drag=null);
+const reduce=matchMedia('(prefers-reduced-motion:reduce)').matches;
+function loop(now){
+  const p=Math.min(1,(now-t0)/800),ease=p<.5?2*p*p:1-Math.pow(-2*p+2,2)/2;
+  disp=slerp(from,to,ease);
+  if(drag===null&&!reduce)ry+=.004;
+  draw(cb,disp,ry);
+  const k=now/1800;draw(ch,[Math.sin(k*1.3)*Math.cos(k),Math.sin(k*1.3)*Math.sin(k),Math.cos(k*1.3)],ry);
+  requestAnimationFrame(loop)
+}
+upd();requestAnimationFrame(loop);
+</script>
+</body>
+</html>
