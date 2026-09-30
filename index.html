@@ -1,0 +1,735 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="space">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Vikash Patel | Quantum Computing, AI &amp; ML</title>
+<meta name="description" content="Vikash Patel, Assistant Professor of Computer Science and Engineering. Lecture notes, lab manuals and research in Quantum Computing, AI and ML.">
+
+<!--
+=====================================================================
+  HOW TO UPDATE THIS PAGE  (search for the word "EDIT" in this file)
+=====================================================================
+  1. PROFILE / BIO ........ search:  EDIT: BIO         (inside the About section)
+  2. CONTACT DETAILS ...... search:  EDIT: CONTACT     (bottom of the page)
+  3. NOTES / PDFs / LINKS . search:  EDIT: RESOURCES   (inside the <script> at the bottom)
+  4. SUBJECT LIST ......... search:  EDIT: SUBJECTS    (inside the <script> at the bottom)
+  5. PROFILE PHOTO ........ search:  EDIT: PHOTO
+  6. DEFAULT THEME ........ search:  EDIT: DEFAULT THEME
+
+  PDF FILES: create a folder called "pdfs" next to this index.html,
+  put your PDFs in it (for example pdfs/qc-unit1.pdf) and write
+  url: "pdfs/qc-unit1.pdf" in the RESOURCES list.
+  You can also use any Google Drive / YouTube / website link as the url.
+=====================================================================
+-->
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700&family=Unbounded:wght@400;600;700&display=swap" rel="stylesheet">
+
+<style>
+/* ---------- THEME TOKENS (each theme overrides these from JS) ---------- */
+:root{
+  --bg:#03040d; --text:#e8ecff; --muted:#9aa3c7;
+  --accent:#7cc4ff; --accent2:#b48cff;
+  --card:rgba(12,16,40,.58); --border:rgba(160,180,255,.18);
+  --on-accent:#03040d;
+  --display:'Unbounded','Trebuchet MS',sans-serif;
+  --body:'Figtree','Segoe UI',system-ui,sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;scroll-padding-top:76px}
+body{font-family:var(--body);background:var(--bg);color:var(--text);line-height:1.65;font-size:17px;overflow-x:hidden;transition:background .6s,color .6s}
+a{color:inherit}
+button{font:inherit;color:inherit;cursor:pointer}
+:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:6px}
+#bg{position:fixed;inset:0;width:100%;height:100%;z-index:-1;display:block}
+
+/* ---------- NAV ---------- */
+header{position:fixed;top:0;left:0;right:0;z-index:50;display:flex;align-items:center;justify-content:space-between;padding:12px clamp(16px,4vw,40px);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);background:linear-gradient(var(--card),transparent);}
+.brand{font-family:var(--display);font-weight:600;font-size:15px;text-decoration:none;letter-spacing:.02em}
+nav{display:flex;gap:6px}
+nav a{text-decoration:none;font-size:15px;padding:6px 12px;border-radius:99px;color:var(--muted);transition:.2s}
+nav a:hover{color:var(--text);background:var(--border)}
+.burger{display:none;background:none;border:1px solid var(--border);border-radius:10px;padding:6px 12px}
+@media(max-width:860px){
+  .burger{display:block}
+  nav{position:absolute;top:100%;left:0;right:0;flex-direction:column;background:var(--card);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);padding:10px 16px 16px;display:none;border-bottom:1px solid var(--border)}
+  nav.open{display:flex}
+}
+
+/* ---------- LAYOUT ---------- */
+main{transition:opacity .8s}
+section{max-width:1080px;margin:0 auto;padding:clamp(64px,10vw,110px) clamp(18px,4vw,40px) 0}
+h2{font-family:var(--display);font-weight:600;font-size:clamp(24px,4vw,36px);line-height:1.2;margin-bottom:10px}
+.lead{color:var(--muted);max-width:60ch;margin-bottom:28px}
+.card{background:var(--card);border:1px solid var(--border);border-radius:18px;padding:24px;backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:11px 22px;border-radius:99px;border:1px solid var(--border);background:var(--card);text-decoration:none;font-weight:600;font-size:15px;transition:transform .2s,background .2s}
+.btn:hover{transform:translateY(-2px);background:var(--border)}
+.btn.primary{background:linear-gradient(120deg,var(--accent),var(--accent2));color:var(--on-accent);border:none}
+.btn.small{padding:7px 16px;font-size:14px}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{padding:6px 14px;border-radius:99px;border:1px solid var(--border);background:transparent;font-size:14px;color:var(--muted);transition:.2s}
+.chip:hover{color:var(--text)}
+.chip.on{background:var(--accent);color:var(--on-accent);border-color:transparent;font-weight:600}
+
+/* ---------- HERO ---------- */
+#home{min-height:100vh;display:flex;flex-direction:column;justify-content:center;padding-top:110px}
+.hero-in{animation:rise 1.4s cubic-bezier(.2,.7,.2,1) .5s both}
+@keyframes rise{from{opacity:0;transform:translateY(24px);filter:blur(8px)}to{opacity:1;transform:none;filter:none}}
+h1{font-family:var(--display);font-weight:700;font-size:clamp(38px,9vw,92px);line-height:1.02;letter-spacing:-.02em;background:linear-gradient(110deg,var(--text) 30%,var(--accent) 70%,var(--accent2));-webkit-background-clip:text;background-clip:text;color:transparent;text-shadow:none;padding-bottom:.08em}
+.role{font-size:clamp(18px,2.6vw,24px);margin:18px 0 6px;font-weight:500}
+.where{color:var(--muted);max-width:56ch;margin-bottom:30px}
+.hero-cta{display:flex;flex-wrap:wrap;gap:12px}
+
+/* ---------- ABOUT ---------- */
+.about-grid{display:grid;grid-template-columns:220px 1fr;gap:28px;align-items:start}
+.photo{width:220px;height:220px;border-radius:50%;border:2px solid var(--border);display:grid;place-items:center;font-family:var(--display);font-size:56px;font-weight:700;background:radial-gradient(circle at 30% 30%,var(--accent),var(--accent2));color:var(--on-accent);overflow:hidden}
+.photo img{width:100%;height:100%;object-fit:cover}
+.facts{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:16px;margin-top:20px}
+.facts .card h3{font-size:15px;color:var(--muted);font-weight:500;margin-bottom:4px}
+@media(max-width:720px){.about-grid{grid-template-columns:1fr;justify-items:center;text-align:left}.photo{width:160px;height:160px;font-size:42px}}
+
+/* ---------- TEACHING ---------- */
+.timeline{display:grid;gap:18px;grid-template-columns:repeat(auto-fit,minmax(300px,1fr))}
+.timeline .card h3{font-family:var(--display);font-size:17px;font-weight:600;margin-bottom:2px}
+.timeline .when{color:var(--accent);font-weight:600;font-size:15px;margin-bottom:12px}
+
+/* ---------- NOTES ---------- */
+.toolbar{display:flex;flex-wrap:wrap;gap:12px;justify-content:space-between;align-items:center;margin-bottom:16px}
+.tabs{display:flex;gap:6px;flex-wrap:wrap}
+.subjects{margin-bottom:22px;display:flex;gap:8px;flex-wrap:wrap}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:16px}
+.res{display:flex;flex-direction:column;gap:8px;transition:transform .25s,border-color .25s}
+.res:hover{transform:translateY(-4px);border-color:var(--accent)}
+.res .tag{font-size:13px;color:var(--accent);font-weight:600}
+.res h3{font-size:18px;line-height:1.3}
+.res p{color:var(--muted);font-size:15px;flex:1}
+.res .row{display:flex;gap:8px;align-items:center;justify-content:space-between;flex-wrap:wrap}
+.res .sub{font-size:13px;color:var(--muted)}
+.empty{padding:30px;text-align:center;color:var(--muted)}
+.rm{background:none;border:none;color:var(--muted);font-size:13px;text-decoration:underline}
+.note-small{font-size:13.5px;color:var(--muted);margin-top:14px}
+
+/* ---------- GAMES ---------- */
+.game-wrap{display:grid;gap:22px;grid-template-columns:1fr}
+.game-box{display:flex;flex-direction:column;align-items:center;gap:14px}
+.gstat{display:flex;gap:22px;flex-wrap:wrap;justify-content:center;color:var(--muted);font-size:15px}
+.gstat b{color:var(--text)}
+#snake{border:1px solid var(--border);border-radius:14px;background:rgba(0,0,0,.35);max-width:100%;touch-action:none}
+.dpad{display:grid;grid-template-columns:repeat(3,52px);grid-template-rows:repeat(2,46px);gap:6px}
+.dpad button{background:var(--card);border:1px solid var(--border);border-radius:12px;font-size:18px}
+.dpad .u{grid-column:2}.dpad .l{grid-row:2;grid-column:1}.dpad .d{grid-row:2;grid-column:2}.dpad .r{grid-row:2;grid-column:3}
+.mem{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;width:min(100%,360px)}
+.mcard{aspect-ratio:1;border-radius:14px;border:1px solid var(--border);background:var(--card);font-size:26px;font-family:var(--display);display:grid;place-items:center;transition:transform .35s,background .3s;transform-style:preserve-3d}
+.mcard.up{background:linear-gradient(140deg,var(--accent),var(--accent2));color:var(--on-accent)}
+.mcard.done{opacity:.45}
+.quiz{width:min(100%,560px);display:grid;gap:10px}
+.quiz .q{font-size:19px;font-weight:600;margin-bottom:4px}
+.opt{text-align:left;padding:12px 16px;border-radius:12px;border:1px solid var(--border);background:var(--card);transition:.2s}
+.opt:hover{border-color:var(--accent)}
+.opt.ok{background:#1f9d62;color:#fff;border-color:transparent}
+.opt.no{background:#c0392b;color:#fff;border-color:transparent}
+
+/* ---------- CONTACT / FOOTER ---------- */
+.contact-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px}
+.contact-grid a{text-decoration:none}
+footer{text-align:center;color:var(--muted);font-size:14px;padding:70px 20px 100px}
+
+/* ---------- FLOATING CONTROLS ---------- */
+.dock{position:fixed;right:16px;bottom:16px;z-index:60;display:flex;flex-direction:column;align-items:flex-end;gap:10px}
+.dock-row{display:flex;gap:8px}
+.fab{width:48px;height:48px;border-radius:50%;border:1px solid var(--border);background:var(--card);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);font-size:20px;display:grid;place-items:center;transition:transform .2s}
+.fab:hover{transform:scale(1.08)}
+.themes{display:none;flex-direction:column;gap:6px;padding:12px;border-radius:18px;background:var(--card);border:1px solid var(--border);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);min-width:210px}
+.themes.open{display:flex}
+.themes h4{font-size:14px;color:var(--muted);font-weight:500;margin-bottom:2px}
+.tbtn{display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:10px;border:1px solid transparent;background:none;text-align:left;font-size:15px}
+.tbtn:hover{background:var(--border)}
+.tbtn.on{border-color:var(--accent)}
+.sw{width:22px;height:22px;border-radius:50%;flex:none;border:1px solid var(--border)}
+
+/* ---------- CINEMATIC MODE ---------- */
+#cineCap{position:fixed;left:0;right:0;bottom:12vh;text-align:center;z-index:40;pointer-events:none;opacity:0;transition:opacity 1.2s;padding:0 20px}
+#cineCap h2{font-size:clamp(22px,4.5vw,44px);margin:0}
+#cineCap p{color:var(--muted);margin-top:6px}
+body.cine main,body.cine header{opacity:0;pointer-events:none}
+body.cine #cineCap{opacity:1}
+body.cine .dock .themes{display:none}
+
+/* ---------- DIALOG ---------- */
+dialog{margin:auto;border:1px solid var(--border);border-radius:20px;background:var(--bg);color:var(--text);padding:26px;width:min(94vw,480px)}
+dialog::backdrop{background:rgba(0,0,0,.6);backdrop-filter:blur(4px)}
+dialog h3{font-family:var(--display);font-size:19px;margin-bottom:14px}
+label{display:block;font-size:14px;color:var(--muted);margin:12px 0 4px}
+input,select{width:100%;padding:10px 12px;border-radius:10px;border:1px solid var(--border);background:var(--card);color:var(--text);font:inherit}
+.dlg-actions{display:flex;gap:10px;justify-content:flex-end;margin-top:20px}
+
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}html{scroll-behavior:auto}}
+</style>
+</head>
+
+<body>
+<canvas id="bg" aria-hidden="true"></canvas>
+
+<header>
+  <a class="brand" href="#home">Vikash Patel</a>
+  <button class="burger" id="burger" aria-label="Open menu">Menu</button>
+  <nav id="nav">
+    <a href="#about">About</a>
+    <a href="#teaching">Teaching</a>
+    <a href="#research">Research</a>
+    <a href="#notes">Notes &amp; Lectures</a>
+    <a href="#games">Games</a>
+    <a href="#contact">Contact</a>
+  </nav>
+</header>
+
+<main>
+<!-- ============================ HOME ============================ -->
+<section id="home">
+  <div class="hero-in">
+    <h1>Vikash Patel</h1>
+    <!-- EDIT: BIO (short headline) -->
+    <p class="role">Assistant Professor of Computer Science and Engineering</p>
+    <p class="where">Teaching Quantum Computing at NIET, Greater Noida. Research in quantum computing, artificial intelligence and machine learning.</p>
+    <div class="hero-cta">
+      <a class="btn primary" href="#notes">Open notes and lectures</a>
+      <a class="btn" href="https://scholar.google.com/citations?user=tzMFy4wAAAAJ&hl=en" target="_blank" rel="noopener">Google Scholar profile</a>
+      <button class="btn" id="cineBtn">Watch the universe</button>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ ABOUT ============================ -->
+<section id="about">
+  <h2>About</h2>
+  <div class="card about-grid">
+    <!-- EDIT: PHOTO  -> replace the initials with:  <img src="photo.jpg" alt="Vikash Patel">  -->
+    <div class="photo">VP</div>
+    <div>
+      <!-- EDIT: BIO (full paragraph) -->
+      <p>Vikash Patel is an Assistant Professor and researcher in Computer Science and Engineering. He holds an M.Tech. in Artificial Intelligence and Robotics and a B.Tech. in Computer Science and Engineering from Gautam Buddha University, Greater Noida. His research and teaching interests include Quantum Computing, Artificial Intelligence, Machine Learning, and emerging computing technologies. He has contributed to IEEE conference publications and is passionate about developing accessible, practical learning resources for students and researchers.</p>
+    </div>
+  </div>
+  <div class="facts">
+    <div class="card"><h3>M.Tech.</h3><b>Artificial Intelligence and Robotics</b><br>Gautam Buddha University</div>
+    <div class="card"><h3>B.Tech., passed out 2022</h3><b>Computer Science and Engineering</b><br>Gautam Buddha University</div>
+    <div class="card"><h3>Publications</h3><b>IEEE conference papers</b><br>Full list on Google Scholar</div>
+  </div>
+</section>
+
+<!-- ============================ TEACHING ============================ -->
+<section id="teaching">
+  <h2>Teaching</h2>
+  <p class="lead">From core programming and algorithms to quantum computing, the same idea runs through every course: learn it by building it.</p>
+  <div class="timeline">
+    <!-- EDIT: SUBJECTS shown here (present job) -->
+    <div class="card">
+      <h3>NIET, Greater Noida</h3>
+      <div class="when">June 2025 to present, Department of Quantum Computing</div>
+      <div class="chips">
+        <span class="chip">Introduction to Quantum Computing</span>
+        <span class="chip">Applied Linear Algebra and Quantum Mechanics</span>
+        <span class="chip">Quantum Machine Learning</span>
+        <span class="chip">Quantum Algorithms</span>
+      </div>
+    </div>
+    <!-- EDIT: SUBJECTS shown here (previous job) -->
+    <div class="card">
+      <h3>Gautam Buddha University</h3>
+      <div class="when">3 years, School of ICT (SoICT), CSE</div>
+      <div class="chips">
+        <span class="chip">C Programming</span>
+        <span class="chip">Artificial Intelligence</span>
+        <span class="chip">Machine Learning</span>
+        <span class="chip">Discrete Structures</span>
+        <span class="chip">Data Structures</span>
+        <span class="chip">Design and Analysis of Algorithms</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ RESEARCH ============================ -->
+<section id="research">
+  <h2>Research</h2>
+  <p class="lead">Working on how quantum ideas can make learning systems faster, smaller and more reliable.</p>
+  <div class="card">
+    <div class="chips" style="margin-bottom:20px">
+      <span class="chip on">Quantum Computing</span>
+      <span class="chip on">Quantum Machine Learning</span>
+      <span class="chip on">Artificial Intelligence</span>
+      <span class="chip on">Machine Learning</span>
+      <span class="chip on">Robotics</span>
+    </div>
+    <a class="btn primary" href="https://scholar.google.com/citations?user=tzMFy4wAAAAJ&hl=en" target="_blank" rel="noopener">See publications and citations on Google Scholar</a>
+  </div>
+</section>
+
+<!-- ============================ NOTES & LECTURES ============================ -->
+<section id="notes">
+  <h2>Notes and lectures</h2>
+  <p class="lead">Theory notes, lab manuals and recorded lectures for every subject. Pick a subject, then a type.</p>
+
+  <div class="subjects" id="subjectChips"></div>
+
+  <div class="toolbar">
+    <div class="tabs" id="typeTabs">
+      <button class="chip on" data-type="all">All</button>
+      <button class="chip" data-type="theory">Theory notes</button>
+      <button class="chip" data-type="lab">Lab manuals</button>
+      <button class="chip" data-type="lecture">Lectures</button>
+    </div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap">
+      <button class="btn small" id="addBtn">Add a PDF or link</button>
+      <button class="btn small" id="exportBtn">Copy my additions as code</button>
+    </div>
+  </div>
+
+  <div class="grid" id="resGrid"></div>
+  <p class="note-small">Teacher tip: items added with the button above are saved in this browser only. To publish them for every student, click "Copy my additions as code" and paste the result into the RESOURCES list in the HTML file. PDFs picked from your computer work for the current visit only; upload the file to your website's "pdfs" folder and use its path as the link.</p>
+</section>
+
+<!-- ============================ GAMES ============================ -->
+<section id="games">
+  <h2>Game room</h2>
+  <p class="lead">A short break between lectures. Three games, all playable on phone and keyboard.</p>
+  <div class="tabs" id="gameTabs" style="margin-bottom:18px">
+    <button class="chip on" data-g="snake">Snake</button>
+    <button class="chip" data-g="memory">Qubit memory</button>
+    <button class="chip" data-g="quiz">Quantum quiz</button>
+  </div>
+  <div class="card game-box" id="g-snake">
+    <div class="gstat"><span>Score <b id="snScore">0</b></span><span>Best <b id="snBest">0</b></span><span id="snMsg">Arrow keys, WASD or swipe</span></div>
+    <canvas id="snake" width="320" height="320"></canvas>
+    <div class="dpad">
+      <button class="u" data-d="u" aria-label="Up">&#9650;</button>
+      <button class="l" data-d="l" aria-label="Left">&#9664;</button>
+      <button class="d" data-d="d" aria-label="Down">&#9660;</button>
+      <button class="r" data-d="r" aria-label="Right">&#9654;</button>
+    </div>
+    <button class="btn primary" id="snStart">Start game</button>
+  </div>
+  <div class="card game-box" id="g-memory" hidden>
+    <div class="gstat"><span>Moves <b id="mvCount">0</b></span><span id="mvMsg">Match all the quantum symbols</span></div>
+    <div class="mem" id="memGrid"></div>
+    <button class="btn primary" id="memRestart">New game</button>
+  </div>
+  <div class="card game-box" id="g-quiz" hidden>
+    <div class="gstat"><span>Question <b id="qNo">1</b> of 5</span><span>Score <b id="qScore">0</b></span></div>
+    <div class="quiz" id="quizBox"></div>
+  </div>
+</section>
+
+<!-- ============================ CONTACT ============================ -->
+<section id="contact">
+  <h2>Contact</h2>
+  <div class="contact-grid">
+    <!-- EDIT: CONTACT  (replace the placeholder email, and add LinkedIn / other links) -->
+    <a class="card" href="mailto:your-email@example.com"><b>Email</b><br><span style="color:var(--muted)">your-email@example.com</span></a>
+    <a class="card" href="https://scholar.google.com/citations?user=tzMFy4wAAAAJ&hl=en" target="_blank" rel="noopener"><b>Google Scholar</b><br><span style="color:var(--muted)">Publications and citations</span></a>
+    <a class="card" href="https://www.linkedin.com/" target="_blank" rel="noopener"><b>LinkedIn</b><br><span style="color:var(--muted)">Add your profile link</span></a>
+  </div>
+</section>
+<footer>&copy; <span id="yr"></span> Vikash Patel. Built for students who look up at the stars and wonder how qubits work.</footer>
+</main>
+
+<div id="cineCap"><h2 id="cineTitle"></h2><p id="cineSub"></p></div>
+
+<!-- ============================ FLOATING CONTROLS ============================ -->
+<div class="dock">
+  <div class="themes" id="themePanel" role="dialog" aria-label="Choose theme"><h4>Page theme</h4></div>
+  <div class="dock-row">
+    <button class="fab" id="exitCine" title="Exit cinematic mode" aria-label="Exit cinematic mode" hidden>&#10005;</button>
+    <button class="fab" id="pauseBtn" title="Pause or play animation" aria-label="Pause animation">&#10074;&#10074;</button>
+    <button class="fab" id="themeBtn" title="Change theme" aria-label="Change theme">&#127912;</button>
+  </div>
+</div>
+
+<!-- Add-resource dialog -->
+<dialog id="dlg">
+  <h3>Add a PDF or link</h3>
+  <label for="fTitle">Title</label><input id="fTitle" placeholder="Unit 1: Qubits and superposition">
+  <label for="fSubject">Subject</label><select id="fSubject"></select>
+  <label for="fType">Type</label>
+  <select id="fType"><option value="theory">Theory notes</option><option value="lab">Lab manual</option><option value="lecture">Lecture</option></select>
+  <label for="fUrl">Link (Google Drive, YouTube, or pdfs/file.pdf)</label><input id="fUrl" placeholder="https://...">
+  <label for="fFile">Or choose a PDF from this computer (this visit only)</label><input id="fFile" type="file" accept="application/pdf">
+  <div class="dlg-actions"><button class="btn small" id="fCancel">Cancel</button><button class="btn primary small" id="fSave">Save</button></div>
+</dialog>
+
+<script>
+/* =====================================================================
+   EDIT: SUBJECTS  -> add or remove subject names here
+   ===================================================================== */
+const SUBJECTS = [
+  "Introduction to Quantum Computing",
+  "Applied Linear Algebra and Quantum Mechanics",
+  "Quantum Machine Learning",
+  "Quantum Algorithms",
+  "C Programming",
+  "Artificial Intelligence",
+  "Machine Learning",
+  "Discrete Structures",
+  "Data Structures",
+  "Design and Analysis of Algorithms"
+];
+
+/* =====================================================================
+   EDIT: RESOURCES  -> add your PDFs and links here. One block per item.
+   type  : "theory"  (theory notes)
+           "lab"     (lab manual / practical file)
+           "lecture" (video lecture / slides)
+   url   : "pdfs/qc-unit1.pdf"  or any full link like "https://drive.google.com/..."
+           Leave url as "" if the file is not ready yet.
+   The items below are examples. Replace them with your own.
+   ===================================================================== */
+const RESOURCES = [
+  { subject:"Introduction to Quantum Computing", type:"theory",  title:"Unit 1: Qubits, superposition and measurement", desc:"Notes with worked examples.", url:"" },
+  { subject:"Introduction to Quantum Computing", type:"lab",     title:"Lab 1: Your first circuit in Qiskit",           desc:"Build and run a Bell-state circuit.", url:"" },
+  { subject:"Introduction to Quantum Computing", type:"lecture", title:"Lecture 1: Why quantum computing?",            desc:"Recorded class lecture.", url:"" },
+  { subject:"Applied Linear Algebra and Quantum Mechanics", type:"theory", title:"Vectors, matrices and Dirac notation", desc:"The maths you need before the gates.", url:"" },
+  { subject:"Quantum Algorithms", type:"theory", title:"Deutsch-Jozsa, Grover and Shor", desc:"Algorithm walk-through with circuits.", url:"" },
+  { subject:"Quantum Machine Learning", type:"lab", title:"Lab: Variational quantum classifier", desc:"Hands-on with hybrid models.", url:"" },
+  { subject:"Data Structures", type:"lab", title:"Lab manual: Linked lists, stacks, queues", desc:"Programs with outputs.", url:"" },
+  { subject:"Design and Analysis of Algorithms", type:"theory", title:"Unit 1: Complexity and asymptotic notation", desc:"Notes and practice questions.", url:"" }
+];
+
+/* =====================================================================
+   EDIT: DEFAULT THEME -> one of: space, galaxy, blackhole, supernova, quantum, nebula, light
+   ===================================================================== */
+const DEFAULT_THEME = "space";
+
+/* ====================== helpers ====================== */
+const $ = s => document.querySelector(s);
+const $$ = s => [...document.querySelectorAll(s)];
+const esc = s => String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const rnd = (a,b)=>a+Math.random()*(b-a);
+const store = {
+  get(k,d){try{const v=localStorage.getItem(k);return v===null?d:JSON.parse(v)}catch(e){return d}},
+  set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}
+};
+$('#yr').textContent = new Date().getFullYear();
+$('#burger').onclick = ()=>$('#nav').classList.toggle('open');
+$$('#nav a').forEach(a=>a.onclick=()=>$('#nav').classList.remove('open'));
+
+/* =====================================================================
+   THEMES  (each theme = colours + a background animation "scene")
+   ===================================================================== */
+const THEMES = {
+  space:     {label:"Deep Space",  scene:"stars",   bg:"#03040d", bg2:"#0a0f2c", text:"#e8ecff", muted:"#9aa3c7", accent:"#7cc4ff", accent2:"#b48cff", card:"rgba(12,16,40,.58)",  border:"rgba(160,180,255,.18)", on:"#03040d"},
+  galaxy:    {label:"Milky Way",   scene:"galaxy",  bg:"#05030f", bg2:"#120a26", text:"#fff3e6", muted:"#c3aac0", accent:"#ffd28a", accent2:"#ff7ab8", card:"rgba(24,12,36,.58)",  border:"rgba(255,200,160,.2)",  on:"#1a0d10"},
+  blackhole: {label:"Black Hole",  scene:"blackhole",bg:"#010101",bg2:"#0a0603", text:"#fff1e0", muted:"#b9a48c", accent:"#ff9a3c", accent2:"#ffe1a8", card:"rgba(16,10,6,.62)",   border:"rgba(255,170,90,.22)",  on:"#1a0d02"},
+  supernova: {label:"Supernova",   scene:"supernova",bg:"#060309",bg2:"#1a0712", text:"#ffeef0", muted:"#c9a3ad", accent:"#ff5f6d", accent2:"#ffc371", card:"rgba(28,8,16,.6)",    border:"rgba(255,120,130,.22)", on:"#22050a"},
+  quantum:   {label:"Quantum Field",scene:"quantum",bg:"#010b14", bg2:"#02222c", text:"#e6fffb", muted:"#8fb9b4", accent:"#2ef2c9", accent2:"#4d9bff", card:"rgba(2,26,34,.6)",    border:"rgba(60,240,200,.2)",   on:"#01161b"},
+  nebula:    {label:"Violet Nebula",scene:"nebula", bg:"#0b0418", bg2:"#1c0838", text:"#f6eaff", muted:"#b79ad0", accent:"#d58cff", accent2:"#6fe3ff", card:"rgba(28,10,52,.58)",  border:"rgba(210,150,255,.22)", on:"#1a0630"},
+  light:     {label:"Bright Classroom",scene:"bubbles",bg:"#f3f6fb",bg2:"#dfe8fb",text:"#10162f", muted:"#55607f", accent:"#3b5bdb", accent2:"#0ca678", card:"rgba(255,255,255,.72)",border:"rgba(40,60,140,.16)", on:"#ffffff"}
+};
+let themeKey = DEFAULT_THEME, TH = THEMES[themeKey];
+
+function applyTheme(key, save=true){
+  if(!THEMES[key]) key = "space";
+  themeKey = key; TH = THEMES[key];
+  const r = document.documentElement.style;
+  r.setProperty('--bg',TH.bg); r.setProperty('--text',TH.text); r.setProperty('--muted',TH.muted);
+  r.setProperty('--accent',TH.accent); r.setProperty('--accent2',TH.accent2);
+  r.setProperty('--card',TH.card); r.setProperty('--border',TH.border); r.setProperty('--on-accent',TH.on);
+  document.documentElement.dataset.theme = key;
+  if(save) store.set('vp_theme',key);
+  $$('.tbtn').forEach(b=>b.classList.toggle('on',b.dataset.k===key));
+  setScene(TH.scene);
+}
+const panel = $('#themePanel');
+Object.entries(THEMES).forEach(([k,t])=>{
+  const b=document.createElement('button'); b.className='tbtn'; b.dataset.k=k;
+  b.innerHTML=`<span class="sw" style="background:linear-gradient(135deg,${t.bg2},${t.accent})"></span>${esc(t.label)}`;
+  b.onclick=()=>applyTheme(k); panel.appendChild(b);
+});
+$('#themeBtn').onclick=()=>panel.classList.toggle('open');
+
+/* =====================================================================
+   CINEMATIC BACKGROUND ENGINE
+   ===================================================================== */
+const cv = $('#bg'), ctx = cv.getContext('2d');
+let W=0,H=0,DPR=1,bgGrad=null;
+function bg(){ctx.globalCompositeOperation='source-over';ctx.globalAlpha=1;ctx.fillStyle=bgGrad;ctx.fillRect(0,0,W,H);}
+function hex(h,a){const n=parseInt(h.slice(1),16);return `rgba(${n>>16},${n>>8&255},${n&255},${a})`;}
+const small = ()=>W<700;
+const SC = {};
+
+/* --- Deep space: twinkling stars + shooting stars --- */
+SC.stars={
+  init(){this.s=Array.from({length:Math.round(W*H/4800)},()=>({x:rnd(0,W),y:rnd(0,H),z:rnd(.2,1),p:rnd(0,6.28)}));this.sh=null;},
+  draw(t,dt){bg();ctx.fillStyle='#fff';
+    for(const s of this.s){s.x-=s.z*dt*.008;if(s.x<0)s.x=W;ctx.globalAlpha=.35+.65*Math.abs(Math.sin(t*.0008*s.z+s.p));ctx.fillRect(s.x,s.y,s.z*2,s.z*2);}
+    ctx.globalAlpha=1;
+    if(!this.sh&&Math.random()<.006)this.sh={x:rnd(W*.3,W),y:rnd(0,H*.45),l:0};
+    if(this.sh){const s=this.sh;s.x-=dt*.9;s.y+=dt*.45;s.l+=dt;const g=ctx.createLinearGradient(s.x,s.y,s.x+130,s.y-65);g.addColorStop(0,`rgba(255,255,255,${1-s.l/1000})`);g.addColorStop(1,'rgba(255,255,255,0)');ctx.strokeStyle=g;ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(s.x,s.y);ctx.lineTo(s.x+130,s.y-65);ctx.stroke();if(s.l>1000)this.sh=null;}
+  }};
+
+/* --- Milky Way: rotating spiral galaxy --- */
+SC.galaxy={
+  init(){const n=small()?900:2000,R=Math.max(W,H)*.5;this.R=R;this.p=[];
+    for(let i=0;i<n;i++){const r=Math.pow(Math.random(),1.5)*R+8,arm=i%3;this.p.push({r,a:arm*2.0944+r*.0085+rnd(-.35,.35)*(1+r/R),s:rnd(.7,2),h:r/R,o:rnd(.45,1)});}
+    this.bs=Array.from({length:120},()=>({x:rnd(0,W),y:rnd(0,H),s:rnd(.5,1.6)}));},
+  draw(t){bg();ctx.fillStyle='rgba(255,255,255,.55)';for(const s of this.bs)ctx.fillRect(s.x,s.y,s.s,s.s);
+    ctx.save();ctx.translate(W*.5,H*.5);ctx.rotate(-.5);ctx.globalCompositeOperation='lighter';
+    ctx.save();ctx.scale(1,.42);const g=ctx.createRadialGradient(0,0,0,0,0,this.R*.4);g.addColorStop(0,'rgba(255,235,190,.7)');g.addColorStop(.3,'rgba(255,170,90,.2)');g.addColorStop(1,'rgba(0,0,0,0)');ctx.fillStyle=g;ctx.beginPath();ctx.arc(0,0,this.R*.4,0,6.283);ctx.fill();ctx.restore();
+    for(const p of this.p){const a=p.a+t*.00006*(300/(p.r+60));ctx.fillStyle=`hsla(${40+p.h*200},90%,${78-p.h*22}%,${p.o*(1-p.h*.5)})`;ctx.fillRect(Math.cos(a)*p.r,Math.sin(a)*p.r*.42,p.s,p.s);}
+    ctx.restore();}};
+
+/* --- Black hole: accretion disk + photon ring --- */
+SC.blackhole={
+  init(){this.rs=Math.min(W,H)*.1;const n=small()?550:1200;this.p=[];for(let i=0;i<n;i++)this.p.push(this.mk());
+    this.bs=Array.from({length:160},()=>({x:rnd(0,W),y:rnd(0,H),s:rnd(.5,1.5)}));},
+  mk(){return{r:this.rs*(1.5+Math.random()*Math.random()*6),a:rnd(0,6.283),s:rnd(.8,1.9),o:rnd(.5,1)};},
+  draw(t,dt){bg();const cx=W*.5,cy=H*.5,rs=this.rs;
+    ctx.fillStyle='rgba(255,255,255,.5)';for(const s of this.bs)ctx.fillRect(s.x,s.y,s.s,s.s);
+    ctx.globalCompositeOperation='lighter';
+    const dot=(p,lens)=>{const k=Math.min(1,(p.r-rs)/(rs*6)),x=cx+Math.cos(p.a)*p.r;let y=cy+Math.sin(p.a)*p.r*.26;
+      if(lens){const dx=x-cx,rr=p.r*.85;y=cy-Math.sqrt(Math.max(0,rr*rr-dx*dx))*.62;}
+      ctx.fillStyle=`hsla(${Math.max(8,48-k*44)},100%,${96-k*46}%,${p.o*(1-k*.6)*(lens?.55:1)})`;ctx.fillRect(x,y,p.s,p.s);};
+    for(const p of this.p){p.a+=dt*.0011*Math.pow(rs*3/p.r,1.4);p.r-=dt*.004*(rs*2/p.r);if(p.r<rs*1.15){p.r=rs*(6.5+Math.random()*1.5);}}
+    for(const p of this.p){if(Math.sin(p.a)<0){dot(p,false);dot(p,true);}}
+    ctx.globalCompositeOperation='source-over';
+    const g=ctx.createRadialGradient(cx,cy,rs*.95,cx,cy,rs*1.9);g.addColorStop(0,'rgba(255,170,80,.55)');g.addColorStop(1,'rgba(255,120,40,0)');ctx.fillStyle=g;ctx.beginPath();ctx.arc(cx,cy,rs*1.9,0,6.283);ctx.fill();
+    ctx.fillStyle='#000';ctx.beginPath();ctx.arc(cx,cy,rs,0,6.283);ctx.fill();
+    ctx.strokeStyle='rgba(255,210,150,.9)';ctx.lineWidth=2;ctx.shadowColor='#ff9a3c';ctx.shadowBlur=22;ctx.beginPath();ctx.arc(cx,cy,rs*1.04,0,6.283);ctx.stroke();ctx.shadowBlur=0;
+    ctx.globalCompositeOperation='lighter';for(const p of this.p){if(Math.sin(p.a)>=0)dot(p,false);}
+  }};
+
+/* --- Supernova: pulsing star, collapse, explosion, remnant --- */
+SC.supernova={
+  init(){this.c=0;this.boom=false;this.ps=[];this.bs=Array.from({length:140},()=>({x:rnd(0,W),y:rnd(0,H),s:rnd(.5,1.5)}));this.k=Math.min(W,H)/700;},
+  draw(t,dt){bg();this.c+=dt;const cyc=this.c%17000,cx=W*.5,cy=H*.5,k=this.k;
+    ctx.fillStyle='rgba(255,255,255,.5)';for(const s of this.bs)ctx.fillRect(s.x,s.y,s.s,s.s);
+    ctx.globalCompositeOperation='lighter';
+    if(cyc<6000){this.boom=false;const p=cyc/6000,r=k*(26+p*30)*(1+.07*Math.sin(cyc*.001*(3+p*9)));
+      const g=ctx.createRadialGradient(cx,cy,0,cx,cy,r*4);g.addColorStop(0,`rgba(255,${230-p*90|0},${200-p*140|0},1)`);g.addColorStop(.25,`rgba(255,${160-p*90|0},80,.55)`);g.addColorStop(1,'rgba(255,60,40,0)');ctx.fillStyle=g;ctx.beginPath();ctx.arc(cx,cy,r*4,0,6.283);ctx.fill();}
+    else if(cyc<6700){const p=(cyc-6000)/700,r=k*56*(1-p)+3;const g=ctx.createRadialGradient(cx,cy,0,cx,cy,r*5+20);g.addColorStop(0,'rgba(255,255,255,1)');g.addColorStop(1,'rgba(120,160,255,0)');ctx.fillStyle=g;ctx.beginPath();ctx.arc(cx,cy,r*5+20,0,6.283);ctx.fill();}
+    else{
+      if(!this.boom){this.boom=true;this.ps=Array.from({length:small()?400:900},()=>({a:rnd(0,6.283),v:Math.pow(Math.random(),.6)*.9*k*1000,s:rnd(1,3),h:rnd(0,55)}));}
+      const e=cyc-6700,f=1-Math.exp(-e/2600),fade=Math.max(0,1-e/10000);
+      const rem=ctx.createRadialGradient(cx,cy,0,cx,cy,k*(80+e*.06));rem.addColorStop(0,`rgba(255,220,160,${.55*fade})`);rem.addColorStop(.6,`rgba(255,80,70,${.25*fade})`);rem.addColorStop(1,'rgba(120,30,90,0)');ctx.fillStyle=rem;ctx.beginPath();ctx.arc(cx,cy,k*(80+e*.06),0,6.283);ctx.fill();
+      for(const p of this.ps){const d=p.v*f*1.6;ctx.fillStyle=`hsla(${p.h},100%,${75-f*25}%,${fade})`;ctx.fillRect(cx+Math.cos(p.a)*d,cy+Math.sin(p.a)*d,p.s,p.s);}
+      const sr=e*.42*Math.max(1,k*1.3);ctx.strokeStyle=`rgba(255,200,170,${Math.max(0,.8-e/3500)})`;ctx.lineWidth=3;ctx.beginPath();ctx.arc(cx,cy,sr,0,6.283);ctx.stroke();
+      if(e<450){ctx.fillStyle=`rgba(255,255,255,${.85*(1-e/450)})`;ctx.fillRect(0,0,W,H);}
+    }}};
+
+/* --- Quantum field: entangled network + wavefunctions --- */
+SC.quantum={
+  init(){const n=small()?42:85;this.n=Array.from({length:n},()=>({x:rnd(0,W),y:rnd(0,H),vx:rnd(-.03,.03),vy:rnd(-.03,.03)}));
+    this.k=Array.from({length:12},()=>({x:rnd(0,W),y:rnd(0,H),t:['|0\u27E9','|1\u27E9','|+\u27E9','|\u03C8\u27E9','H','\u2297'][Math.floor(rnd(0,6))],v:rnd(.01,.03)}));},
+  draw(t,dt){bg();const A=TH.accent,B=TH.accent2;
+    for(const p of this.n){p.x+=p.vx*dt;p.y+=p.vy*dt;if(p.x<0)p.x=W;if(p.x>W)p.x=0;if(p.y<0)p.y=H;if(p.y>H)p.y=0;}
+    ctx.lineWidth=1;for(let i=0;i<this.n.length;i++)for(let j=i+1;j<this.n.length;j++){const a=this.n[i],b=this.n[j],d=Math.hypot(a.x-b.x,a.y-b.y);if(d<140){ctx.strokeStyle=hex(A,.3*(1-d/140));ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);ctx.stroke();}}
+    ctx.fillStyle=hex(A,.9);for(const p of this.n){ctx.beginPath();ctx.arc(p.x,p.y,2,0,6.283);ctx.fill();}
+    [[.3,A],[.55,B],[.78,A]].forEach(([y,c],i)=>{ctx.strokeStyle=hex(c,.28);ctx.lineWidth=1.5;ctx.beginPath();for(let x=0;x<=W;x+=8){const yy=H*y+Math.sin(x*.012+t*.0009*(i+1))*30*Math.sin(t*.0004+i);x?ctx.lineTo(x,yy):ctx.moveTo(x,yy);}ctx.stroke();});
+    ctx.font='22px Unbounded,sans-serif';ctx.fillStyle=hex(B,.3);for(const k of this.k){k.y-=k.v*dt;if(k.y<-30){k.y=H+30;k.x=rnd(0,W);}ctx.fillText(k.t,k.x,k.y);}}};
+
+/* --- Violet nebula: drifting gas clouds --- */
+SC.nebula={
+  init(){this.b=Array.from({length:7},(_,i)=>({x:rnd(0,W),y:rnd(0,H),r:rnd(.25,.5)*Math.max(W,H),h:[280,300,190,320,260,200,340][i],vx:rnd(-.012,.012),vy:rnd(-.012,.012)}));
+    this.s=Array.from({length:180},()=>({x:rnd(0,W),y:rnd(0,H),z:rnd(.4,1.6),p:rnd(0,6.28)}));},
+  draw(t,dt){bg();ctx.globalCompositeOperation='lighter';
+    for(const b of this.b){b.x+=b.vx*dt;b.y+=b.vy*dt;if(b.x<-b.r*.3||b.x>W+b.r*.3)b.vx*=-1;if(b.y<-b.r*.3||b.y>H+b.r*.3)b.vy*=-1;const g=ctx.createRadialGradient(b.x,b.y,0,b.x,b.y,b.r);g.addColorStop(0,`hsla(${b.h},80%,55%,.22)`);g.addColorStop(1,`hsla(${b.h},80%,40%,0)`);ctx.fillStyle=g;ctx.fillRect(0,0,W,H);}
+    ctx.fillStyle='#fff';for(const s of this.s){ctx.globalAlpha=.4+.6*Math.abs(Math.sin(t*.001+s.p));ctx.fillRect(s.x,s.y,s.z,s.z);}ctx.globalAlpha=1;}};
+
+/* --- Bright classroom: soft floating bubbles (light theme) --- */
+SC.bubbles={
+  init(){this.b=Array.from({length:small()?22:40},()=>({x:rnd(0,W),y:rnd(0,H),r:rnd(10,60),v:rnd(.008,.03),p:rnd(0,6.28)}));},
+  draw(t,dt){bg();for(const b of this.b){b.y-=b.v*dt;if(b.y<-b.r)b.y=H+b.r;const x=b.x+Math.sin(t*.0005+b.p)*20;ctx.fillStyle=hex(TH.accent,.07);ctx.strokeStyle=hex(TH.accent2,.18);ctx.beginPath();ctx.arc(x,b.y,b.r,0,6.283);ctx.fill();ctx.stroke();}}};
+
+/* --- Warp speed intro (plays once when the page opens) --- */
+SC.warp={
+  init(){this.s=Array.from({length:260},()=>({x:rnd(-1,1),y:rnd(-1,1),z:rnd(.1,1)}));this.sp=.0004;},
+  draw(t,dt){ctx.globalCompositeOperation='source-over';ctx.fillStyle='rgba(2,3,10,.35)';ctx.fillRect(0,0,W,H);this.sp=Math.min(.0022,this.sp*1.012+.00001);
+    ctx.strokeStyle='#cfe0ff';ctx.lineWidth=1.4;const m=Math.max(W,H)*.5;
+    for(const s of this.s){const pz=s.z;s.z-=this.sp*dt;if(s.z<=.02){s.x=rnd(-1,1);s.y=rnd(-1,1);s.z=1;continue;}
+      ctx.beginPath();ctx.moveTo(W/2+s.x/pz*m*.25,H/2+s.y/pz*m*.25);ctx.lineTo(W/2+s.x/s.z*m*.25,H/2+s.y/s.z*m*.25);ctx.stroke();}}};
+
+/* ---- engine loop ---- */
+let sceneName='stars', paused=false, last=performance.now(), introUntil=0, intro=true;
+function setScene(n){sceneName=n;const s=SC[n];if(s&&W)s.init();if(paused)frame(performance.now(),true);}
+function resize(){
+  DPR=Math.min(window.devicePixelRatio||1,1.5);W=innerWidth;H=innerHeight;
+  cv.width=W*DPR;cv.height=H*DPR;ctx.setTransform(DPR,0,0,DPR,0,0);
+  bgGrad=ctx.createLinearGradient(0,0,0,H);bgGrad.addColorStop(0,TH.bg);bgGrad.addColorStop(1,TH.bg2);
+  SC[sceneName].init();SC.warp.init();
+}
+const _apply=applyTheme;
+applyTheme=function(k,s){_apply(k,s);bgGrad=ctx.createLinearGradient(0,0,0,H||1);bgGrad.addColorStop(0,TH.bg);bgGrad.addColorStop(1,TH.bg2);if(paused)frame(performance.now(),true);};
+function frame(now,force){
+  const dt=Math.min(50,now-last);last=now;
+  if(paused&&!force)return;
+  const sc=(intro&&now<introUntil)?SC.warp:SC[sceneName];
+  if(intro&&now>=introUntil){intro=false;bg();}
+  sc.draw(now,force?16:dt);
+}
+function loop(now){frame(now);requestAnimationFrame(loop);}
+addEventListener('resize',()=>{clearTimeout(resize.t);resize.t=setTimeout(resize,150);});
+
+/* pause / play */
+function setPaused(p){paused=p;$('#pauseBtn').innerHTML=p?'&#9654;':'&#10074;&#10074;';$('#pauseBtn').setAttribute('aria-label',p?'Play animation':'Pause animation');if(p)frame(performance.now(),true);}
+$('#pauseBtn').onclick=()=>setPaused(!paused);
+
+/* =====================================================================
+   CINEMATIC MODE: auto-plays galaxy, black hole, supernova, deep space
+   ===================================================================== */
+const CINE=[
+  {k:'galaxy',   ms:15000,t:'Our home galaxy',       s:'The Milky Way holds more than 100 billion stars.'},
+  {k:'blackhole',ms:16000,t:'A black hole',          s:'Where gravity is so strong that even light cannot leave.'},
+  {k:'supernova',ms:17000,t:'A supernova',           s:'A dying star outshines its whole galaxy for a few weeks.'},
+  {k:'space',    ms:14000,t:'The quantum universe',  s:'Everything, from stars to circuits, is quantum at heart.'}
+];
+let cineOn=false,cineIdx=0,cineTimer=null,cineSaved=null;
+function cineStep(){
+  const c=CINE[cineIdx%CINE.length];cineIdx++;
+  applyTheme(c.k,false);intro=false;
+  $('#cineTitle').textContent=c.t;$('#cineSub').textContent=c.s;
+  cineTimer=setTimeout(cineStep,c.ms);
+}
+function cineStart(){cineOn=true;cineSaved=themeKey;cineIdx=0;document.body.classList.add('cine');$('#exitCine').hidden=false;panel.classList.remove('open');setPaused(false);window.scrollTo({top:0});cineStep();}
+function cineStop(){if(!cineOn)return;cineOn=false;clearTimeout(cineTimer);document.body.classList.remove('cine');$('#exitCine').hidden=true;applyTheme(cineSaved,false);}
+$('#cineBtn').onclick=cineStart;$('#exitCine').onclick=cineStop;
+addEventListener('keydown',e=>{if(e.key==='Escape')cineStop();});
+
+/* =====================================================================
+   NOTES & LECTURES
+   ===================================================================== */
+const TYPE_LABEL={theory:'Theory notes',lab:'Lab manual',lecture:'Lecture'};
+const ACTION={theory:'Open notes',lab:'Open lab manual',lecture:'Watch lecture'};
+let userRes = store.get('vp_resources',[]);   // saved additions (links)
+let sessionRes = [];                           // PDFs chosen from computer (this visit only)
+let fSubject='All', fType='all';
+
+function allRes(){return [...RESOURCES,...userRes.map(r=>({...r,mine:1})),...sessionRes.map(r=>({...r,mine:2}))];}
+function renderSubjects(){
+  const box=$('#subjectChips');box.innerHTML='';
+  ['All',...SUBJECTS].forEach(s=>{const b=document.createElement('button');b.className='chip'+(s===fSubject?' on':'');b.textContent=s;b.onclick=()=>{fSubject=s;renderSubjects();renderRes();};box.appendChild(b);});
+}
+function renderRes(){
+  const g=$('#resGrid');
+  const list=allRes().filter(r=>(fSubject==='All'||r.subject===fSubject)&&(fType==='all'||r.type===fType));
+  if(!list.length){g.innerHTML='<div class="card empty" style="grid-column:1/-1">Nothing here yet. Add a PDF or link with the button above, or edit the RESOURCES list in the HTML file.</div>';return;}
+  g.innerHTML=list.map((r,i)=>{
+    const open=r.url?`<a class="btn small primary" href="${esc(r.url)}" target="_blank" rel="noopener">${ACTION[r.type]||'Open'}</a>`:`<span class="sub">Link coming soon</span>`;
+    const rm=r.mine?`<button class="rm" data-rm="${esc(r.title)}|${r.mine}">Remove</button>`:'';
+    return `<article class="card res"><span class="tag">${TYPE_LABEL[r.type]||''}</span><h3>${esc(r.title)}</h3><p>${esc(r.desc||'')}</p><div class="sub">${esc(r.subject)}${r.mine===2?' (this visit only)':''}</div><div class="row">${open}${rm}</div></article>`;}).join('');
+  $$('[data-rm]').forEach(b=>b.onclick=()=>{const [t,m]=b.dataset.rm.split('|');
+    if(m==='1'){userRes=userRes.filter(r=>r.title!==t);store.set('vp_resources',userRes);}else{sessionRes=sessionRes.filter(r=>r.title!==t);}renderRes();});
+}
+$$('#typeTabs .chip').forEach(b=>b.onclick=()=>{fType=b.dataset.type;$$('#typeTabs .chip').forEach(x=>x.classList.toggle('on',x===b));renderRes();});
+
+/* add dialog */
+const dlg=$('#dlg');
+$('#fSubject').innerHTML=SUBJECTS.map(s=>`<option>${esc(s)}</option>`).join('');
+$('#addBtn').onclick=()=>{dlg.showModal();};
+$('#fCancel').onclick=()=>dlg.close();
+$('#fSave').onclick=()=>{
+  const title=$('#fTitle').value.trim();if(!title){$('#fTitle').focus();return;}
+  const item={subject:$('#fSubject').value,type:$('#fType').value,title,desc:'Added by teacher',url:$('#fUrl').value.trim()};
+  const file=$('#fFile').files[0];
+  if(file){item.url=URL.createObjectURL(file);sessionRes.push(item);}
+  else{userRes.push(item);store.set('vp_resources',userRes);}
+  ['fTitle','fUrl','fFile'].forEach(id=>$('#'+id).value='');dlg.close();renderRes();
+};
+$('#exportBtn').onclick=async()=>{
+  const code=userRes.map(r=>`  { subject:${JSON.stringify(r.subject)}, type:${JSON.stringify(r.type)}, title:${JSON.stringify(r.title)}, desc:${JSON.stringify(r.desc||'')}, url:${JSON.stringify(r.url)} }`).join(',\n');
+  const out=code||'// nothing added yet';
+  try{await navigator.clipboard.writeText(out);alert('Copied. Paste it inside the RESOURCES list in your HTML file.');}catch(e){prompt('Copy this code and paste it inside RESOURCES:',out);}
+};
+
+/* =====================================================================
+   GAMES
+   ===================================================================== */
+$$('#gameTabs .chip').forEach(b=>b.onclick=()=>{
+  $$('#gameTabs .chip').forEach(x=>x.classList.toggle('on',x===b));
+  ['snake','memory','quiz'].forEach(g=>$('#g-'+g).hidden=(g!==b.dataset.g));
+  if(b.dataset.g!=='snake')Snake.stop();
+});
+
+/* --- Snake --- */
+const Snake=(()=>{
+  const c=$('#snake'),x=c.getContext('2d'),G=16,S=c.width/G;let s,d,nd,f,timer=null,score=0,best=store.get('vp_snake',0);
+  $('#snBest').textContent=best;
+  const place=()=>{do{f={x:Math.floor(Math.random()*G),y:Math.floor(Math.random()*G)};}while(s.some(p=>p.x===f.x&&p.y===f.y));};
+  function draw(){
+    const ac=getComputedStyle(document.documentElement).getPropertyValue('--accent'),ac2=getComputedStyle(document.documentElement).getPropertyValue('--accent2');
+    x.clearRect(0,0,c.width,c.height);
+    x.fillStyle=ac2;x.beginPath();x.arc(f.x*S+S/2,f.y*S+S/2,S/2.6,0,6.283);x.fill();
+    s.forEach((p,i)=>{x.fillStyle=i?ac:'#fff';x.globalAlpha=i?Math.max(.45,1-i*.03):1;x.fillRect(p.x*S+1,p.y*S+1,S-2,S-2);});x.globalAlpha=1;}
+  function start(){stop();s=[{x:8,y:8},{x:7,y:8},{x:6,y:8}];d={x:1,y:0};nd=d;score=0;$('#snScore').textContent=0;$('#snMsg').textContent='Go!';place();draw();timer=setInterval(step,115);}
+  function stop(){clearInterval(timer);timer=null;}
+  function step(){
+    d=nd;const h={x:s[0].x+d.x,y:s[0].y+d.y};
+    if(h.x<0||h.y<0||h.x>=G||h.y>=G||s.some(p=>p.x===h.x&&p.y===h.y)){stop();$('#snMsg').textContent='Game over. Press start to play again.';if(score>best){best=score;store.set('vp_snake',best);$('#snBest').textContent=best;}return;}
+    s.unshift(h);if(h.x===f.x&&h.y===f.y){score++;$('#snScore').textContent=score;place();}else s.pop();draw();}
+  function dir(k){const m={u:{x:0,y:-1},d:{x:0,y:1},l:{x:-1,y:0},r:{x:1,y:0}}[k];if(m&&(m.x!==-d.x||m.y!==-d.y))nd=m;}
+  addEventListener('keydown',e=>{if(!timer)return;const k={ArrowUp:'u',w:'u',ArrowDown:'d',s:'d',ArrowLeft:'l',a:'l',ArrowRight:'r',d:'r'}[e.key];if(k){e.preventDefault();dir(k);}});
+  $$('.dpad button').forEach(b=>b.onclick=()=>timer&&dir(b.dataset.d));
+  let tx,ty;c.addEventListener('touchstart',e=>{tx=e.touches[0].clientX;ty=e.touches[0].clientY;},{passive:true});
+  c.addEventListener('touchend',e=>{const dx=e.changedTouches[0].clientX-tx,dy=e.changedTouches[0].clientY-ty;if(Math.max(Math.abs(dx),Math.abs(dy))<20)return;dir(Math.abs(dx)>Math.abs(dy)?(dx>0?'r':'l'):(dy>0?'d':'u'));},{passive:true});
+  s=[{x:8,y:8}];d={x:1,y:0};f={x:12,y:8};draw();
+  $('#snStart').onclick=start;return{stop};
+})();
+
+/* --- Qubit memory match --- */
+(function(){
+  const sym=['|0\u27E9','|1\u27E9','|+\u27E9','H','\u03C8','\u2297'];let first=null,lock=false,moves=0,found=0;
+  function build(){
+    const deck=[...sym,...sym].sort(()=>Math.random()-.5);moves=0;found=0;first=null;lock=false;$('#mvCount').textContent=0;$('#mvMsg').textContent='Match all the quantum symbols';
+    const g=$('#memGrid');g.innerHTML='';
+    deck.forEach(v=>{const b=document.createElement('button');b.className='mcard';b.dataset.v=v;b.textContent='?';b.onclick=()=>flip(b);g.appendChild(b);});}
+  function flip(b){
+    if(lock||b.classList.contains('up')||b.classList.contains('done'))return;
+    b.classList.add('up');b.textContent=b.dataset.v;
+    if(!first){first=b;return;}
+    moves++;$('#mvCount').textContent=moves;
+    if(first.dataset.v===b.dataset.v){first.classList.add('done');b.classList.add('done');first=null;found++;if(found===sym.length)$('#mvMsg').textContent='Superposition collapsed. You won in '+moves+' moves!';}
+    else{lock=true;const a=first;first=null;setTimeout(()=>{[a,b].forEach(z=>{z.classList.remove('up');z.textContent='?';});lock=false;},750);}}
+  $('#memRestart').onclick=build;build();
+})();
+
+/* --- Quantum quiz --- */
+(function(){
+  const Q=[
+    ["A qubit can be in which kind of state?",["Only 0","Only 1","A superposition of 0 and 1","Neither 0 nor 1"],2],
+    ["Which gate turns |0\u27E9 into an equal superposition?",["Hadamard","Pauli-Z","NOT","Identity"],0],
+    ["Measuring a qubit in superposition gives:",["Always 0","Always 1","0 or 1, with probabilities set by its amplitudes","Both at once"],2],
+    ["Which algorithm factors large integers efficiently?",["Grover's","Shor's","Dijkstra's","Deutsch's"],1],
+    ["Grover's algorithm speeds up unstructured search by:",["A quadratic factor","An exponential factor","A constant factor","No speed-up"],0],
+    ["Which is a Bell (maximally entangled) state?",["|00\u27E9","|01\u27E9","(|00\u27E9 + |11\u27E9)/\u221A2","|11\u27E9"],2],
+    ["The no-cloning theorem says:",["Qubits cannot be stored","An unknown quantum state cannot be copied perfectly","Gates must be reversible","Entanglement is impossible"],1],
+    ["The Pauli-X gate acts as a:",["Phase flip","Bit flip","Measurement","Rotation by 45 degrees"],1],
+    ["The Bloch sphere represents the state of:",["A single qubit","Two qubits","A classical bit","A quantum computer"],0],
+    ["Quantum gates are represented by which matrices?",["Unitary matrices","Diagonal matrices only","Singular matrices","Random matrices"],0]
+  ];
+  let qs,i,sc;
+  function start(){qs=[...Q].sort(()=>Math.random()-.5).slice(0,5);i=0;sc=0;show();}
+  function show(){
+    $('#qNo').textContent=i+1;$('#qScore').textContent=sc;const box=$('#quizBox'),q=qs[i];
+    box.innerHTML=`<div class="q">${esc(q[0])}</div>`+q[1].map((o,n)=>`<button class="opt" data-n="${n}">${esc(o)}</button>`).join('');
+    $$('#quizBox .opt').forEach(b=>b.onclick=()=>{
+      const n=+b.dataset.n;$$('#quizBox .opt').forEach(x=>x.disabled=true);
+      $$('#quizBox .opt')[q[2]].classList.add('ok');if(n===q[2])sc++;else b.classList.add('no');
+      $('#qScore').textContent=sc;setTimeout(()=>{i++;i<5?show():end();},1100);});}
+  function end(){$('#quizBox').innerHTML=`<div class="q">You scored ${sc} out of 5.</div><p style="color:var(--muted)">${sc>=4?'Excellent. You think in qubits.':sc>=2?'Good start. Revisit the notes above and try again.':'Open the Introduction to Quantum Computing notes and try again.'}</p><button class="btn primary" id="qAgain">Play again</button>`;$('#qAgain').onclick=start;}
+  start();
+})();
+
+/* =====================================================================
+   START
+   ===================================================================== */
+renderSubjects();renderRes();
+const savedTheme=store.get('vp_theme',DEFAULT_THEME);
+resize();
+applyTheme(THEMES[savedTheme]?savedTheme:DEFAULT_THEME,false);
+if(matchMedia('(prefers-reduced-motion: reduce)').matches){intro=false;setPaused(true);}
+else{introUntil=performance.now()+2600;}
+requestAnimationFrame(loop);
+</script>
+</body>
+</html>
