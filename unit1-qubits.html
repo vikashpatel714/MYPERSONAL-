@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Unit 1: Qubits, Superposition and Measurement</title>
+<!-- HOW TO EDIT: change any text inside the tags below, save, and upload again to GitHub.
+     Colours of every theme are in the CSS block at the top (search "data-theme"). -->
+<style>
+:root{--bg:#f4f6fc;--pn:rgba(255,255,255,.88);--tx:#14213d;--mu:#56627a;--a1:#3b5bdb;--a2:#7048e8;--bd:rgba(20,33,61,.13);box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#060914;--pn:rgba(255,255,255,.06);--tx:#eaf0ff;--mu:#9aa8c7;--a1:#6ea8ff;--a2:#b48cff;--bd:rgba(255,255,255,.14)}}
+:root[data-theme="space"]{--bg:#060914;--pn:rgba(255,255,255,.06);--tx:#eaf0ff;--mu:#9aa8c7;--a1:#6ea8ff;--a2:#b48cff;--bd:rgba(255,255,255,.14)}
+:root[data-theme="neon"]{--bg:#0c0620;--pn:rgba(255,255,255,.06);--tx:#f7eeff;--mu:#bba8da;--a1:#ff6ad5;--a2:#7c6bff;--bd:rgba(255,255,255,.14)}
+:root[data-theme="hole"]{--bg:#050505;--pn:rgba(255,255,255,.05);--tx:#fff4e6;--mu:#b8a58c;--a1:#ff9d2e;--a2:#ffd27a;--bd:rgba(255,255,255,.14)}
+:root[data-theme="aurora"]{--bg:#03130f;--pn:rgba(255,255,255,.06);--tx:#e6fff4;--mu:#8fc2ad;--a1:#3dffb0;--a2:#36b3ff;--bd:rgba(255,255,255,.14)}
+:root[data-theme="nova"]{--bg:#14060a;--pn:rgba(255,255,255,.06);--tx:#ffeceb;--mu:#d0a3a3;--a1:#ff4d5e;--a2:#ffb347;--bd:rgba(255,255,255,.14)}
+:root[data-theme="ocean"]{--bg:#04202e;--pn:rgba(255,255,255,.06);--tx:#e4faff;--mu:#8fbccb;--a1:#4dd0e1;--a2:#2979ff;--bd:rgba(255,255,255,.14)}
+:root[data-theme="matrix"]{--bg:#000;--pn:rgba(0,255,100,.06);--tx:#d6ffe0;--mu:#6fae82;--a1:#00ff66;--a2:#b6ff00;--bd:rgba(0,255,100,.25)}
+html{scroll-behavior:smooth;scroll-padding-top:calc(env(safe-area-inset-top,0px) + 70px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--tx);font:16px/1.65 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;overflow-x:hidden}
+#bg{position:fixed;inset:0;width:100%;height:100%;z-index:-1}
+.w{max-width:1040px;margin:auto;padding:0 18px}
+.hd{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;display:flex;align-items:center;gap:10px;padding:10px 18px;background:var(--pn);backdrop-filter:blur(14px);border-bottom:1px solid var(--bd)}
+.hd nav{display:flex;gap:14px;overflow-x:auto;flex:1}
+.hd nav a{color:var(--mu);text-decoration:none;font-size:.9rem;white-space:nowrap}
+.hd nav a:hover{color:var(--a1)}
+select,button,input{font:inherit;color:var(--tx);background:var(--pn);border:1px solid var(--bd);border-radius:10px;padding:6px 10px}
+button{cursor:pointer}button:hover{border-color:var(--a1)}
+.on,.bt{background:linear-gradient(90deg,var(--a1),var(--a2))!important;color:#fff!important;border:0}
+section{padding:60px 0}
+.hero{min-height:84vh;display:flex;align-items:center}
+.hero .w{display:flex;flex-wrap:wrap;gap:30px;align-items:center;justify-content:center}
+.hero .w>div{animation:rise 1s both}
+.kick{color:var(--a1);letter-spacing:.14em;text-transform:uppercase;font-size:.85rem;margin:0}
+h1{font-size:clamp(2rem,5.5vw,3.5rem);line-height:1.1;margin:.2em 0;background:linear-gradient(90deg,var(--a1),var(--a2),var(--a1));background-size:200%;-webkit-background-clip:text;background-clip:text;color:transparent;animation:sh 6s linear infinite}
+h2{font-size:1.8rem;margin:0 0 16px}
+h2::after{content:"";display:block;width:56px;height:4px;border-radius:4px;margin-top:6px;background:linear-gradient(90deg,var(--a1),var(--a2))}
+h3{margin:14px 0 8px;color:var(--a1)}
+.mu{color:var(--mu)}.mono{font:.9rem/1.5 ui-monospace,Menlo,Consolas,monospace;word-break:break-word}
+.bt{display:inline-block;padding:9px 18px;border-radius:99px;text-decoration:none;font-weight:600;margin:4px 6px 4px 0}
+.tg{display:inline-block;font-size:.8rem;padding:2px 10px;border-radius:99px;border:1px solid var(--a2);color:var(--a2);margin:2px}
+.gr{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:14px}
+.cd{background:var(--pn);border:1px solid var(--bd);border-radius:16px;padding:16px;backdrop-filter:blur(8px);overflow-x:auto}
+.cd ul{padding-left:20px;margin:6px 0}
+.rl{border-left:4px solid var(--a2);background:var(--pn);padding:8px 14px;border-radius:0 12px 12px 0;margin:12px 0}
+table{border-collapse:collapse;margin:8px 0}th,td{border:1px solid var(--bd);padding:5px 10px}th{background:var(--pn)}
+.lab{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:14px}.wide{grid-column:1/-1}
+#bl{width:100%;max-width:440px;aspect-ratio:1;display:block;margin:auto;touch-action:none;cursor:grab}
+.pre{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin-top:8px}
+label{display:block;margin:6px 0;color:var(--mu);font-size:.9rem}input[type=range]{width:100%;padding:0}
+.ni{width:78px}
+.br{display:flex;align-items:center;gap:8px;margin:4px 0}.br span{min-width:96px}.br div{flex:1;height:14px;background:var(--bd);border-radius:8px;overflow:hidden}
+.br i{display:block;height:100%;background:linear-gradient(90deg,var(--a1),var(--a2));transition:width .3s}.br em{min-width:56px;font-style:normal;text-align:right}
+hr{border:0;border-top:1px dashed var(--bd)}
+details{background:var(--pn);border:1px solid var(--bd);border-radius:12px;padding:10px 14px;margin:10px 0}summary{cursor:pointer;font-weight:700}
+.cw{perspective:500px;padding:14px 0}
+.coin{width:90px;height:90px;margin:auto;position:relative;transform-style:preserve-3d;animation:flip 1.6s linear infinite}
+.coin.land{animation:none}.coin.land.t{transform:rotateY(180deg)}
+.cf{position:absolute;inset:0;border-radius:50%;backface-visibility:hidden;display:grid;place-items:center;font-weight:800;font-size:1.5rem;color:#fff;background:radial-gradient(circle at 30% 30%,var(--a2),var(--a1));border:4px solid rgba(255,255,255,.4);box-shadow:0 0 24px var(--a1)}
+.cf.b{transform:rotateY(180deg)}
+.at{width:220px;height:220px;position:relative;transform-style:preserve-3d;animation:s3 14s linear infinite}
+.at i{position:absolute;inset:0;border:2px solid var(--a1);border-radius:50%}
+.at i:nth-child(2){transform:rotateY(60deg);border-color:var(--a2)}.at i:nth-child(3){transform:rotateY(120deg)}
+.at b{position:absolute;left:50%;top:50%;width:26px;height:26px;margin:-13px;border-radius:50%;background:var(--a1);box-shadow:0 0 30px var(--a1)}
+.rv{opacity:0;transform:translateY(26px);transition:opacity .8s,transform .8s}.rv.in{opacity:1;transform:none}
+footer{text-align:center;color:var(--mu);padding:30px 18px 50px}
+@keyframes flip{to{transform:rotateY(360deg)}}@keyframes s3{to{transform:rotateX(360deg) rotateY(360deg)}}
+@keyframes sh{to{background-position:200%}}@keyframes rise{from{opacity:0;transform:translateY(20px)}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<canvas id="bg"></canvas>
+<header class="hd"><b>⚛ Unit 1</b>
+<nav><a href="#s1">Basics</a><a href="#s2">Born Rule</a><a href="#s3">Bloch Sphere</a><a href="#lab">Lab</a><a href="#s4">Measurement</a><a href="#s5">Expectation</a><a href="#s6">Numericals</a><a href="#s7">Cheat Sheet</a></nav>
+<select id="th" aria-label="Choose theme"><option value="space">🌌 Deep Space</option><option value="neon">💜 Neon Galaxy</option><option value="hole">🕳️ Black Hole</option><option value="aurora">🌿 Aurora</option><option value="nova">💥 Supernova</option><option value="ocean">🌊 Ocean</option><option value="matrix">🟩 Matrix</option><option value="light">☀️ Daylight</option></select>
+<button id="an" aria-label="Animation on or off">✨</button></header>
+<main>
+<section class="hero"><div class="w"><div><p class="kick">Part B: Qubits and Circuits</p><h1>Unit 1: Qubits, Superposition and Measurement</h1>
+<p class="mu" style="max-width:560px">A beginner-friendly, interactive guide. Rotate a 3D Bloch sphere, measure qubits thousands of times, and solve numericals step by step with real-life examples.</p>
+<a class="bt" href="#s1">Start learning</a><a class="bt" href="#lab">Open the Lab</a><br>
+<span class="tg">Bit vs qubit</span><span class="tg">Dirac notation</span><span class="tg">Superposition</span><span class="tg">Born rule</span><span class="tg">Bloch sphere</span><span class="tg">Phase</span><span class="tg">Measurement</span><span class="tg">⟨Z⟩</span></div>
+<div style="perspective:700px"><div class="at"><i></i><i></i><i></i><b></b></div></div></div></section>
+
+<section id="s1"><div class="w rv"><h2>1. Bit vs Qubit and Dirac Notation</h2>
+<div class="gr"><div class="cd"><h3>Classical bit</h3><p>Always exactly <b>0</b> or <b>1</b>, like a light switch: ON or OFF.</p><div class="cw"><div class="coin land"><div class="cf">0</div><div class="cf b">1</div></div></div></div>
+<div class="cd"><h3>Qubit</h3><p>Can be in a <b>superposition</b> of |0⟩ and |1⟩ until it is measured, like a coin spinning in the air.</p><div class="cw"><div class="coin" id="coin"><div class="cf">0</div><div class="cf b">1</div></div></div><button id="cb">🪙 Catch the coin (measure)</button> <span class="mono" id="cr"></span></div></div>
+<h3>Notes</h3><ul><li>A qubit state is |ψ⟩ = α|0⟩ + β|1⟩, where α and β are complex numbers called <b>amplitudes</b>.</li>
+<li>A <b>ket</b> |ψ⟩ is a column vector. A <b>bra</b> ⟨ψ| is its conjugate transpose (a row vector with every number conjugated).</li>
+<li>The inner product ⟨φ|ψ⟩ is a single number. |0⟩ and |1⟩ are <b>orthonormal</b>: ⟨0|0⟩ = ⟨1|1⟩ = 1 and ⟨0|1⟩ = 0.</li></ul>
+<table><tr><th>Symbol</th><th>Meaning</th></tr><tr><td>|0⟩</td><td>[1, 0]ᵀ</td></tr><tr><td>|1⟩</td><td>[0, 1]ᵀ</td></tr><tr><td>|ψ⟩</td><td>[α, β]ᵀ</td></tr><tr><td>⟨ψ|</td><td>[α*, β*]</td></tr><tr><td>|0⟩⟨0|</td><td>[[1, 0], [0, 0]] (a projector)</td></tr></table>
+<p class="rl"><b>🌍 Real life:</b> A light switch is a bit. A spinning coin is an <i>analogy</i> for a qubit. Be careful: a real spinning coin is secretly heads or tails, but a qubit is not hiding a value. Use the coin only for intuition.</p></div></section>
+
+<section id="s2"><div class="w rv"><h2>2. Superposition, Normalization and the Born Rule</h2>
+<ul><li><b>Superposition:</b> |ψ⟩ = α|0⟩ + β|1⟩ with both α and β non-zero. Example: |+⟩ = (|0⟩ + |1⟩)/√2 and |−⟩ = (|0⟩ − |1⟩)/√2.</li>
+<li><b>Born rule:</b> P(0) = |α|² and P(1) = |β|². Probability is the <i>squared magnitude</i> of the amplitude, not the amplitude itself.</li>
+<li><b>Normalization:</b> probabilities must add up to 1, so |α|² + |β|² = 1. If not, divide both amplitudes by N = √(|α|² + |β|²).</li></ul>
+<p class="rl"><b>🌍 Real life:</b> A recipe adds up to 5 cups but you need exactly 1 cup, so you scale every ingredient by 1/5. Normalizing a state is the same idea. Also, 3 votes and 4 votes become 9/25 and 16/25 only after dividing by 5 (the 3-4-5 triangle).</p>
+<div class="cd"><h3>🧮 Normalizer</h3><p class="mu">Enter α = a + bi and β = c + di.</p>
+α: <input class="ni" type="number" id="ar" value="3"> + <input class="ni" type="number" id="ai" value="0">i &nbsp; β: <input class="ni" type="number" id="br" value="0"> + <input class="ni" type="number" id="bi" value="4">i
+<p class="mono" id="no"></p><button class="ld" id="nl" data-t="0" data-p="0">Load this state in the lab</button></div></div></section>
+
+<section id="s3"><div class="w rv"><h2>3. Bloch Sphere, Global and Relative Phase</h2>
+<ul><li>Every pure qubit state can be written |ψ⟩ = cos(θ/2)|0⟩ + e<sup>iφ</sup> sin(θ/2)|1⟩ and drawn as a point on a sphere: r = (sinθ cosφ, sinθ sinφ, cosθ).</li>
+<li>North pole = |0⟩, south pole = |1⟩. The equator holds equal superpositions: |+⟩ (φ = 0), |+i⟩ (φ = 90°), |−⟩ (180°), |−i⟩ (270°).</li>
+<li><b>Global phase:</b> e<sup>iγ</sup>|ψ⟩ is the same physical state. Probabilities and the Bloch point do not change.</li>
+<li><b>Relative phase φ:</b> the phase <i>between</i> the |0⟩ and |1⟩ parts. It is physical: it moves the point around the equator and changes results in X and Y measurements.</li>
+<li>Opposite points on the sphere are orthogonal states (180° on the sphere is 90° in Hilbert space).</li></ul>
+<p class="rl"><b>🌍 Real life:</b> Think of a <b>globe</b>. Latitude (θ) is how the probability is split between |0⟩ and |1⟩. Longitude (φ) is the relative phase. Global phase is like moving the whole clock by one hour: all time <i>differences</i> stay the same. Relative phase is like one dancer being a quarter-beat ahead of another.</p></div></section>
+
+<section id="lab"><div class="w rv"><h2>Interactive Lab: Bloch Sphere and Measurement</h2>
+<p class="mu">Drag the sphere to rotate it. Use presets or sliders, then measure.</p>
+<div class="lab"><div class="cd"><canvas id="bl" width="420" height="420"></canvas>
+<div class="pre"><button data-t="0" data-p="0">|0⟩</button><button data-t="180" data-p="0">|1⟩</button><button data-t="90" data-p="0">|+⟩</button><button data-t="90" data-p="180">|−⟩</button><button data-t="90" data-p="90">|+i⟩</button><button data-t="90" data-p="270">|−i⟩</button></div></div>
+<div class="cd"><h3>State</h3><p class="mono" id="st"></p><p class="mono" id="bv"></p>
+<label>θ (latitude, 0° to 180°)<input type="range" id="sth" min="0" max="180"></label>
+<label>φ (relative phase, 0° to 360°)<input type="range" id="sph" min="0" max="360"></label>
+<label>γ (global phase) <small>Numbers change, physics does not.</small><input type="range" id="sg" min="0" max="360" value="0"></label>
+<h3>Probabilities and expectation values</h3><div id="pb"></div></div>
+<div class="cd wide"><h3>Measure</h3>
+<button class="bs on" data-b="Z">Z basis</button> <button class="bs" data-b="X">X basis</button> <button class="bs" data-b="Y">Y basis</button><br><br>
+<button class="bt" onclick="meas(1)">Measure once (collapses)</button> <button onclick="meas(100)">×100</button> <button onclick="meas(1000)">×1000</button> <button onclick="restore()">↺ Restore state</button> <button onclick="clr()">Clear counts</button>
+<p class="mono" id="rs"></p><div id="hs"></div>
+<p class="mu">Try this: measure once in Z, then measure once again in Z (same result every time). Now switch to X and measure a few times (results become random).</p></div></div></div></section>
+
+<section id="s4"><div class="w rv"><h2>4. Projective Measurement and Collapse</h2>
+<ul><li>Measuring in the Z basis uses projectors P₀ = |0⟩⟨0| and P₁ = |1⟩⟨1|.</li>
+<li>Probability of outcome m: p(m) = ⟨ψ|P<sub>m</sub>|ψ⟩.</li>
+<li>After the measurement the state <b>collapses</b> to P<sub>m</sub>|ψ⟩ / √p(m). Measuring again in the same basis repeats the result.</li>
+<li>X basis: |±⟩ = (|0⟩ ± |1⟩)/√2. Y basis: |±i⟩ = (|0⟩ ± i|1⟩)/√2. Each basis is a pair of opposite points on the sphere.</li>
+<li>One measurement gives only one random bit. Probabilities show up only over many identically prepared qubits.</li></ul>
+<p class="rl"><b>🌍 Real life:</b> <b>Polarized sunglasses.</b> A vertical filter (Z basis) lets some photons through and makes them vertical. A second vertical filter passes them all (repeatable). A diagonal filter (X basis) then passes only half, because the old vertical information is lost.</p></div></section>
+
+<section id="s5"><div class="w rv"><h2>5. Expectation Values and ⟨Z⟩</h2>
+<ul><li>The expectation value is the average result over many measurements: ⟨A⟩ = ⟨ψ|A|ψ⟩.</li>
+<li>Z = [[1, 0], [0, −1]] gives eigenvalue +1 for |0⟩ and −1 for |1⟩, so <b>⟨Z⟩ = P(0) − P(1) = |α|² − |β|² = cosθ</b>.</li>
+<li>Similarly ⟨X⟩ = sinθ cosφ and ⟨Y⟩ = sinθ sinφ. These are exactly the x, y and z coordinates of the Bloch vector, and each lies between −1 and +1.</li></ul>
+<p class="rl"><b>🌍 Real life:</b> A game pays ₹1 if the result is 0 and costs ₹1 if it is 1. Your average winning per round after many rounds is ⟨Z⟩. If P(0) = 85% and P(1) = 15%, you win ₹0.70 per round on average.</p></div></section>
+
+<section id="s6"><div class="w rv"><h2>6. Numericals (Solved Step by Step)</h2><p class="mu">Tap a question to see the solution. Use the buttons to see the answer on the sphere.</p>
+<details><summary>N1. Normalize |ψ⟩ = 3|0⟩ + 4i|1⟩ and find P(0), P(1).</summary><p>Norm² = |3|² + |4i|² = 9 + 16 = 25, so N = 1/5.<br>|ψ⟩ = (3/5)|0⟩ + (4i/5)|1⟩.<br>P(0) = 9/25 = 36%, P(1) = 16/25 = 64%. Check: 36% + 64% = 100%.</p><p class="rl">🌍 Votes 3 and 4 turned into shares of 5.</p><button class="ld" data-t="106.26" data-p="90">Show in lab</button></details>
+<details><summary>N2. For |ψ⟩ = (1/√3)|0⟩ + √(2/3)|1⟩ find the probabilities and ⟨Z⟩.</summary><p>Check: 1/3 + 2/3 = 1 ✓ (already normalized).<br>P(0) = 1/3 ≈ 33.3%, P(1) = 2/3 ≈ 66.7%.<br>⟨Z⟩ = P(0) − P(1) = 1/3 − 2/3 = −1/3.<br>cos(θ/2) = 1/√3 gives θ ≈ 109.47°, φ = 0.</p><p class="rl">🌍 In the ₹1 game you lose about ₹0.33 per round.</p><button class="ld" data-t="109.47" data-p="0">Show in lab</button></details>
+<details><summary>N3. Find the Bloch vector of cos(π/8)|0⟩ + sin(π/8)|1⟩.</summary><p>θ/2 = π/8, so θ = π/4 = 45°, and φ = 0 (amplitudes are real).<br>r = (sin45°, 0, cos45°) = (0.707, 0, 0.707).<br>P(0) = cos²(22.5°) ≈ 85.4%, P(1) ≈ 14.6%, ⟨Z⟩ = 0.707.</p><p class="rl">🌍 A compass needle halfway between north (|0⟩) and the east direction (|+⟩).</p><button class="ld" data-t="45" data-p="0">Show in lab</button></details>
+<details><summary>N4. Compare |+⟩ and |−⟩. Are they different?</summary><p>|±⟩ = (|0⟩ ± |1⟩)/√2. In the Z basis both give P(0) = P(1) = 1/2.<br>Bloch vectors: |+⟩ = (1, 0, 0) and |−⟩ = (−1, 0, 0). They differ only by relative phase (φ = 0 vs 180°).<br>In the X basis: |+⟩ gives + with 100%, |−⟩ gives − with 100%. So they are perfectly distinguishable, but not by a Z measurement.</p><p class="rl">🌍 Noise-cancelling headphones: a sound wave and its upside-down copy have the same loudness but cancel each other.</p><button class="ld" data-t="90" data-p="0">Show |+⟩</button> <button class="ld" data-t="90" data-p="180">Show |−⟩</button></details>
+<details><summary>N5. Where is (|0⟩ + i|1⟩)/√2 on the sphere?</summary><p>|α| = |β| = 1/√2, so θ = 90° (equator). The relative phase is arg(i) = 90°, so φ = 90°.<br>r = (0, 1, 0), P(0) = P(1) = 50%, ⟨Y⟩ = +1. A Y-basis measurement gives |+i⟩ every time.</p><p class="rl">🌍 On the globe it is the point 90° east of |+⟩ on the equator. Same latitude, different longitude.</p><button class="ld" data-t="90" data-p="90">Show in lab</button></details></div></section>
+
+<section id="s7"><div class="w rv"><h2>7. Cheat Sheet and Common Mistakes</h2>
+<table><tr><th>Quantity</th><th>Formula</th></tr><tr><td>State</td><td>|ψ⟩ = cos(θ/2)|0⟩ + e<sup>iφ</sup> sin(θ/2)|1⟩</td></tr><tr><td>Normalization</td><td>|α|² + |β|² = 1</td></tr><tr><td>Born rule</td><td>P(0) = |α|², P(1) = |β|²</td></tr><tr><td>Bloch vector</td><td>(sinθ cosφ, sinθ sinφ, cosθ)</td></tr><tr><td>Basis probabilities</td><td>P(±) = (1 ± ⟨X⟩)/2, P(±i) = (1 ± ⟨Y⟩)/2</td></tr><tr><td>Expectation</td><td>⟨Z⟩ = P(0) − P(1) = cosθ</td></tr></table>
+<ul><li>❌ Using the amplitude as the probability. ✅ Square its magnitude.</li><li>❌ Using θ instead of θ/2 in the state. ✅ Half-angle is correct.</li><li>❌ Thinking global phase can be measured. ✅ It cannot.</li><li>❌ Thinking |+⟩ and |−⟩ are the same. ✅ They differ by relative phase.</li></ul></div></section>
+</main>
+<footer>Unit 1 · Qubits, Superposition and Measurement · Part B: Qubits and Circuits</footer>
+<script>
+const $=id=>document.getElementById(id),M=Math,PI=M.PI,R=M.random;
+let th=1.1,ph=.8,tth=th,tph=ph,yaw=.7,pit=.35,gm=0,prep=[th,ph],dr=0,lx=0,ly=0,on=1,tt=0,N=[0,0],PT=.5,bas='Z',lk='',W=0,H=0;
+const C={a1:'#6ea8ff',a2:'#b48cff',tx:'#fff',mu:'#999'},LB={Z:['|0⟩','|1⟩'],X:['|+⟩','|−⟩'],Y:['|+i⟩','|−i⟩']},EG={Z:[[0,0],[PI,0]],X:[[PI/2,0],[PI/2,PI]],Y:[[PI/2,PI/2],[PI/2,3*PI/2]]};
+const bar=(l,p)=>`<div class="br"><span>${l}</span><div><i style="width:${p*100}%"></i></div><em>${(p*100).toFixed(1)}%</em></div>`;
+const fc=(r,i)=>`${r.toFixed(3)} ${i<0?'−':'+'} ${M.abs(i).toFixed(3)}i`;
+const g=$('bl').getContext('2d'),b=$('bg').getContext('2d');
+function rd(){const x=M.sin(th)*M.cos(ph),y=M.sin(th)*M.sin(ph),z=M.cos(th),c=M.cos(th/2),s=M.sin(th/2);
+$('st').textContent=`|ψ⟩ = (${fc(c*M.cos(gm),c*M.sin(gm))})|0⟩ + (${fc(s*M.cos(ph+gm),s*M.sin(ph+gm))})|1⟩`;
+$('bv').textContent=`r = (${x.toFixed(3)}, ${y.toFixed(3)}, ${z.toFixed(3)}) · θ = ${(th*180/PI).toFixed(1)}° · φ = ${(((ph*180/PI)%360)+360)%360|0}°`;
+$('pb').innerHTML=[['Z',z],['X',x],['Y',y]].map(([k,v])=>bar(LB[k][0],(1+v)/2)+bar(LB[k][1],(1-v)/2)+`<p class="mono">⟨${k}⟩ = ${v.toFixed(3)}</p>`).join('<hr>')}
+function sl(){$('sth').value=th*180/PI;$('sph').value=((ph*180/PI)%360+360)%360}
+function pj(p){const c=M.cos(yaw),s=M.sin(yaw),x=p[0]*c-p[1]*s,y=p[0]*s+p[1]*c,cb=M.cos(pit),sb=M.sin(pit),y2=y*cb-p[2]*sb,z2=y*sb+p[2]*cb,f=1/(1-y2*.1);return[210+x*150*f,210-z2*150*f,y2]}
+function dl(a,e,al,w,col,d){const A=pj(a),B=pj(e);g.globalAlpha=al;g.strokeStyle=col;g.lineWidth=w;g.setLineDash(d||[]);g.beginPath();g.moveTo(A[0],A[1]);g.lineTo(B[0],B[1]);g.stroke();g.setLineDash([])}
+function draw(){g.clearRect(0,0,420,420);const gr=g.createRadialGradient(170,160,10,210,210,155);gr.addColorStop(0,C.a1+'44');gr.addColorStop(1,C.a2+'0f');g.globalAlpha=1;g.fillStyle=gr;g.beginPath();g.arc(210,210,150,0,7);g.fill();
+for(const f of [a=>[M.cos(a),M.sin(a),0],a=>[M.cos(a),0,M.sin(a)],a=>[0,M.cos(a),M.sin(a)]])for(let i=0;i<48;i++){const p=f(i/48*6.2832),q=f((i+1)/48*6.2832);dl(p,q,pj(p)[2]>0?.6:.2,1,C.tx)}
+for(const a of [[1,0,0],[0,1,0],[0,0,1]])dl(a.map(v=>-v*1.2),a.map(v=>v*1.2),.35,1,C.mu);
+g.font='14px system-ui';g.textAlign='center';
+[['|0⟩',0,0,1.3],['|1⟩',0,0,-1.3],['|+⟩',1.3,0,0],['|−⟩',-1.3,0,0],['|+i⟩',0,1.3,0],['|−i⟩',0,-1.3,0]].forEach(([t,x,y,z])=>{const p=pj([x,y,z]);g.globalAlpha=p[2]>0?1:.4;g.fillStyle=C.tx;g.fillText(t,p[0],p[1]+5)});
+const v=[M.sin(th)*M.cos(ph),M.sin(th)*M.sin(ph),M.cos(th)],h=[v[0],v[1],0];
+dl([0,0,0],h,.7,1.5,C.a2,[4,4]);dl(h,v,.7,1.5,C.a2,[4,4]);dl([0,0,0],v,1,4,C.a1);
+const e=pj(v);g.globalAlpha=1;g.shadowColor=C.a1;g.shadowBlur=18;g.fillStyle=C.a1;g.beginPath();g.arc(e[0],e[1],8,0,7);g.fill();g.shadowBlur=0;g.fillStyle=C.tx;g.fillText('|ψ⟩',e[0]+22,e[1]-8)}
+const S=[];for(let i=0;i<220;i++){const u=R()*2-1,a=R()*6.283,r=.4+R()*.6,q=M.sqrt(1-u*u);S.push([q*M.cos(a)*r,u*r,q*M.sin(a)*r])}
+function rs(){W=$('bg').width=innerWidth;H=$('bg').height=innerHeight}
+function bgd(){b.clearRect(0,0,W,H);const a=tt*.05,c=M.cos(a),s=M.sin(a),m=M.max(W,H)*.55;S.forEach(p=>{const x=p[0]*c-p[2]*s,z=p[0]*s+p[2]*c,f=1/(1.6-z);b.globalAlpha=.25+.6*(z+1)/2;b.fillStyle=z>0?C.a1:C.a2;b.fillRect(W/2+x*f*m,H/2+p[1]*f*m,1+f*1.4,1+f*1.4)});b.globalAlpha=1}
+function loop(){if(on){tt+=.016;if(!dr)yaw+=.004}
+const d=M.abs(tth-th)+M.abs(tph-ph);if(d>0){th+=(tth-th)*.12;ph+=(tph-ph)*.12;if(d<.001){th=tth;ph=tph}sl()}
+const k=[th,ph,gm].map(v=>v.toFixed(3)).join();if(k!=lk){lk=k;rd()}draw();bgd();requestAnimationFrame(loop)}
+function go(t,p,keep){tth=t;tph=p;if(!keep)prep=[t,p]}
+function clr(){N=[0,0];$('rs').textContent='';$('hs').innerHTML=''}
+function restore(){go(prep[0],prep[1],1);clr()}
+function hist(){const T=N[0]+N[1];if(!T)return;const L=LB[bas];$('hs').innerHTML=bar(`${L[0]} (${N[0]})`,N[0]/T)+bar(`${L[1]} (${N[1]})`,N[1]/T)+`<p class="mono">Theory ⟨${bas}⟩ = ${(2*PT-1).toFixed(3)} · Measured ⟨${bas}⟩ = ${((N[0]-N[1])/T).toFixed(3)} (${T} shots)</p>`}
+function meas(n){const v=bas=='Z'?M.cos(th):bas=='X'?M.sin(th)*M.cos(ph):M.sin(th)*M.sin(ph);PT=(1+v)/2;let a=0;for(let i=0;i<n;i++)if(R()<PT)a++;N[0]+=a;N[1]+=n-a;
+if(n==1){const k=a?0:1;go(EG[bas][k][0],EG[bas][k][1],1);$('rs').textContent=`Result: ${LB[bas][k]}. The qubit has collapsed to this state.`}else $('rs').textContent=`${n} identical qubits measured (no collapse is kept).`;hist()}
+document.addEventListener('click',e=>{const t=e.target.closest('[data-t]');if(t){go(+t.dataset.t*PI/180,+t.dataset.p*PI/180);clr();if(t.classList.contains('ld'))$('lab').scrollIntoView({behavior:'smooth'})}
+const s=e.target.closest('.bs');if(s){bas=s.dataset.b;document.querySelectorAll('.bs').forEach(x=>x.classList.toggle('on',x==s));clr()}});
+$('sth').oninput=e=>{th=tth=e.target.value*PI/180;prep=[th,ph];clr()};$('sph').oninput=e=>{ph=tph=e.target.value*PI/180;prep=[th,ph];clr()};$('sg').oninput=e=>gm=e.target.value*PI/180;
+const cv=$('bl');cv.onpointerdown=e=>{dr=1;lx=e.clientX;ly=e.clientY;cv.setPointerCapture(e.pointerId)};cv.onpointermove=e=>{if(dr){yaw+=(e.clientX-lx)*.01;pit=M.max(-1.4,M.min(1.4,pit+(e.clientY-ly)*.01));lx=e.clientX;ly=e.clientY}};cv.onpointerup=cv.onpointercancel=()=>dr=0;
+function nz(){const [a,i,c,d]=['ar','ai','br','bi'].map(k=>+$(k).value||0),n2=a*a+i*i+c*c+d*d;if(!n2){$('no').textContent='Enter at least one non-zero number.';return}
+const k=1/M.sqrt(n2),A=M.hypot(a,i),B=M.hypot(c,d),T=2*M.atan2(B,A),P=A&&B?M.atan2(d,c)-M.atan2(i,a):0;
+$('no').innerHTML=`Norm² = |α|² + |β|² = ${n2.toFixed(3)}, so N = 1/√${n2.toFixed(3)} = ${k.toFixed(4)}<br>α' = ${fc(a*k,i*k)}<br>β' = ${fc(c*k,d*k)}<br>P(0) = ${(A*A*k*k*100).toFixed(1)}%, P(1) = ${(B*B*k*k*100).toFixed(1)}%`;$('nl').dataset.t=T*180/PI;$('nl').dataset.p=P*180/PI}
+['ar','ai','br','bi'].forEach(k=>$(k).oninput=nz);nz();
+let cs=0;$('cb').onclick=()=>{const c=$('coin');if(cs){c.className='coin';cs=0;$('cr').textContent='';$('cb').textContent='🪙 Catch the coin (measure)'}else{const r=R()<.5;c.className='coin land'+(r?' t':'');cs=1;$('cr').textContent='Measured: '+(r?'|1⟩ (tails)':'|0⟩ (heads)');$('cb').textContent='🔁 Toss again'}};
+function setT(v){document.documentElement.dataset.theme=v;const cs=getComputedStyle(document.documentElement);['a1','a2','tx','mu'].forEach(k=>C[k]=cs.getPropertyValue('--'+k).trim());try{localStorage.setItem('qt',v)}catch(e){}}
+let v;try{v=localStorage.getItem('qt');on=localStorage.getItem('qa')!='0'}catch(e){}
+if(matchMedia('(prefers-reduced-motion:reduce)').matches)on=0;
+v=$('th').querySelector(`[value="${v}"]`)?v:(matchMedia('(prefers-color-scheme:dark)').matches?'space':'light');
+$('th').value=v;setT(v);$('th').onchange=e=>setT(e.target.value);
+$('an').style.opacity=on?1:.5;$('an').onclick=()=>{on=!on;$('an').style.opacity=on?1:.5;try{localStorage.setItem('qa',on?1:0)}catch(e){}};
+const io=window.IntersectionObserver?new IntersectionObserver(es=>es.forEach(e=>e.isIntersecting&&e.target.classList.add('in')),{threshold:.05}):0;
+document.querySelectorAll('.rv').forEach(e=>io?io.observe(e):e.classList.add('in'));
+addEventListener('resize',rs);rs();sl();requestAnimationFrame(loop);
+</script>
+</body>
+</html>
