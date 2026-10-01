@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Unit 5 — Quantum Protocols</title>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;800&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:60px}
+body{margin:0;font:16px/1.65 Sora,system-ui,sans-serif;background:var(--bg);color:var(--fg);transition:.5s}
+body,[data-t="nebula"]{--bg:#0a0714;--fg:#ece8ff;--card:#140f24;--mut:#a79be0;--ac:#c084fc;--ac2:#38bdf8;--ln:#2c2246}
+[data-t="supernova"]{--bg:#1a0400;--fg:#ffe8d6;--card:#2b0a02;--mut:#e8956b;--ac:#ff6b35;--ac2:#ffd60a;--ln:#4a1608}
+[data-t="galaxy"]{--bg:#0a0a2e;--fg:#e4e4ff;--card:#16163f;--mut:#9898d6;--ac:#8b5cf6;--ac2:#ec4899;--ln:#262668}
+[data-t="neon"]{--bg:#050505;--fg:#f0f0f0;--card:#111111;--mut:#999999;--ac:#ff00ff;--ac2:#00ffff;--ln:#2a2a2a}
+[data-t="blackhole"]{--bg:#000000;--fg:#ffffff;--card:#0a0a0a;--mut:#8a8a8a;--ac:#ff8c00;--ac2:#ffffff;--ln:#1e1e1e}
+[data-t="aurora"]{--bg:#001a14;--fg:#d6fff0;--card:#002b22;--mut:#6bcfa8;--ac:#10b981;--ac2:#22d3ee;--ln:#0a4536}
+[data-t="solarflare"]{--bg:#1f0a00;--fg:#ffe0b3;--card:#331400;--mut:#e0a05c;--ac:#f97316;--ac2:#fbbf24;--ln:#5c2600}
+[data-t="deepspace"]{--bg:#000814;--fg:#dbe9ff;--card:#001233;--mut:#6a8bc9;--ac:#3b82f6;--ac2:#818cf8;--ln:#002255}
+[data-t="pulsar"]{--bg:#020617;--fg:#e0f2ff;--card:#0a1428;--mut:#7dd3fc;--ac:#38bdf8;--ac2:#ffffff;--ln:#0e2240}
+nav{position:sticky;top:0;z-index:9;display:flex;gap:4px;overflow-x:auto;padding:10px 14px;background:color-mix(in srgb,var(--bg) 85%,transparent);backdrop-filter:blur(10px);border-bottom:1px solid var(--ln)}
+nav a{white-space:nowrap;color:var(--mut);text-decoration:none;font-size:13px;padding:5px 11px;border-radius:99px}
+nav a:hover{color:var(--fg);background:var(--card)}
+.themes{position:fixed;right:10px;bottom:10px;z-index:20;display:flex;gap:6px;background:var(--card);padding:7px;border-radius:12px;border:1px solid var(--ln);flex-wrap:wrap;max-width:170px;box-shadow:0 8px 30px #0006}
+.themes button{width:22px;height:22px;border-radius:50%;border:2px solid var(--ln);cursor:pointer;padding:0}
+.themes button.on{border-color:var(--fg);transform:scale(1.15)}
+.hero{position:relative;overflow:hidden;min-height:70vh;display:grid;place-items:center;text-align:center;padding:60px 20px}
+.hero svg{position:absolute;inset:0;width:100%;height:100%;opacity:.5}
+.hero h1{position:relative;margin:0;font-size:clamp(30px,7vw,70px);font-weight:800;letter-spacing:-.03em;animation:rise 1.4s cubic-bezier(.2,.7,.2,1) both}
+.hero p{position:relative;max-width:640px;margin:20px auto 0;color:var(--mut);animation:rise 1.4s .4s cubic-bezier(.2,.7,.2,1) both}
+@keyframes rise{from{opacity:0;transform:translateY(18px);filter:blur(8px)}}
+.beam{stroke-dasharray:8 6;animation:flow 1.2s linear infinite}
+@keyframes flow{to{stroke-dashoffset:-28}}
+main{max-width:1000px;margin:auto;padding:0 18px 100px}
+section{padding:54px 0 18px;border-top:1px solid var(--ln)}
+h2{font-size:clamp(24px,4vw,36px);margin:0 0 4px;letter-spacing:-.02em}
+.tag{color:var(--ac2);margin:0 0 20px}
+h3{font-size:16px;margin:0 0 6px;color:var(--ac)}
+.g{display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));gap:16px}
+.b{background:var(--card);border:1px solid var(--ln);border-radius:10px;padding:15px 17px}
+.b.re{border-left:4px solid var(--ac2)}
+.b.num{border-left:4px solid var(--ac)}
+.eq{font-family:'JetBrains Mono',monospace;background:color-mix(in srgb,var(--ac) 10%,transparent);padding:10px 12px;border-radius:8px;margin:8px 0;overflow-x:auto;font-size:14.5px}
+code{font-family:'JetBrains Mono',monospace;background:color-mix(in srgb,var(--ac) 14%,transparent);padding:1px 6px;border-radius:4px;font-size:.88em}
+pre{font-family:'JetBrains Mono',monospace;background:var(--card);border:1px solid var(--ln);border-radius:10px;padding:14px;overflow-x:auto;font-size:13.5px;line-height:1.6}
+.sim{margin-top:18px;background:var(--card);border:1px solid var(--ln);border-radius:10px;padding:14px}
+.sim h3{color:var(--ac)}
+.ctl{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin:10px 0}
+button{font:inherit;color:var(--fg);background:var(--bg);border:1px solid var(--ln);border-radius:8px;padding:6px 14px;cursor:pointer}
+button:hover{border-color:var(--ac)}
+label{display:flex;align-items:center;gap:4px}
+.log{min-height:40px;margin-top:8px;padding:10px 12px;border-radius:8px;background:var(--bg);font-size:14.5px}
+.qrow{display:flex;align-items:center;gap:0;justify-content:center;margin:14px 0;flex-wrap:wrap}
+.q{width:52px;height:52px;border-radius:50%;border:3px solid var(--ac);display:grid;place-items:center;font-weight:800;font-size:12px;transition:.5s;flex:0 0 auto}
+.q.e{background:var(--ac);color:#000}
+.q.m{background:var(--ac2);border-color:var(--ac2);color:#000}
+.wire{height:3px;background:var(--ln);flex:0 0 50px;position:relative}
+.gate{position:absolute;top:-15px;background:var(--ac2);color:#000;font-weight:800;width:30px;height:30px;border-radius:6px;display:grid;place-items:center;left:50%;transform:translateX(-50%);font-size:12px}
+.lbl{font-size:12px;color:var(--mut);text-align:center;flex:0 0 52px}
+.bits{display:flex;gap:8px;justify-content:center;margin:10px 0}
+.bits span{padding:7px 14px;border-radius:8px;background:var(--ln);font-weight:800;font-family:'JetBrains Mono',monospace;transition:.4s}
+.bits span.on{background:var(--ac);color:#000}
+.bb84{overflow-x:auto}
+table.bb{border-collapse:collapse;font-family:'JetBrains Mono',monospace;font-size:13px;margin:auto}
+.bb td,.bb th{border:1px solid var(--ln);padding:5px 9px;text-align:center;min-width:28px}
+.bb th{color:var(--mut);font-family:Sora,sans-serif}
+.bb td.keep{background:color-mix(in srgb,#22c55e 30%,transparent)}
+.bb td.err{background:color-mix(in srgb,#ef4444 35%,transparent);font-weight:800}
+table.t{width:100%;border-collapse:collapse;font-size:14px}
+.t th,.t td{border-bottom:1px solid var(--ln);padding:7px;text-align:left}
+.rv{opacity:0;transform:translateY(22px);transition:.9s}.rv.in{opacity:1;transform:none}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.rv{opacity:1;transform:none}}
+</style></head><body data-t="nebula">
+<nav><a href="#nocl">No-Cloning</a><a href="#tele">Teleportation</a><a href="#sdc">Superdense</a><a href="#swap">Entanglement Swap</a><a href="#qkd">BB84 / E91</a><a href="#num">Numericals</a><a href="#code">Code</a><a href="#real">Real-life</a></nav>
+<div class="themes" id="themes" aria-label="Theme picker"></div>
+
+<header class="hero">
+<svg viewBox="0 0 400 260" aria-hidden="true"><line class="beam" x1="60" y1="130" x2="340" y2="130" stroke="var(--ac)" stroke-width="2"/><circle cx="60" cy="130" r="9" fill="var(--ac)"/><circle cx="340" cy="130" r="9" fill="var(--ac2)"/></svg>
+<div><h1>Unit 5<br>Quantum Protocols</h1><p>Teleportation, superdense coding, entanglement swapping and quantum key distribution — the practical magic tricks entanglement makes possible, each with a live step-by-step simulator.</p></div>
+</header>
+
+<main>
+<section id="nocl" class="rv"><h2>No-Cloning Theorem</h2><p class="tag">You cannot copy an unknown quantum state.</p>
+<div class="g"><div class="b"><h3>Statement</h3>There is no unitary operator U that can copy an arbitrary unknown state: <code>U(|ψ⟩⊗|0⟩) = |ψ⟩⊗|ψ⟩</code> for <i>every</i> |ψ⟩. This is why quantum information cannot be duplicated like classical bits.</div>
+<div class="b num"><h3>Proof (by contradiction)</h3>Suppose such a U exists. Take two states and their equal superposition <code>|χ⟩ = (|ψ⟩+|φ⟩)/√2</code>.
+<div class="eq">By linearity: U(|χ⟩|0⟩) = (U(|ψ⟩|0⟩)+U(|φ⟩|0⟩))/√2 = (|ψψ⟩+|φφ⟩)/√2</div>
+<div class="eq">But cloning |χ⟩ directly should give: |χ⟩|χ⟩ = (|ψψ⟩+|ψφ⟩+|φψ⟩+|φφ⟩)/2</div>
+These two results disagree (the cross terms |ψφ⟩, |φψ⟩ are missing) unless |ψ⟩=|φ⟩. <b>Contradiction → no universal cloning machine can exist.</b></div></div>
+<div class="b" style="margin-top:16px"><h3>Why it matters</h3>No-cloning is <i>why</i> quantum cryptography (BB84 below) is secure: an eavesdropper cannot silently copy a qubit and send the original on untouched — she must measure it, and measurement disturbs it.</div>
+</section>
+
+<section id="tele" class="rv"><h2>Quantum Teleportation</h2><p class="tag">Moving a quantum state using entanglement + 2 classical bits.</p>
+<div class="g"><div class="b"><h3>What it is NOT</h3>No matter, no energy, and no information moves faster than light. The unknown qubit's state disappears from Alice and reappears on Bob's qubit — but only after Bob receives 2 ordinary classical bits, which travel at or below light speed.</div>
+<div class="b"><h3>Protocol</h3><ol><li>Alice and Bob pre-share a Bell pair (qubits 2 &amp; 3).</li><li>Alice has the unknown state |ψ⟩ on qubit 1.</li><li>Alice applies CNOT(1→2), then H on qubit 1.</li><li>Alice measures qubits 1 and 2, gets classical bits (m1,m2).</li><li>Alice sends m1,m2 to Bob over a classical channel.</li><li>Bob applies X if m2=1, then Z if m1=1 → his qubit becomes exactly |ψ⟩.</li></ol></div></div>
+<div class="sim"><h3>Simulation: Teleportation circuit</h3>
+<div class="qrow"><div class="lbl">q1 |ψ⟩</div><div class="q" id="t1">ψ</div><div class="wire"><div class="gate" id="tg1">●</div></div><div class="wire"><div class="gate" id="tg2">H</div></div><div class="wire"></div><div class="lbl" id="tl1">measure</div></div>
+<div class="qrow"><div class="lbl">q2 (Bell)</div><div class="q" id="t2">0</div><div class="wire"></div><div class="wire"><div class="gate" id="tg3">X</div></div><div class="wire"></div><div class="lbl" id="tl2">measure</div></div>
+<div class="qrow"><div class="lbl">q3 (Bob)</div><div class="q" id="t3">0</div><div class="wire"></div><div class="wire"></div><div class="wire"><div class="gate" id="tg4">⟲</div></div><div class="lbl">= |ψ⟩ ✔</div></div>
+<div class="bits"><span>m1 = <b id="tm1">?</b></span><span>m2 = <b id="tm2">?</b></span></div>
+<div class="ctl"><button id="tStep">Step ▶</button><button id="tReset">Reset</button><button id="tRand">Randomize outcome</button></div>
+<div class="log" id="tLog">Press Step to begin the teleportation protocol.</div></div>
+</section>
+
+<section id="sdc" class="rv"><h2>Superdense Coding</h2><p class="tag">Sending 2 classical bits using only 1 qubit.</p>
+<div class="g"><div class="b"><h3>Protocol</h3><ol><li>Alice and Bob pre-share a Bell pair.</li><li>To send bits (b1,b2), Alice applies a gate to <i>her</i> qubit only:</li></ol>
+<div class="eq">00→I &nbsp; 01→X &nbsp; 10→Z &nbsp; 11→XZ</div>
+<ol start="3"><li>Alice sends her single qubit to Bob.</li><li>Bob now holds both qubits. He applies CNOT then H, and measures both — recovering exactly (b1,b2).</li></ol></div>
+<div class="b"><h3>Why it works</h3>The 4 possible gates map the shared Bell pair to the 4 orthogonal Bell states. Since the Bell basis is a valid measurement basis, Bob can perfectly distinguish all 4 — effectively doubling the classical capacity of one transmitted qubit, at the cost of pre-sharing entanglement.</div></div>
+<div class="sim"><h3>Simulation: encode 2 bits</h3><div class="ctl"><label>Bits to send: <select id="sdcBits"><option>00</option><option>01</option><option>10</option><option>11</option></select></label><button id="sdcGo">Encode &amp; Send</button></div><div class="log" id="sdcLog">Choose 2 bits and press Encode.</div></div>
+</section>
+
+<section id="swap" class="rv"><h2>Entanglement Swapping</h2><p class="tag">Entangling two particles that have never interacted.</p>
+<div class="b">Alice shares a Bell pair with particle A2 (A1–A2), and Carol shares a Bell pair with particle C1 (C1–C2). Nobody has let A2 and C1 interact. If someone performs a <b>Bell-basis measurement jointly on A2 and C1</b>, the result is that A1 and C2 instantly become entangled with each other — even though they never touched. This is the core trick behind <b>quantum repeaters</b>, which extend entanglement over long distances by swapping across a chain of shorter links.</div>
+</section>
+
+<section id="qkd" class="rv"><h2>Quantum Key Distribution: BB84 &amp; E91</h2><p class="tag">Using quantum mechanics to detect eavesdroppers.</p>
+<div class="g"><div class="b"><h3>BB84 (Bennett &amp; Brassard, 1984)</h3><ol><li>Alice sends each qubit encoded in a <b>randomly chosen basis</b>: rectilinear (+: |0⟩/|1⟩) or diagonal (×: |+⟩/|−⟩).</li><li>Bob measures each qubit in his own randomly chosen basis.</li><li>Alice and Bob publicly announce (not the bit, only) <i>which basis</i> they used for each qubit.</li><li>They keep only the bits where their bases matched → the <b>sifted key</b>.</li><li>They compare a small public sample of the sifted key to estimate the error rate (QBER). High error ⇒ eavesdropper present ⇒ discard the key.</li></ol></div>
+<div class="b"><h3>Why eavesdropping is caught</h3>By no-cloning, Eve cannot copy a qubit. If she measures it to learn the bit, she must guess a basis — when she guesses wrong (50% of the time), she disturbs the qubit, so even when Bob later uses the <i>same</i> basis as Alice, he sometimes gets the wrong bit. This introduces a detectable error rate of about <b>25%</b> on the sifted key when Eve intercepts every qubit.</div>
+<div class="b"><h3>E91 (Ekert, 1991) — intro</h3>Uses entangled pairs instead of single prepared qubits. Alice and Bob each measure their half in randomly chosen angles and later check the <b>CHSH value</b> on a subset of results. If |S| is close to 2√2, there is no eavesdropper; if it drops toward 2, someone has been measuring the particles in transit, destroying the entanglement.</div></div>
+<div class="sim"><h3>Simulation: BB84 with an eavesdropper</h3><div class="ctl"><label><input type="checkbox" id="eveOn"> Eve intercepts every qubit</label><button id="bbRun">Run BB84 (16 qubits)</button></div>
+<div class="bb84"><table class="bb" id="bbTable"></table></div>
+<div class="log" id="bbLog">Press Run to generate a BB84 exchange.</div></div>
+</section>
+
+<section id="num" class="rv"><h2>Numericals</h2><p class="tag">Worked examples.</p>
+<div class="g"><div class="b num"><h3>1. Teleportation correction table</h3>Bob's qubit after Alice's Bell measurement, before correction, is <code>X^(m2) Z^(m1) |ψ⟩</code>. The correction undoing this is:
+<table class="t"><tr><th>m1 m2</th><th>Correction</th></tr><tr><td>00</td><td>I (do nothing)</td></tr><tr><td>01</td><td>Apply X</td></tr><tr><td>10</td><td>Apply Z</td></tr><tr><td>11</td><td>Apply X then Z</td></tr></table></div>
+<div class="b num"><h3>2. BB84 key rate &amp; error detection</h3>With N=1000 qubits sent and random bases on both sides, Alice and Bob's bases match <b>on average 50%</b> of the time → sifted key length ≈ <b>500 bits</b>.<br>If Eve intercepts every qubit: she guesses the right basis 50% of the time (no disturbance), and the wrong basis 50% of the time (50% chance of flipping the bit even if Bob's basis matches Alice's). Net error on the sifted key:
+<div class="eq">QBER = 0.5 (wrong basis) × 0.5 (wrong result) = 0.25 = 25%</div>
+A QBER this high (versus ~0% with no eavesdropper, ignoring channel noise) is an unmistakable sign of interception, so Alice and Bob abort the key.</div></div>
+</section>
+
+<section id="code" class="rv"><h2>Code</h2><p class="tag">Qiskit circuits and a Python BB84 simulation.</p>
+<div class="b"><h3>Teleportation (Qiskit)</h3><pre>from qiskit import QuantumCircuit
+
+qc = QuantumCircuit(3, 3)
+qc.h(1); qc.cx(1, 2)        # create Bell pair on q1,q2
+qc.cx(0, 1); qc.h(0)        # Alice's Bell measurement prep
+qc.measure([0,1], [0,1])    # m0, m1 are Alice's classical bits
+qc.cx(1, 2)                 # apply X on q2 if m1==1
+qc.cz(0, 2)                 # apply Z on q2 if m0==1
+qc.measure(2, 2)            # q2 now holds the teleported state</pre></div>
+<div class="b"><h3>Superdense coding (Qiskit)</h3><pre>from qiskit import QuantumCircuit
+
+qc = QuantumCircuit(2, 2)
+qc.h(0); qc.cx(0, 1)        # shared Bell pair
+
+bits = "11"                 # bits Alice wants to send
+if bits[1] == '1': qc.x(0)
+if bits[0] == '1': qc.z(0)
+
+qc.cx(0, 1); qc.h(0)        # Bob decodes
+qc.measure([0,1], [0,1])    # recovers "11"</pre></div>
+<div class="b"><h3>BB84 with an eavesdropper (plain Python)</h3><pre>import random
+
+N = 1000
+a_bits  = [random.randint(0,1) for _ in range(N)]
+a_bases = [random.choice('+x') for _ in range(N)]
+b_bases = [random.choice('+x') for _ in range(N)]
+EVE = True
+
+received = []
+for i in range(N):
+    bit, basis = a_bits[i], a_bases[i]
+    if EVE:
+        e_basis = random.choice('+x')
+        if e_basis != basis:
+            bit = random.randint(0,1)   # Eve disturbs it
+        basis = e_basis                 # Eve resends in her basis
+    if b_bases[i] != basis:
+        bit = random.randint(0,1)       # Bob's own basis mismatch
+    received.append(bit)
+
+sifted_a = [a_bits[i]  for i in range(N) if a_bases[i]==b_bases[i]]
+sifted_b = [received[i] for i in range(N) if a_bases[i]==b_bases[i]]
+errors = sum(x!=y for x,y in zip(sifted_a, sifted_b))
+print("Sifted key length:", len(sifted_a))
+print("QBER:", errors/len(sifted_a))   # ~0.25 if EVE else ~0</pre></div>
+</section>
+
+<section id="real" class="rv"><h2>Real-life Example: A Secret Message No One Can Eavesdrop On</h2><p class="tag">Why BB84 can prove someone was listening.</p>
+<div class="g"><div class="b re"><h3>The picture</h3>Imagine mailing a message written in invisible ink that only reveals itself correctly under one of two special lamps — and the ink <b>permanently changes</b> if viewed under the wrong lamp, destroying the original message. Any mail carrier who peeks without knowing the right lamp has a 50% chance of ruining it. If the receiver checks a few spot letters and finds them scrambled, they know someone opened the envelope.</div>
+<div class="b num"><h3>The limitation</h3>Unlike invisible ink, which is a classical trick someone could in principle photograph instead of damage, a quantum qubit genuinely <b>cannot</b> be copied first and inspected later (no-cloning theorem). The disturbance is not a design choice to patch — it is a law of physics. That is what makes BB84 provably secure rather than just "hard to crack."</div></div>
+</section>
+
+<section class="rv"><h2>Summary Table</h2><div class="b" style="overflow-x:auto"><table class="t">
+<tr><th>Protocol</th><th>Uses</th><th>Key idea</th></tr>
+<tr><td>No-cloning</td><td>—</td><td>Linearity forbids copying an unknown state</td></tr>
+<tr><td>Teleportation</td><td>1 Bell pair + 2 classical bits</td><td>Move a state, don't copy it</td></tr>
+<tr><td>Superdense coding</td><td>1 Bell pair + 1 qubit sent</td><td>Send 2 classical bits in 1 qubit</td></tr>
+<tr><td>Entanglement swapping</td><td>2 Bell pairs + Bell measurement</td><td>Entangle particles that never met</td></tr>
+<tr><td>BB84</td><td>Random bases, public basis comparison</td><td>Measurement disturbance exposes Eve</td></tr>
+<tr><td>E91</td><td>Entangled pairs + CHSH check</td><td>Bell-inequality drop exposes Eve</td></tr>
+</table></div></section>
+</main>
+
+<script>
+const themes=['nebula','supernova','galaxy','neon','blackhole','aurora','solarflare','deepspace','pulsar'];
+const tc=document.getElementById('themes');
+themes.forEach(t=>{const b=document.createElement('button');b.title=t;b.dataset.t=t;
+ b.onclick=()=>{document.body.dataset.t=t;document.querySelectorAll('.themes button').forEach(x=>x.classList.toggle('on',x.dataset.t===t))};tc.appendChild(b)});
+themes.forEach(t=>{const probe=document.createElement('div');probe.dataset.t=t;probe.style.cssText='position:absolute;visibility:hidden';document.body.appendChild(probe);
+ const c=getComputedStyle(probe).getPropertyValue('--ac');document.querySelector(`.themes button[data-t="${t}"]`).style.background=c;probe.remove()});
+tc.firstChild.classList.add('on');
+
+/* Teleportation */
+let ts=0,m1=1,m2=0;
+const t1=document.getElementById('t1'),t2=document.getElementById('t2'),t3=document.getElementById('t3'),
+tm1=document.getElementById('tm1'),tm2=document.getElementById('tm2'),tLog=document.getElementById('tLog');
+const tsteps=()=>[
+ 'q1 holds the unknown state |ψ⟩. q2 and q3 are an entangled Bell pair shared between Alice and Bob.',
+ 'Alice applies CNOT(q1→q2): entangles her unknown qubit with her half of the Bell pair.',
+ 'Alice applies Hadamard to q1, then measures q1 and q2, getting classical bits m1='+m1+', m2='+m2+'.',
+ 'Alice sends m1,m2 to Bob over an ordinary classical channel (limited by light speed).',
+ (m2?'m2=1 → Bob applies X. ':'m2=0 → no X needed. ')+(m1?'m1=1 → Bob applies Z. ':'m1=0 → no Z needed. ')+'q3 is now exactly |ψ⟩!'
+];
+function renderT(){t1.className='q'+(ts>=2?' m':'');t1.textContent=ts>=2?m1:'ψ';
+ t2.className='q'+(ts>=1&&ts<2?' e':'')+(ts>=2?' m':'');t2.textContent=ts>=2?m2:(ts>=1?'•':'0');
+ t3.className='q'+(ts>=4?' e':'');t3.textContent=ts>=4?'ψ':'0';
+ tm1.textContent=ts>=2?m1:'?';tm2.textContent=ts>=2?m2:'?';
+ tLog.textContent=tsteps()[ts]}
+document.getElementById('tStep').onclick=()=>{ts=Math.min(ts+1,4);renderT()};
+document.getElementById('tReset').onclick=()=>{ts=0;renderT()};
+document.getElementById('tRand').onclick=()=>{m1=Math.round(Math.random());m2=Math.round(Math.random());renderT()};
+renderT();
+
+/* Superdense coding */
+document.getElementById('sdcGo').onclick=()=>{
+ const bits=document.getElementById('sdcBits').value;
+ const gate=bits=='00'?'I (no gate)':bits=='01'?'X':bits=='10'?'Z':'X then Z';
+ document.getElementById('sdcLog').innerHTML=`Alice applies <b>${gate}</b> to her qubit of the shared Bell pair, then sends that single qubit to Bob. Bob applies CNOT+H to both qubits and measures → recovers bits <b>${bits}</b> with 100% accuracy.`};
+
+/* BB84 */
+function runBB84(){
+ const N=16,eve=document.getElementById('eveOn').checked;
+ const bases=['+','x'];
+ let aBit=[],aBas=[],bBas=[],recv=[],eBas=[];
+ for(let i=0;i<N;i++){aBit.push(Math.round(Math.random()));aBas.push(bases[Math.round(Math.random())]);bBas.push(bases[Math.round(Math.random())])}
+ for(let i=0;i<N;i++){let bit=aBit[i],basis=aBas[i];
+  if(eve){const eb=bases[Math.round(Math.random())];eBas.push(eb);if(eb!==basis)bit=Math.round(Math.random());basis=eb}else eBas.push('—');
+  if(bBas[i]!==basis)bit=Math.round(Math.random());
+  recv.push(bit)}
+ let rows=['bit','basis']; if(eve)rows.push('eve basis'); rows.push('bob basis','bob got','keep?');
+ let html='<tr><th></th>'+Array.from({length:N},(_,i)=>`<th>${i+1}</th>`).join('')+'</tr>';
+ html+='<tr><th>Alice bit</th>'+aBit.map(x=>`<td>${x}</td>`).join('')+'</tr>';
+ html+='<tr><th>Alice basis</th>'+aBas.map(x=>`<td>${x}</td>`).join('')+'</tr>';
+ if(eve)html+='<tr><th>Eve basis</th>'+eBas.map(x=>`<td>${x}</td>`).join('')+'</tr>';
+ html+='<tr><th>Bob basis</th>'+bBas.map(x=>`<td>${x}</td>`).join('')+'</tr>';
+ html+='<tr><th>Bob got</th>'+recv.map((x,i)=>{const keep=aBas[i]===bBas[i],err=keep&&x!==aBit[i];return `<td class="${err?'err':keep?'keep':''}">${x}</td>`}).join('')+'</tr>';
+ document.getElementById('bbTable').innerHTML=html;
+ let kept=0,errs=0;for(let i=0;i<N;i++)if(aBas[i]===bBas[i]){kept++;if(recv[i]!==aBit[i])errs++}
+ document.getElementById('bbLog').innerHTML=`Sifted key length: <b>${kept}</b> (green columns). Errors in sifted key: <b>${errs}</b> (red = basis matched but bit still wrong). QBER ≈ <b>${kept?Math.round(100*errs/kept):0}%</b>. ${errs/Math.max(kept,1)>0.1?'High error rate — <b>eavesdropper detected</b>, discard this key!':'Low error rate — channel looks secure.'}`}
+document.getElementById('bbRun').onclick=runBB84;
+runBB84();
+
+const io=new IntersectionObserver(e=>e.forEach(x=>x.isIntersecting&&x.target.classList.add('in')),{threshold:.08});
+document.querySelectorAll('.rv').forEach(x=>io.observe(x));
+</script></body></html>
