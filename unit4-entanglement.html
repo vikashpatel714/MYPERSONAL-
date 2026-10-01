@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Unit 4 — Quantum Entanglement</title>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;800&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:60px}
+body{margin:0;font:16px/1.65 Sora,system-ui,sans-serif;background:var(--bg);color:var(--fg);transition:.5s}
+/* ---- themes ---- */
+body,[data-t="nebula"]{--bg:#0a0714;--fg:#ece8ff;--card:#140f24;--mut:#a79be0;--ac:#c084fc;--ac2:#38bdf8;--ln:#2c2246}
+[data-t="daylight"]{--bg:#f6f7fb;--fg:#101322;--card:#fff;--mut:#55597a;--ac:#6d28d9;--ac2:#0e7490;--ln:#dbe0ee}
+[data-t="ocean"]{--bg:#031b26;--fg:#dff6ff;--card:#063241;--mut:#78c4dd;--ac:#22d3ee;--ac2:#2dd4bf;--ln:#0b4a5e}
+[data-t="sunset"]{--bg:#1a0d12;--fg:#ffecd9;--card:#2a131a;--mut:#e0a08a;--ac:#fb7185;--ac2:#f59e0b;--ln:#4a2029}
+[data-t="forest"]{--bg:#07140d;--fg:#e3f6ec;--card:#0f2318;--mut:#86c7a4;--ac:#34d399;--ac2:#a3e635;--ln:#174430}
+[data-t="mono"]{--bg:#0c0c0c;--fg:#f2f2f2;--card:#1a1a1a;--mut:#9a9a9a;--ac:#ffffff;--ac2:#9a9a9a;--ln:#303030}
+[data-t="candy"]{--bg:#140a1f;--fg:#fde9ff;--card:#241231;--mut:#d89be0;--ac:#f472b6;--ac2:#a78bfa;--ln:#3c1f4c}
+[data-t="royal"]{--bg:#06080f;--fg:#e9edff;--card:#0e1326;--mut:#8e9ad6;--ac:#4f46e5;--ac2:#06b6d4;--ln:#1c2448}
+
+nav{position:sticky;top:0;z-index:9;display:flex;gap:4px;overflow-x:auto;padding:10px 14px;background:color-mix(in srgb,var(--bg) 85%,transparent);backdrop-filter:blur(10px);border-bottom:1px solid var(--ln)}
+nav a{white-space:nowrap;color:var(--mut);text-decoration:none;font-size:13px;padding:5px 11px;border-radius:99px}
+nav a:hover{color:var(--fg);background:var(--card)}
+.themes{position:fixed;right:10px;bottom:10px;z-index:20;display:flex;gap:6px;background:var(--card);padding:7px;border-radius:12px;border:1px solid var(--ln);flex-wrap:wrap;max-width:170px;box-shadow:0 8px 30px #0006}
+.themes button{width:22px;height:22px;border-radius:50%;border:2px solid var(--ln);cursor:pointer;padding:0}
+.themes button.on{border-color:var(--fg);transform:scale(1.15)}
+
+.hero{position:relative;overflow:hidden;min-height:72vh;display:grid;place-items:center;text-align:center;padding:60px 20px}
+.hero svg{position:absolute;inset:0;width:100%;height:100%;opacity:.55}
+.hero h1{position:relative;margin:0;font-size:clamp(32px,7vw,76px);font-weight:800;letter-spacing:-.03em;animation:rise 1.4s cubic-bezier(.2,.7,.2,1) both}
+.hero p{position:relative;max-width:640px;margin:20px auto 0;color:var(--mut);animation:rise 1.4s .4s cubic-bezier(.2,.7,.2,1) both}
+@keyframes rise{from{opacity:0;transform:translateY(18px);filter:blur(8px)}}
+.orb{animation:spin 10s linear infinite;transform-origin:center}
+@keyframes spin{to{transform:rotate(360deg)}}
+.pulse{animation:pulse 1.8s ease-in-out infinite}
+@keyframes pulse{50%{r:7;opacity:.4}}
+
+main{max-width:1000px;margin:auto;padding:0 18px 100px}
+section{padding:54px 0 18px;border-top:1px solid var(--ln)}
+h2{font-size:clamp(24px,4vw,36px);margin:0 0 4px;letter-spacing:-.02em}
+.tag{color:var(--ac2);margin:0 0 20px}
+h3{font-size:16px;margin:0 0 6px;color:var(--ac)}
+.g{display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));gap:16px}
+.b{background:var(--card);border:1px solid var(--ln);border-radius:10px;padding:15px 17px}
+.b.re{border-left:4px solid var(--ac2)}
+.b.num{border-left:4px solid var(--ac)}
+.eq{font-family:'JetBrains Mono',monospace;background:color-mix(in srgb,var(--ac) 10%,transparent);padding:10px 12px;border-radius:8px;margin:8px 0;overflow-x:auto;font-size:14.5px}
+code{font-family:'JetBrains Mono',monospace;background:color-mix(in srgb,var(--ac) 14%,transparent);padding:1px 6px;border-radius:4px;font-size:.88em}
+pre{font-family:'JetBrains Mono',monospace;background:var(--card);border:1px solid var(--ln);border-radius:10px;padding:14px;overflow-x:auto;font-size:13.5px;line-height:1.6}
+.sim{margin-top:18px;background:var(--card);border:1px solid var(--ln);border-radius:10px;padding:14px}
+.sim h3{color:var(--ac)}
+.ctl{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin:10px 0}
+button,input[type=range]{font:inherit}
+button{color:var(--fg);background:var(--bg);border:1px solid var(--ln);border-radius:8px;padding:6px 14px;cursor:pointer}
+button:hover{border-color:var(--ac)}
+.log{min-height:40px;margin-top:8px;padding:10px 12px;border-radius:8px;background:var(--bg);font-size:14.5px}
+.qrow{display:flex;align-items:center;gap:16px;justify-content:center;margin:14px 0;flex-wrap:wrap}
+.q{width:54px;height:54px;border-radius:50%;border:3px solid var(--ac);display:grid;place-items:center;font-weight:800;font-size:13px;transition:.5s;position:relative}
+.q.e{background:var(--ac);color:#000}
+.q.sup{background:conic-gradient(var(--ac) 0 50%,transparent 50% 100%);animation:spin 2.5s linear infinite}
+.wire{height:3px;background:var(--ln);flex:1;min-width:30px;position:relative}
+.gate{position:absolute;top:-15px;background:var(--ac2);color:#000;font-weight:800;width:32px;height:32px;border-radius:6px;display:grid;place-items:center;left:50%;transform:translateX(-50%)}
+.link{position:absolute;top:50%;left:50%;height:60px;width:2px;background:var(--ac2);transform:translate(-50%,-50%);opacity:0;transition:1s}
+.link.on{opacity:1}
+.chshbar{height:26px;border-radius:6px;background:var(--ln);position:relative;margin:12px 0;overflow:visible}
+.chshfill{height:100%;border-radius:6px;background:var(--ac);transition:.4s;width:0}
+.mark{position:absolute;top:-20px;transform:translateX(-50%);font-size:12px;color:var(--mut)}
+.markline{position:absolute;top:0;bottom:0;width:2px;background:var(--mut)}
+.bloch{width:160px;height:160px;border-radius:50%;background:radial-gradient(circle at 35% 30%,color-mix(in srgb,var(--ac) 25%,transparent),transparent 70%);border:2px solid var(--ln);position:relative;margin:auto}
+.dot{position:absolute;width:12px;height:12px;border-radius:50%;background:var(--ac2);top:50%;left:50%;transform:translate(-50%,-50%);box-shadow:0 0 10px var(--ac2);transition:.3s}
+table.t{width:100%;border-collapse:collapse;font-size:14px}
+.t th,.t td{border-bottom:1px solid var(--ln);padding:7px;text-align:left}
+.rv{opacity:0;transform:translateY(22px);transition:.9s}.rv.in{opacity:1;transform:none}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.rv{opacity:1;transform:none}}
+</style></head><body data-t="nebula">
+<nav><a href="#sep">Separable/Entangled</a><a href="#bell">Bell States</a><a href="#ghzw">GHZ/W</a><a href="#epr">EPR</a><a href="#chsh">CHSH</a><a href="#schmidt">Schmidt</a><a href="#entropy">Entropy</a><a href="#nocomm">No-Comm</a><a href="#num">Numericals</a><a href="#code">Code</a><a href="#real">Real-life</a></nav>
+<div class="themes" id="themes" aria-label="Theme picker"></div>
+
+<header class="hero">
+<svg viewBox="0 0 400 300" aria-hidden="true"><g class="orb"><circle cx="200" cy="150" r="90" fill="none" stroke="var(--ac)" stroke-width="1.2" opacity=".5"/><circle cx="200" cy="150" r="60" fill="none" stroke="var(--ac2)" stroke-width="1.2" opacity=".5"/></g>
+<circle class="pulse" cx="140" cy="150" r="5" fill="var(--ac)"/><circle class="pulse" cx="260" cy="150" r="5" fill="var(--ac2)" style="animation-delay:.9s"/></svg>
+<div><h1>Unit 4<br>Quantum Entanglement</h1><p>From separable states to Bell's inequality — with step-by-step simulations, real numbers, and a real-life analogy that shows exactly where classical intuition breaks down.</p></div>
+</header>
+
+<main>
+<section id="sep" class="rv"><h2>Entangled vs Separable States</h2><p class="tag">Can the whole be written as a product of its parts?</p>
+<div class="g"><div class="b"><h3>Separable (product) state</h3>A two-qubit state is <b>separable</b> if it can be written as a tensor product of two single-qubit states:
+<div class="eq">|ψ⟩ = |a⟩ ⊗ |b⟩</div>
+Each qubit has its own independent description. Measuring one tells you nothing new about the other beyond what you already knew.</div>
+<div class="b"><h3>Entangled state</h3>A state is <b>entangled</b> if no such factorisation exists — the two qubits must be described together. Example: <code>(|00⟩+|11⟩)/√2</code>. Measuring the first qubit instantly fixes the outcome of the second, even though neither qubit "contains" that outcome on its own.</div>
+<div class="b num"><h3>How to tell them apart</h3><ol><li>Try to factor the amplitudes as (α|0⟩+β|1⟩)⊗(γ|0⟩+δ|1⟩).</li><li>Compare the four resulting coefficients to the actual state.</li><li>If no α,β,γ,δ satisfy all four equations → entangled.</li><li>Formally: compute the <b>Schmidt rank</b> (below). Rank 1 = separable, rank &gt; 1 = entangled.</li></ol></div></div>
+<div class="sim"><h3>Simulation: try to split a state</h3><div class="ctl"><button id="sepA">Try (|00⟩+|11⟩)/√2</button><button id="sepB">Try (|00⟩+|01⟩)/√2</button></div><div class="log" id="sepLog">Pick a state above to see whether it factors.</div></div>
+</section>
+
+<section id="bell" class="rv"><h2>Bell States &amp; the Bell Basis</h2><p class="tag">The four maximally-entangled two-qubit states.</p>
+<div class="eq">|Φ⁺⟩ = (|00⟩+|11⟩)/√2 &nbsp; |Φ⁻⟩ = (|00⟩−|11⟩)/√2<br>|Ψ⁺⟩ = (|01⟩+|10⟩)/√2 &nbsp; |Ψ⁻⟩ = (|01⟩−|10⟩)/√2</div>
+<div class="g"><div class="b"><h3>Properties</h3>These four states are orthonormal and together form a complete basis for the 2-qubit space — the <b>Bell basis</b>. Each is maximally entangled: measuring either qubit gives a perfectly random result, but the two results are perfectly correlated (or anti-correlated).</div>
+<div class="b"><h3>How to build |Φ⁺⟩</h3><ol><li>Start with |00⟩.</li><li>Apply a Hadamard (H) to qubit 1 → (|00⟩+|10⟩)/√2.</li><li>Apply CNOT (control = qubit 1, target = qubit 2) → (|00⟩+|11⟩)/√2.</li></ol>This H + CNOT pair is the standard "Bell state circuit".</div></div>
+<div class="sim"><h3>Simulation: Bell state circuit</h3><div class="qrow" id="bellCirc">
+<div class="q" id="q1">0</div><div class="wire" style="flex:0 0 60px"><div class="gate" id="gH">H</div></div><div class="wire" style="flex:0 0 40px"></div><div style="width:4px"></div>
+<div class="q" id="q2">0</div>
+</div><div class="qrow"><div class="link" id="cnotLink"></div></div>
+<div class="ctl"><button id="bellStep">Step ▶</button><button id="bellReset">Reset</button></div><div class="log" id="bellLog">Two qubits start in |0⟩, unentangled. Press Step.</div></div>
+</section>
+
+<section id="ghzw" class="rv"><h2>GHZ and W States</h2><p class="tag">Entanglement across three (or more) qubits.</p>
+<div class="g"><div class="b"><h3>GHZ state</h3><div class="eq">|GHZ⟩ = (|000⟩+|111⟩)/√2</div>All three qubits are either all 0 or all 1. <b>Fragile:</b> if you lose or measure just one qubit, the remaining two collapse into a classical mixture — all entanglement between them is destroyed.</div>
+<div class="b"><h3>W state</h3><div class="eq">|W⟩ = (|001⟩+|010⟩+|100⟩)/√3</div>Exactly one qubit is 1 at a time. <b>Robust:</b> if you lose one qubit, the remaining two are still entangled (a smaller W-like state survives). This makes W states useful when qubit loss is likely.</div></div>
+</section>
+
+<section id="epr" class="rv"><h2>EPR Paradox &amp; Hidden Variables</h2><p class="tag">Einstein, Podolsky, Rosen (1935): is quantum mechanics incomplete?</p>
+<div class="g"><div class="b"><h3>The argument</h3>EPR considered two entangled particles sent far apart. Measuring one instantly determines the state of the other. EPR argued that since no signal could travel that fast, the outcome must have been <b>pre-decided</b> ("real") before measurement — meaning quantum mechanics is missing some <b>hidden variable</b> that already fixes the result.</div>
+<div class="b"><h3>The resolution</h3>Bell showed in 1964 that this idea is testable: if hidden variables exist, measurement correlations must obey an inequality. Experiments (Aspect, 1982, and later loophole-free tests) show the inequality is <b>violated</b>, ruling out local hidden variables. Nature really is non-local in this statistical sense — yet, as shown below, this still can't be used to send a message.</div></div>
+</section>
+
+<section id="chsh" class="rv"><h2>Bell / CHSH Inequality</h2><p class="tag">Classical limit: 2. Quantum limit: 2√2 ≈ 2.828 (Tsirelson's bound).</p>
+<div class="g"><div class="b"><h3>Setup</h3>Alice measures her qubit at angle <i>a</i> or <i>a′</i>; Bob measures his at angle <i>b</i> or <i>b′</i>. Each measurement gives ±1. Define the correlation <code>E(a,b) = ⟨cos(a−b)⟩</code>. For the singlet/Bell state, quantum mechanics predicts exactly:
+<div class="eq">E(a,b) = −cos(a − b)</div></div>
+<div class="b num"><h3>CHSH quantity</h3><div class="eq">S = E(a,b) − E(a,b′) + E(a′,b) + E(a′,b′)</div>Local hidden-variable theories require <code>|S| ≤ 2</code>. Quantum mechanics allows up to <code>|S| = 2√2</code>, achieved at <code>a=0°, a′=90°, b=45°, b′=135°</code> (each pair of angles 45° apart).</div></div>
+<div class="sim"><h3>Simulation: CHSH experiment</h3><p>Drag the four angles and watch S update live. Try to push S above 2 — that is the "impossible" region for any classical theory.</p>
+<div class="ctl"><label>a <input type="range" id="ra" min="0" max="180" value="0"><span id="va">0°</span></label></div>
+<div class="ctl"><label>a′ <input type="range" id="ra2" min="0" max="180" value="90"><span id="va2">90°</span></label></div>
+<div class="ctl"><label>b <input type="range" id="rb" min="0" max="180" value="45"><span id="vb">45°</span></label></div>
+<div class="ctl"><label>b′ <input type="range" id="rb2" min="0" max="180" value="135"><span id="vb2">135°</span></label></div>
+<div class="chshbar"><div class="markline" style="left:70.7%"></div><span class="mark" style="left:70.7%">classical limit 2</span><div class="chshfill" id="chshFill"></div></div>
+<div class="log" id="chshLog"></div><div class="ctl"><button id="chshBest">Jump to quantum-optimal angles</button></div></div>
+</section>
+
+<section id="schmidt" class="rv"><h2>Schmidt Decomposition (intro)</h2><p class="tag">Every pure bipartite state has a clean canonical form.</p>
+<div class="b">Any pure state of two subsystems can always be written as
+<div class="eq">|ψ⟩ = Σᵢ λᵢ |uᵢ⟩_A |vᵢ⟩_B</div>
+where {|uᵢ⟩} and {|vᵢ⟩} are each orthonormal, λᵢ ≥ 0, and Σλᵢ² = 1. The number of non-zero λᵢ is the <b>Schmidt rank</b>.
+<ul><li>Rank = 1 → separable (e.g. |00⟩: λ₁=1).</li><li>Rank ≥ 2 → entangled (e.g. Bell state: λ₁=λ₂=1/√2).</li></ul>
+This is the rigorous version of the "try to factor it" test from Section 1.</div>
+</section>
+
+<section id="entropy" class="rv"><h2>Entanglement Entropy (intro)</h2><p class="tag">A number that measures "how entangled".</p>
+<div class="b">Take the reduced density matrix of subsystem A (trace out B). Its eigenvalues are exactly the λᵢ² from the Schmidt decomposition. The <b>von Neumann entropy</b>
+<div class="eq">S(ρ_A) = −Σᵢ λᵢ² log₂(λᵢ²)</div>
+is the entanglement entropy.
+<ul><li>Separable state: one λᵢ²=1, rest 0 → S = 0 (no entanglement).</li><li>Bell state: λ₁²=λ₂²=1/2 → S = −2×(1/2)log₂(1/2) = <b>1 bit</b> — the maximum possible for a qubit pair.</li></ul></div>
+</section>
+
+<section id="nocomm" class="rv"><h2>No-Communication Theorem</h2><p class="tag">Entanglement cannot send a message faster than light.</p>
+<div class="b">Even though measuring Alice's qubit instantly fixes the <i>correlation</i> with Bob's qubit, Bob's own measurement statistics (the reduced density matrix on his side) never change based on what Alice chooses to measure or whether she measures at all. Mathematically, any local operation Alice performs commutes with Bob's reduced state. So:
+<ul><li>Bob sees pure randomness either way — he cannot tell if Alice has measured.</li><li>The correlation is only visible after Alice and Bob <b>compare notes over a classical channel</b> (phone, internet — limited by light speed).</li><li>This is why entanglement does not violate relativity.</li></ul></div>
+</section>
+
+<section id="num" class="rv"><h2>Numericals</h2><p class="tag">Worked examples, step by step.</p>
+<div class="g"><div class="b num"><h3>1. Build the Bell state</h3>Start: |00⟩ = (1,0,0,0)ᵀ.<br>H on qubit 1: (1/√2)(|00⟩+|10⟩).<br>CNOT (q1→q2): (1/√2)(|00⟩+|11⟩) = |Φ⁺⟩. ✅</div>
+<div class="b num"><h3>2. CHSH value = 2√2</h3>Use a=0°, a′=90°, b=45°, b′=135°, with E(x,y)=−cos(x−y):<br>E(a,b)=−cos(−45°)=−0.707<br>E(a,b′)=−cos(−135°)=+0.707<br>E(a′,b)=−cos(45°)=−0.707<br>E(a′,b′)=−cos(−45°)=−0.707<br>S = E(a,b)−E(a,b′)+E(a′,b)+E(a′,b′)<br>S = −0.707−0.707−0.707−0.707 = <b>−2.828</b><br>|S| = 2√2 ≈ <b>2.828</b> — exactly the Tsirelson bound, and well above the classical limit of 2. Try it live in the simulator above (click "Jump to quantum-optimal angles").</div>
+<div class="b num"><h3>3. Show (|00⟩+|11⟩)/√2 is NOT a product state</h3>Assume |ψ⟩=(α|0⟩+β|1⟩)⊗(γ|0⟩+δ|1⟩) = αγ|00⟩+αδ|01⟩+βγ|10⟩+βδ|11⟩.<br>Match to (1/√2)|00⟩ + 0|01⟩ + 0|10⟩ + (1/√2)|11⟩:<br>αδ=0 and βγ=0, but αγ=1/√2≠0 and βδ=1/√2≠0.<br>αδ=0 ⟹ α=0 or δ=0. If α=0, then αγ=0 ≠1/√2 — contradiction. If δ=0, then βδ=0≠1/√2 — contradiction. <b>No valid α,β,γ,δ exist, so the state cannot be factored — it is entangled. ✅</b></div></div>
+</section>
+
+<section id="code" class="rv"><h2>Code</h2><p class="tag">Qiskit-style Bell circuit, and a CHSH correlation simulator.</p>
+<div class="b"><h3>Bell state circuit (Qiskit)</h3><pre>from qiskit import QuantumCircuit
+
+qc = QuantumCircuit(2, 2)
+qc.h(0)        # superposition on qubit 0
+qc.cx(0, 1)    # CNOT: entangle qubit 0 and 1
+qc.measure([0,1],[0,1])
+# Result: ~50% '00', ~50% '11', never '01' or '10'</pre></div>
+<div class="b"><h3>CHSH correlation (Python, no hardware needed)</h3><pre>import math, random
+
+def E(a, b, trials=20000):
+    """Quantum prediction for the singlet state: E = -cos(a-b)"""
+    return -math.cos(math.radians(a - b))
+
+a, a2, b, b2 = 0, 90, 45, 135
+S = E(a,b) - E(a,b2) + E(a2,b) + E(a2,b2)
+print("CHSH S =", abs(S))   # 2.828... = 2*sqrt(2)</pre></div>
+</section>
+
+<section id="real" class="rv"><h2>Real-life Example: The Glove Analogy</h2><p class="tag">A useful picture — and exactly where it breaks down.</p>
+<div class="g"><div class="b re"><h3>The analogy</h3>Put a left glove and a right glove into two identical boxes, mail one to Alice and one to Bob without telling either which is inside. The moment Alice opens her box and sees "left", she instantly knows Bob has "right" — no signal needed, because the correlation was fixed the moment the gloves were packed.</div>
+<div class="b re"><h3>Why it is a good first picture</h3>It correctly shows that correlation ≠ communication: Alice learns about Bob's glove without any signal travelling between them. This mirrors the no-communication theorem.</div>
+<div class="b num"><h3>Where it breaks down</h3>The glove outcome was <b>fixed in advance</b> — a classical hidden variable (which glove went in which box). Bell's theorem proves entangled qubits are <i>not</i> like this: there is no fixed "glove" waiting to be revealed. The CHSH simulator above shows quantum correlations exceeding 2 — something gloves (or any pre-set classical property) can never do, since gloves always give <code>|S| ≤ 2</code>. The entanglement is created and remains genuinely undetermined until measured.</div></div>
+</section>
+
+<section class="rv"><h2>Summary Table</h2><div class="b" style="overflow-x:auto"><table class="t">
+<tr><th>Concept</th><th>Key fact</th></tr>
+<tr><td>Separable state</td><td>|ψ⟩=|a⟩⊗|b⟩, Schmidt rank 1</td></tr>
+<tr><td>Bell states</td><td>4 maximally entangled 2-qubit states, orthonormal basis</td></tr>
+<tr><td>GHZ</td><td>Fragile — one lost qubit destroys entanglement</td></tr>
+<tr><td>W state</td><td>Robust — survives loss of one qubit</td></tr>
+<tr><td>CHSH</td><td>Classical ≤ 2, Quantum max = 2√2 ≈ 2.828</td></tr>
+<tr><td>Entanglement entropy</td><td>0 = separable, 1 bit = maximally entangled (2 qubits)</td></tr>
+<tr><td>No-communication theorem</td><td>Entanglement ≠ faster-than-light signalling</td></tr>
+</table></div></section>
+</main>
+
+<script>
+/* theme switcher */
+const themes=['nebula','daylight','ocean','sunset','forest','mono','candy','royal'];
+const tc=document.getElementById('themes');
+themes.forEach(t=>{const b=document.createElement('button');b.title=t;b.dataset.t=t;b.style.background=`var(--ac)`;
+ b.onclick=()=>{document.body.dataset.t=t;document.querySelectorAll('.themes button').forEach(x=>x.classList.toggle('on',x.dataset.t===t))};tc.appendChild(b)});
+tc.firstChild.classList.add('on');
+// give each swatch its own color preview using a hidden probe element per theme
+themes.forEach(t=>{const probe=document.createElement('div');probe.dataset.t=t;probe.style.cssText='position:absolute;visibility:hidden';document.body.appendChild(probe);
+ const c=getComputedStyle(probe).getPropertyValue('--ac')||getComputedStyle(document.body).getPropertyValue('--ac');
+ document.querySelector(`.themes button[data-t="${t}"]`).style.background=c;probe.remove()});
+
+/* separable test */
+document.getElementById('sepA').onclick=()=>document.getElementById('sepLog').innerHTML='αδ=0 and βγ=0 required, but αγ=1/√2 and βδ=1/√2 both needed nonzero → <b>no solution. ENTANGLED.</b>';
+document.getElementById('sepB').onclick=()=>document.getElementById('sepLog').innerHTML='(|00⟩+|01⟩)/√2 = |0⟩⊗(|0⟩+|1⟩)/√2 → a valid product exists. <b>SEPARABLE.</b>';
+
+/* bell circuit */
+let bs=0;const q1=document.getElementById('q1'),q2=document.getElementById('q2'),lk=document.getElementById('cnotLink'),lg=document.getElementById('bellLog');
+const steps=['Two qubits start as |0⟩|0⟩ — unentangled.','Apply Hadamard to qubit 1: it enters superposition (|0⟩+|1⟩)/√2.','Apply CNOT (control=qubit1, target=qubit2): qubit 2 flips only in the |1⟩ branch, creating (|00⟩+|11⟩)/√2 — entangled!','This is the Bell state |Φ⁺⟩. Measuring either qubit now instantly fixes the other.'];
+function renderBell(){q1.className='q'+(bs>=1?' sup':'')+(bs>=2?' e':'');q2.className='q'+(bs>=2?' e sup':'');lk.className='link'+(bs>=2?' on':'');lg.textContent=steps[bs]}
+document.getElementById('bellStep').onclick=()=>{bs=Math.min(bs+1,3);renderBell()};
+document.getElementById('bellReset').onclick=()=>{bs=0;renderBell()};
+renderBell();
+
+/* CHSH */
+const ra=ra2id('ra'),ra2=ra2id('ra2'),rb=ra2id('rb'),rb2=ra2id('rb2');
+function ra2id(id){return document.getElementById(id)}
+const va=document.getElementById('va'),va2=document.getElementById('va2'),vb=document.getElementById('vb'),vb2=document.getElementById('vb2');
+const fill=document.getElementById('chshFill'),clog=document.getElementById('chshLog');
+const Ecorr=(x,y)=>-Math.cos((x-y)*Math.PI/180);
+function updateChsh(){const a=+ra.value,a2=+ra2.value,b=+rb.value,b2=+rb2.value;
+va.textContent=a+'°';va2.textContent=a2+'°';vb.textContent=b+'°';vb2.textContent=b2+'°';
+const S=Ecorr(a,b)-Ecorr(a,b2)+Ecorr(a2,b)+Ecorr(a2,b2),abs=Math.abs(S),pct=Math.min(abs/2.828*100,100);
+fill.style.width=pct+'%';fill.style.background=abs>2?'var(--ac2)':'var(--ac)';
+clog.innerHTML=`S = <b>${S.toFixed(3)}</b> &nbsp; |S| = ${abs.toFixed(3)} ${abs>2?'→ <b>exceeds the classical limit of 2!</b> No local hidden-variable theory can produce this.':'→ within the classical limit.'}`}
+[ra,ra2,rb,rb2].forEach(r=>r.addEventListener('input',updateChsh));
+document.getElementById('chshBest').onclick=()=>{ra.value=0;ra2.value=90;rb.value=45;rb2.value=135;updateChsh()};
+updateChsh();
+
+const io=new IntersectionObserver(e=>e.forEach(x=>x.isIntersecting&&x.target.classList.add('in')),{threshold:.08});
+document.querySelectorAll('.rv').forEach(x=>io.observe(x));
+</script></body></html>
