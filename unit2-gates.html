@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Unit 2: Single-Qubit Gates</title>
+<!-- HOW TO EDIT: change any text inside the tags below, save, and upload again to GitHub.
+     Colours of every theme are in the CSS block at the top (search "data-theme"). -->
+<style>
+:root{--bg:#f4f6fc;--pn:rgba(255,255,255,.88);--tx:#14213d;--mu:#56627a;--a1:#3b5bdb;--a2:#7048e8;--bd:rgba(20,33,61,.13);box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#060914;--pn:rgba(255,255,255,.06);--tx:#eaf0ff;--mu:#9aa8c7;--a1:#6ea8ff;--a2:#b48cff;--bd:rgba(255,255,255,.14)}}
+:root[data-theme="space"]{--bg:#060914;--pn:rgba(255,255,255,.06);--tx:#eaf0ff;--mu:#9aa8c7;--a1:#6ea8ff;--a2:#b48cff;--bd:rgba(255,255,255,.14)}
+:root[data-theme="neon"]{--bg:#0c0620;--pn:rgba(255,255,255,.06);--tx:#f7eeff;--mu:#bba8da;--a1:#ff6ad5;--a2:#7c6bff;--bd:rgba(255,255,255,.14)}
+:root[data-theme="hole"]{--bg:#050505;--pn:rgba(255,255,255,.05);--tx:#fff4e6;--mu:#b8a58c;--a1:#ff9d2e;--a2:#ffd27a;--bd:rgba(255,255,255,.14)}
+:root[data-theme="aurora"]{--bg:#03130f;--pn:rgba(255,255,255,.06);--tx:#e6fff4;--mu:#8fc2ad;--a1:#3dffb0;--a2:#36b3ff;--bd:rgba(255,255,255,.14)}
+:root[data-theme="nova"]{--bg:#14060a;--pn:rgba(255,255,255,.06);--tx:#ffeceb;--mu:#d0a3a3;--a1:#ff4d5e;--a2:#ffb347;--bd:rgba(255,255,255,.14)}
+:root[data-theme="ocean"]{--bg:#04202e;--pn:rgba(255,255,255,.06);--tx:#e4faff;--mu:#8fbccb;--a1:#4dd0e1;--a2:#2979ff;--bd:rgba(255,255,255,.14)}
+:root[data-theme="matrix"]{--bg:#000;--pn:rgba(0,255,100,.06);--tx:#d6ffe0;--mu:#6fae82;--a1:#00ff66;--a2:#b6ff00;--bd:rgba(0,255,100,.25)}
+html{scroll-behavior:smooth;scroll-padding-top:calc(env(safe-area-inset-top,0px) + 70px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--tx);font:16px/1.65 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;overflow-x:hidden}
+#bg{position:fixed;inset:0;width:100%;height:100%;z-index:-1}
+.w{max-width:1040px;margin:auto;padding:0 18px}
+.hd{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;display:flex;align-items:center;gap:10px;padding:10px 18px;background:var(--pn);backdrop-filter:blur(14px);border-bottom:1px solid var(--bd)}
+.hd nav{display:flex;gap:14px;overflow-x:auto;flex:1}
+.hd nav a{color:var(--mu);text-decoration:none;font-size:.9rem;white-space:nowrap}
+.hd nav a:hover{color:var(--a1)}
+select,button,input{font:inherit;color:var(--tx);background:var(--pn);border:1px solid var(--bd);border-radius:10px;padding:6px 10px}
+button{cursor:pointer}button:hover{border-color:var(--a1)}
+.on,.bt{background:linear-gradient(90deg,var(--a1),var(--a2))!important;color:#fff!important;border:0}
+section{padding:60px 0}
+.hero{min-height:84vh;display:flex;align-items:center}
+.hero .w{display:flex;flex-wrap:wrap;gap:30px;align-items:center;justify-content:center}
+.hero .w>div{animation:rise 1s both}
+.kick{color:var(--a1);letter-spacing:.14em;text-transform:uppercase;font-size:.85rem;margin:0}
+h1{font-size:clamp(2rem,5.5vw,3.5rem);line-height:1.1;margin:.2em 0;background:linear-gradient(90deg,var(--a1),var(--a2),var(--a1));background-size:200%;-webkit-background-clip:text;background-clip:text;color:transparent;animation:sh 6s linear infinite}
+h2{font-size:1.8rem;margin:0 0 16px}
+h2::after{content:"";display:block;width:56px;height:4px;border-radius:4px;margin-top:6px;background:linear-gradient(90deg,var(--a1),var(--a2))}
+h3{margin:14px 0 8px;color:var(--a1)}
+.mu{color:var(--mu)}.mono{font:.9rem/1.5 ui-monospace,Menlo,Consolas,monospace;word-break:break-word}
+.bt{display:inline-block;padding:9px 18px;border-radius:99px;text-decoration:none;font-weight:600;margin:4px 6px 4px 0}
+.tg{display:inline-block;font-size:.8rem;padding:2px 10px;border-radius:99px;border:1px solid var(--a2);color:var(--a2);margin:2px}
+.gr{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:14px}
+.cd{background:var(--pn);border:1px solid var(--bd);border-radius:16px;padding:16px;backdrop-filter:blur(8px);overflow-x:auto}
+.cd ul{padding-left:20px;margin:6px 0}
+.rl{border-left:4px solid var(--a2);background:var(--pn);padding:8px 14px;border-radius:0 12px 12px 0;margin:12px 0}
+table{border-collapse:collapse;margin:8px 0}th,td{border:1px solid var(--bd);padding:5px 10px}th{background:var(--pn)}
+.lab{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:14px}.wide{grid-column:1/-1}
+#bl{width:100%;max-width:440px;aspect-ratio:1;display:block;margin:auto;touch-action:none;cursor:grab}
+.pre{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin-top:8px}
+label{display:block;margin:6px 0;color:var(--mu);font-size:.9rem}input[type=range]{width:100%;padding:0}
+.ni{width:78px}
+.br{display:flex;align-items:center;gap:8px;margin:4px 0}.br span{min-width:96px}.br div{flex:1;height:14px;background:var(--bd);border-radius:8px;overflow:hidden}
+.br i{display:block;height:100%;background:linear-gradient(90deg,var(--a1),var(--a2));transition:width .3s}.br em{min-width:56px;font-style:normal;text-align:right}
+hr{border:0;border-top:1px dashed var(--bd)}
+details{background:var(--pn);border:1px solid var(--bd);border-radius:12px;padding:10px 14px;margin:10px 0}summary{cursor:pointer;font-weight:700}
+.cw{perspective:500px;padding:14px 0}
+.coin{width:90px;height:90px;margin:auto;position:relative;transform-style:preserve-3d;animation:flip 1.6s linear infinite}
+.coin.land{animation:none}.coin.land.t{transform:rotateY(180deg)}
+.cf{position:absolute;inset:0;border-radius:50%;backface-visibility:hidden;display:grid;place-items:center;font-weight:800;font-size:1.5rem;color:#fff;background:radial-gradient(circle at 30% 30%,var(--a2),var(--a1));border:4px solid rgba(255,255,255,.4);box-shadow:0 0 24px var(--a1)}
+.cf.b{transform:rotateY(180deg)}
+.at{width:220px;height:220px;position:relative;transform-style:preserve-3d;animation:s3 14s linear infinite}
+.at i{position:absolute;inset:0;border:2px solid var(--a1);border-radius:50%}
+.at i:nth-child(2){transform:rotateY(60deg);border-color:var(--a2)}.at i:nth-child(3){transform:rotateY(120deg)}
+.at b{position:absolute;left:50%;top:50%;width:26px;height:26px;margin:-13px;border-radius:50%;background:var(--a1);box-shadow:0 0 30px var(--a1)}
+.rv{opacity:0;transform:translateY(26px);transition:opacity .8s,transform .8s}.rv.in{opacity:1;transform:none}
+footer{text-align:center;color:var(--mu);padding:30px 18px 50px}
+@keyframes flip{to{transform:rotateY(360deg)}}@keyframes s3{to{transform:rotateX(360deg) rotateY(360deg)}}
+@keyframes sh{to{background-position:200%}}@keyframes rise{from{opacity:0;transform:translateY(20px)}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+.phn{width:110px;height:210px;border-radius:24px;border:6px solid var(--tx);background:linear-gradient(160deg,var(--a1),var(--a2));position:relative;animation:pr 9s ease-in-out infinite;box-shadow:0 0 40px var(--a1)}
+.phn::before{content:"";position:absolute;top:8px;left:50%;width:36px;height:8px;margin-left:-18px;border-radius:6px;background:var(--bg)}
+@keyframes pr{0%{transform:rotateX(0)}20%{transform:rotateX(180deg)}40%{transform:rotateY(180deg)}60%{transform:rotateZ(90deg)}80%{transform:rotateZ(45deg) rotateX(60deg)}100%{transform:rotate(0)}}
+.wire{display:flex;align-items:center;overflow-x:auto;padding:12px 0;background:linear-gradient(var(--mu),var(--mu)) center/100% 2px no-repeat}
+.wire span{padding:4px 10px;background:var(--bg);border-radius:6px;white-space:nowrap}.wire .gb{border:2px solid var(--a1);margin:0 12px}
+.ln{display:grid;grid-template-columns:26px 1fr;padding:5px 0;border-bottom:1px dashed var(--bd)}.ln:last-child{border:0}.ln span{color:var(--mu);font-size:.8rem}
+.ln code{font:.88rem/1.4 ui-monospace,Menlo,Consolas,monospace;white-space:pre-wrap;word-break:break-word}.ln small{grid-column:2;color:var(--mu)}.ln small::before{content:"↳ ";color:var(--a1)}
+pre{margin:0;overflow-x:auto}.pre{margin:8px 0}
+</style>
+</head>
+<body>
+<canvas id="bg"></canvas>
+<header class="hd"><b>⚛ Unit 2</b>
+<nav><a href="#s1">Gates</a><a href="#s2">Gate Zoo</a><a href="#s3">Rotations</a><a href="#lab">Lab</a><a href="#s4">Identities</a><a href="#s5">Circuits</a><a href="#s6">Numericals</a><a href="#s7">Qiskit</a></nav>
+<select id="th" aria-label="Choose theme"><option value="space">🌌 Deep Space</option><option value="neon">💜 Neon Galaxy</option><option value="hole">🕳️ Black Hole</option><option value="aurora">🌿 Aurora</option><option value="nova">💥 Supernova</option><option value="ocean">🌊 Ocean</option><option value="matrix">🟩 Matrix</option><option value="light">☀️ Daylight</option></select><button id="an" aria-label="Animation on or off">✨</button></header>
+<main>
+<section class="hero"><div class="w"><div><p class="kick">Part B: Qubits and Circuits</p><h1>Unit 2: Single-Qubit Gates</h1>
+<p class="mu" style="max-width:560px">Learn Pauli, Hadamard, S, T, rotation and general unitary gates. Apply gates to a 3D Bloch sphere, watch each rotation, build circuits, verify identities and run Qiskit code.</p>
+<a class="bt" href="#s1">Start learning</a><a class="bt" href="#lab">Open the Gate Lab</a><br>
+<span class="tg">X Y Z</span><span class="tg">Hadamard</span><span class="tg">S and T</span><span class="tg">Rx Ry Rz</span><span class="tg">U(θ,φ,λ)</span><span class="tg">Unitarity</span><span class="tg">Identities</span><span class="tg">Circuits</span><span class="tg">Qiskit</span></div>
+<div style="perspective:700px;text-align:center"><div class="phn" style="margin:auto"></div><p class="mu">A gate rotates the state, like you rotate a phone.</p></div></div></section>
+
+<section id="s1"><div class="w rv"><h2>1. What is a Quantum Gate?</h2>
+<ul><li>A single-qubit gate is a 2×2 matrix U. It turns |ψ⟩ into U|ψ⟩.</li>
+<li><b>Unitary:</b> U†U = UU† = I. This keeps |α|² + |β|² = 1, so probabilities still add up to 100%.</li>
+<li><b>Reversible:</b> U⁻¹ = U†, so every gate can be undone. (A measurement cannot be undone.)</li>
+<li><b>Bloch sphere view:</b> every single-qubit gate is a <b>rotation</b> of the sphere about some axis by some angle (plus a global phase that cannot be measured).</li></ul>
+<p class="rl"><b>🌍 Real life:</b> <b>Rotating your phone.</b> The orientation changes, but the phone stays the same: same size, same apps (unitarity). You can always rotate it back (reversibility). Any orientation can be reached with a few rotations about three axes.</p></div></section>
+
+<section id="s2"><div class="w rv"><h2>2. Gate Zoo: Pauli, Hadamard, S and T</h2>
+<div class="cd"><table><tr><th>Gate</th><th>Matrix</th><th>Bloch action</th></tr>
+<tr><td>X</td><td>[[0, 1], [1, 0]]</td><td>180° about x (bit flip)</td></tr>
+<tr><td>Y</td><td>[[0, −i], [i, 0]]</td><td>180° about y</td></tr>
+<tr><td>Z</td><td>[[1, 0], [0, −1]]</td><td>180° about z (phase flip)</td></tr>
+<tr><td>H</td><td>(1/√2)[[1, 1], [1, −1]]</td><td>180° about (x+z)/√2: |0⟩↔|+⟩, |1⟩↔|−⟩</td></tr>
+<tr><td>S</td><td>[[1, 0], [0, i]]</td><td>90° about z</td></tr>
+<tr><td>T</td><td>[[1, 0], [0, e<sup>iπ/4</sup>]]</td><td>45° about z</td></tr></table></div>
+<ul><li><b>Pauli properties:</b> X² = Y² = Z² = I; XY = iZ, YZ = iX, ZX = iY; XY = −YX (they anticommute). Paulis are both Hermitian and unitary.</li>
+<li>H² = I, S² = Z, T² = S. S† and T† are the inverses of S and T.</li></ul>
+<p class="rl"><b>🌍 Real life:</b> X, Y, Z are 180° flips of your phone about three axes (turn the page, spin on a turntable). S is a 90° turn of a steering wheel and T is a 45° turn. H tips the phone over a diagonal axis, so "up" becomes "sideways".</p></div></section>
+
+<section id="s3"><div class="w rv"><h2>3. Rotation Gates and the General Unitary</h2>
+<div class="cd"><table><tr><th>Gate</th><th>Matrix</th></tr>
+<tr><td>R<sub>x</sub>(θ)</td><td>[[cos(θ/2), −i sin(θ/2)], [−i sin(θ/2), cos(θ/2)]]</td></tr>
+<tr><td>R<sub>y</sub>(θ)</td><td>[[cos(θ/2), −sin(θ/2)], [sin(θ/2), cos(θ/2)]]</td></tr>
+<tr><td>R<sub>z</sub>(θ)</td><td>[[e<sup>−iθ/2</sup>, 0], [0, e<sup>iθ/2</sup>]]</td></tr>
+<tr><td>U(θ,φ,λ)</td><td>[[cos(θ/2), −e<sup>iλ</sup> sin(θ/2)], [e<sup>iφ</sup> sin(θ/2), e<sup>i(φ+λ)</sup> cos(θ/2)]]</td></tr></table></div>
+<ul><li>R<sub>n</sub>(θ) = e<sup>−iθ(n·σ)/2</sup> rotates the Bloch vector by θ about the axis n. The half-angle appears in the matrix, but the sphere turns by the full θ.</li>
+<li>U(θ,φ,λ) equals R<sub>z</sub>(φ) R<sub>y</sub>(θ) R<sub>z</sub>(λ) up to a global phase, so <b>any</b> single-qubit gate is three rotations.</li>
+<li>Special cases: R<sub>x</sub>(π) = −iX, R<sub>z</sub>(π/2) ≈ S, R<sub>z</sub>(π/4) ≈ T (equal up to global phase).</li></ul>
+<p class="rl"><b>🌍 Real life:</b> A drone has <b>roll</b> (x), <b>pitch</b> (y) and <b>yaw</b> (z). Any orientation is reachable with three turns, just as U(θ,φ,λ) needs three angles.</p></div></section>
+
+<section id="lab"><div class="w rv"><h2>Gate Lab: Apply Gates and Watch the Rotation</h2>
+<p class="mu">Pick a start state, press gates, and watch the Bloch vector rotate around the glowing axis. Drag the sphere to look around.</p>
+<div class="lab"><div class="cd"><canvas id="bl" width="420" height="420"></canvas>
+<div class="pre"><span class="mu">Start:</span><button onclick="rst('0')">|0⟩</button><button onclick="rst('1')">|1⟩</button><button onclick="rst('+')">|+⟩</button><button onclick="rst('i')">|+i⟩</button><button onclick="undo()">↶ Undo</button></div></div>
+<div class="cd"><h3>Gates</h3><div class="pre"><button data-g="X">X</button><button data-g="Y">Y</button><button data-g="Z">Z</button><button data-g="H">H</button><button data-g="S">S</button><button data-g="T">T</button><button data-g="S†">S†</button><button data-g="T†">T†</button></div>
+<label>Angle θ = <b>90</b>°<input type="range" id="ta" min="0" max="360" value="90"></label>
+<div class="pre"><button data-g="Rx">Rx(θ)</button><button data-g="Ry">Ry(θ)</button><button data-g="Rz">Rz(θ)</button></div>
+<label>U: θ = <b>90</b>°<input type="range" id="ut" min="0" max="180" value="90"></label>
+<label>U: φ = <b>0</b>°<input type="range" id="up" min="0" max="360" value="0"></label>
+<label>U: λ = <b>180</b>°<input type="range" id="ul" min="0" max="360" value="180"></label>
+<div class="pre"><button data-g="U">Apply U(θ,φ,λ)</button></div></div>
+<div class="cd wide"><h3>State</h3><p class="mono" id="st"></p><p class="mono" id="bv"></p><div id="pb"></div><p class="mono" id="mt"></p>
+<h3>Your circuit</h3><div class="wire" id="ck"></div><p class="mono" id="pr"></p></div></div></div></section>
+
+<section id="s4"><div class="w rv"><h2>4. Gate Identities</h2>
+<ul><li><b>HXH = Z</b> and <b>HZH = X</b>: H swaps the x and z axes, so surrounding a gate with H changes its axis.</li>
+<li><b>S² = Z</b> and <b>T² = S</b>: two small turns about z make a bigger turn about z.</li>
+<li>Also X² = I (do it twice and you are back) and XY = iZ.</li></ul>
+<p class="rl"><b>🌍 Real life:</b> You tilt a camera sideways, take a photo of a left-right swipe, and tilt it back. In the tilted view the swipe looks up-down. That is how H turns X into Z.</p>
+<div class="cd"><h3>🧮 Identity checker</h3><p class="mu">Choose an identity. The page multiplies the real matrices and compares both sides.</p><select id="iv"></select><pre class="mono" id="ir"></pre></div></div></section>
+
+<section id="s5"><div class="w rv"><h2>5. Reading Circuit Diagrams</h2>
+<div class="cd"><pre class="mono">          ┌───┐┌───┐┌─┐
+ q: |0⟩ ──┤ X ├┤ H ├┤M├
+          └───┘└───┘└─┘</pre></div>
+<ul><li>Each horizontal line is one qubit. The label |0⟩ is its starting state.</li>
+<li><b>Time flows left to right.</b> Each box is a gate. M is a measurement.</li>
+<li>This circuit applies X first, then H. As a matrix it is written <b>U = H · X</b>: the first gate sits on the <b>right</b>, because the matrix acts on the ket from the left.</li></ul>
+<p class="rl"><b>🌍 Real life:</b> A circuit is like a recipe or a music score: steps run left to right. But when you write the maths, the earliest step is written last, like nesting f(g(x)): g is applied first.</p></div></section>
+
+<section id="s6"><div class="w rv"><h2>6. Numericals (Solved Step by Step)</h2><p class="mu">Tap a question to open the solution. Use "Run in lab" to see it on the sphere.</p>
+<details><summary>N1. Prove HXH = Z using matrices.</summary><p>H = (1/√2)[[1, 1], [1, −1]], X = [[0, 1], [1, 0]].<br>XH swaps the rows of H: XH = (1/√2)[[1, −1], [1, 1]].<br>H(XH) = (1/2)[[1, 1], [1, −1]] · [[1, −1], [1, 1]] = (1/2)[[1+1, −1+1], [1−1, −1−1]] = (1/2)[[2, 0], [0, −2]] = [[1, 0], [0, −1]] = <b>Z</b> ✓</p><p class="rl">🌍 The tilted camera: an X-swipe seen through H looks like a Z-swipe.</p><button class="rn" data-s="H,X,H" data-k="+">Run H, X, H on |+⟩</button></details>
+<details><summary>N2. Show that Rx(π) = −iX.</summary><p>Rx(θ) = [[cos(θ/2), −i sin(θ/2)], [−i sin(θ/2), cos(θ/2)]].<br>For θ = π: cos(π/2) = 0 and sin(π/2) = 1, so Rx(π) = [[0, −i], [−i, 0]] = −i [[0, 1], [1, 0]] = <b>−iX</b> ✓<br>The factor −i is a global phase, so on the Bloch sphere Rx(π) does exactly what X does (a 180° turn about x).</p><p class="rl">🌍 Turning the phone over: you see the same flip whether or not you note that you started the turn "a little earlier" (the global phase).</p><button class="rn" data-s="Rx" data-k="0">Run Rx(θ) from |0⟩</button></details>
+<details><summary>N3. Find the state after a T gate acts on |+⟩.</summary><p>|+⟩ = (|0⟩ + |1⟩)/√2 and T = diag(1, e<sup>iπ/4</sup>).<br>T|+⟩ = (|0⟩ + e<sup>iπ/4</sup>|1⟩)/√2 = (1/√2)|0⟩ + ((1+i)/2)|1⟩ ≈ 0.707|0⟩ + (0.5 + 0.5i)|1⟩.<br>Probabilities: |0.707|² = 50% and |0.5+0.5i|² = 0.5 → 50%. They are unchanged, because T only changes the phase.<br>Bloch vector: (1, 0, 0) turns 45° about z to (0.707, 0.707, 0).</p><p class="rl">🌍 Turning a radio dial by 45°: the volume (probabilities) stays the same, only the direction (phase) changes.</p><button class="rn" data-s="H,T" data-k="0">Run H then T on |0⟩</button></details>
+<details><summary>N4. Verify XY = iZ and X² = I.</summary><p>XY = [[0, 1], [1, 0]] · [[0, −i], [i, 0]] = [[i, 0], [0, −i]] = i [[1, 0], [0, −1]] = <b>iZ</b> ✓<br>X² = [[0·0+1·1, 0], [0, 1·1+0·0]] = [[1, 0], [0, 1]] = <b>I</b> ✓</p><p class="rl">🌍 Flip a switch twice and you are back where you started.</p><button class="rn" data-s="X,X" data-k="0">Run X twice on |0⟩</button></details>
+<details><summary>N5. Show S² = Z and T² = S.</summary><p>S² = diag(1, i²) = diag(1, −1) = <b>Z</b> ✓<br>T² = diag(1, (e<sup>iπ/4</sup>)²) = diag(1, e<sup>iπ/2</sup>) = diag(1, i) = <b>S</b> ✓</p><p class="rl">🌍 Two 45° turns make a 90° turn.</p><button class="rn" data-s="H,T,T" data-k="0">Run H, T, T (you land on |+i⟩)</button></details>
+<details><summary>N6. Is Y unitary? Compute Y†Y.</summary><p>Y = [[0, −i], [i, 0]]. Its conjugate transpose is Y† = [[0, −i], [i, 0]] = Y.<br>Y†Y = [[0·0+(−i)(i), 0], [0, i(−i)+0]] = [[1, 0], [0, 1]] = <b>I</b> ✓. So Y is unitary and reversible (it is its own inverse).</p><p class="rl">🌍 A rotation of the phone keeps its size, so rotating back always works.</p><button class="rn" data-s="Y,Y" data-k="+">Run Y twice on |+⟩</button></details></div></section>
+
+<section id="s7"><div class="w rv"><h2>7. Qiskit Code: One-Qubit Circuit, Statevector and Bloch Sphere</h2>
+<p class="mu">Install once: <code>pip install qiskit matplotlib pylatexenc</code>. Save as <code>gates.py</code> and run <code>python gates.py</code>.</p>
+<div class="cd" id="q1"></div>
+<p>Output will look similar to: the circuit diagram with H then T, and <code>Statevector([0.70710678+0.j, 0.5+0.5j], dims=(2,))</code>. This matches Numerical N3. A picture <code>bloch.png</code> is also saved.</p>
+<h3>Bonus: check HXH = Z by code</h3><div class="cd" id="q2"></div>
+<p class="rl"><b>🌍 Real life:</b> The code is the recipe, the statevector is the finished dish, and the Bloch sphere is its photo.</p>
+<h3>Common mistakes</h3><ul><li>❌ Multiplying matrices in time order. ✅ The last gate is written first.</li><li>❌ Thinking Rx(π) and X differ physically. ✅ They differ only by a global phase.</li><li>❌ Using θ instead of θ/2 inside the rotation matrix. ✅ The half-angle is correct.</li><li>❌ Thinking Z "does nothing" to |+⟩. ✅ It turns |+⟩ into |−⟩.</li></ul></div></section>
+</main>
+<footer>Unit 2 · Single-Qubit Gates · Part B: Qubits and Circuits</footer>
+<script>
+const $=id=>document.getElementById(id),M=Math,PI=M.PI,R=M.random;
+let V=[0,0,1],A=[[1,0],[0,0]],HS=[],CK=[],Q=[],cur=null,AX=null,TR=[],LM=null,LN='',ST='|0⟩',yaw=.7,pit=.35,dr=0,lx=0,ly=0,on=1,tt=0,W=0,H=0;
+const C={a1:'#6ea8ff',a2:'#b48cff',tx:'#fff',mu:'#999'};
+const g=$('bl').getContext('2d'),b=$('bg').getContext('2d');
+const E=s=>s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+const bar=(l,p)=>`<div class="br"><span>${l}</span><div><i style="width:${p*100}%"></i></div><em>${(p*100).toFixed(1)}%</em></div>`;
+function pj(p){const c=M.cos(yaw),s=M.sin(yaw),x=p[0]*c-p[1]*s,y=p[0]*s+p[1]*c,cb=M.cos(pit),sb=M.sin(pit),y2=y*cb-p[2]*sb,z2=y*sb+p[2]*cb,f=1/(1-y2*.1);return[210+x*150*f,210-z2*150*f,y2]}
+function dl(a,e,al,w,col,d){const A=pj(a),B=pj(e);g.globalAlpha=al;g.strokeStyle=col;g.lineWidth=w;g.setLineDash(d||[]);g.beginPath();g.moveTo(A[0],A[1]);g.lineTo(B[0],B[1]);g.stroke();g.setLineDash([])}
+function draw(){g.clearRect(0,0,420,420);const gr=g.createRadialGradient(170,160,10,210,210,155);gr.addColorStop(0,C.a1+'44');gr.addColorStop(1,C.a2+'0f');g.globalAlpha=1;g.fillStyle=gr;g.beginPath();g.arc(210,210,150,0,7);g.fill();
+for(const f of [a=>[M.cos(a),M.sin(a),0],a=>[M.cos(a),0,M.sin(a)],a=>[0,M.cos(a),M.sin(a)]])for(let i=0;i<48;i++){const p=f(i/48*6.2832),q=f((i+1)/48*6.2832);dl(p,q,pj(p)[2]>0?.6:.2,1,C.tx)}
+for(const a of [[1,0,0],[0,1,0],[0,0,1]])dl(a.map(v=>-v*1.2),a.map(v=>v*1.2),.35,1,C.mu);
+g.font='14px system-ui';g.textAlign='center';
+[['|0⟩',0,0,1.3],['|1⟩',0,0,-1.3],['|+⟩',1.3,0,0],['|−⟩',-1.3,0,0],['|+i⟩',0,1.3,0],['|−i⟩',0,-1.3,0]].forEach(([t,x,y,z])=>{const p=pj([x,y,z]);g.globalAlpha=p[2]>0?1:.4;g.fillStyle=C.tx;g.fillText(t,p[0],p[1]+5)});
+const v=V.slice(),h=[v[0],v[1],0];if(AX)dl(AX.map(q=>-q*1.35),AX.map(q=>q*1.35),.9,2.5,C.a2);TR.forEach((p,i)=>{const q=pj(p);g.globalAlpha=i/TR.length*.8;g.fillStyle=C.a2;g.beginPath();g.arc(q[0],q[1],3,0,7);g.fill()});
+dl([0,0,0],h,.7,1.5,C.a2,[4,4]);dl(h,v,.7,1.5,C.a2,[4,4]);dl([0,0,0],v,1,4,C.a1);
+const e=pj(v);g.globalAlpha=1;g.shadowColor=C.a1;g.shadowBlur=18;g.fillStyle=C.a1;g.beginPath();g.arc(e[0],e[1],8,0,7);g.fill();g.shadowBlur=0;g.fillStyle=C.tx;g.fillText('|ψ⟩',e[0]+22,e[1]-8)}
+const S=[];for(let i=0;i<220;i++){const u=R()*2-1,a=R()*6.283,r=.4+R()*.6,q=M.sqrt(1-u*u);S.push([q*M.cos(a)*r,u*r,q*M.sin(a)*r])}
+function rs(){W=$('bg').width=innerWidth;H=$('bg').height=innerHeight}
+function bgd(){b.clearRect(0,0,W,H);const a=tt*.05,c=M.cos(a),s=M.sin(a),m=M.max(W,H)*.55;S.forEach(p=>{const x=p[0]*c-p[2]*s,z=p[0]*s+p[2]*c,f=1/(1.6-z);b.globalAlpha=.25+.6*(z+1)/2;b.fillStyle=z>0?C.a1:C.a2;b.fillRect(W/2+x*f*m,H/2+p[1]*f*m,1+f*1.4,1+f*1.4)});b.globalAlpha=1}
+
+const s2=M.SQRT1_2,Z0=[0,0],O=[1,0],Im=[0,1];
+const cm=(a,c)=>[a[0]*c[0]-a[1]*c[1],a[0]*c[1]+a[1]*c[0]],ca=(a,c)=>[a[0]+c[0],a[1]+c[1]],ex=t=>[M.cos(t),M.sin(t)];
+const mm=(X,Y)=>[0,1].map(i=>[0,1].map(j=>ca(cm(X[i][0],Y[0][j]),cm(X[i][1],Y[1][j])))),mv=(X,v)=>[0,1].map(i=>ca(cm(X[i][0],v[0]),cm(X[i][1],v[1])));
+const cs=c=>{const r=M.abs(c[0])<5e-4?0:c[0],i=M.abs(c[1])<5e-4?0:c[1];return i?(r?`${r.toFixed(3)}${i<0?'−':'+'}${M.abs(i).toFixed(3)}i`:`${i.toFixed(3)}i`):r.toFixed(3)},mf=X=>`[[${X[0].map(cs).join(', ')}], [${X[1].map(cs).join(', ')}]]`;
+const vf=A=>[2*(A[0][0]*A[1][0]+A[0][1]*A[1][1]),2*(A[0][0]*A[1][1]-A[0][1]*A[1][0]),A[0][0]**2+A[0][1]**2-A[1][0]**2-A[1][1]**2];
+function rot(v,k,a){const c=M.cos(a),s=M.sin(a),d=k[0]*v[0]+k[1]*v[1]+k[2]*v[2],r=[k[1]*v[2]-k[2]*v[1],k[2]*v[0]-k[0]*v[2],k[0]*v[1]-k[1]*v[0]];return v.map((x,i)=>x*c+r[i]*s+k[i]*d*(1-c))}
+function gt(n,t,p,l){const x=[1,0,0],y=[0,1,0],z=[0,0,1],h=[s2,0,s2];
+switch(n){
+case'I':return{m:[[O,Z0],[Z0,O]],st:[]};
+case'X':return{m:[[Z0,O],[O,Z0]],st:[[x,PI]]};
+case'Y':return{m:[[Z0,[0,-1]],[Im,Z0]],st:[[y,PI]]};
+case'Z':return{m:[[O,Z0],[Z0,[-1,0]]],st:[[z,PI]]};
+case'H':return{m:[[[s2,0],[s2,0]],[[s2,0],[-s2,0]]],st:[[h,PI]]};
+case'S':case'S†':case'T':case'T†':{const a=(n[0]=='S'?PI/2:PI/4)*(n[1]?-1:1);return{m:[[O,Z0],[Z0,ex(a)]],st:[[z,a]]}}
+case'Rx':{const c=M.cos(t/2),s=M.sin(t/2);return{m:[[[c,0],[0,-s]],[[0,-s],[c,0]]],st:[[x,t]]}}
+case'Ry':{const c=M.cos(t/2),s=M.sin(t/2);return{m:[[[c,0],[-s,0]],[[s,0],[c,0]]],st:[[y,t]]}}
+case'Rz':return{m:[[ex(-t/2),Z0],[Z0,ex(t/2)]],st:[[z,t]]};
+case'U':{const c=M.cos(t/2),s=M.sin(t/2);return{m:[[[c,0],cm(ex(l),[-s,0])],[cm(ex(p),[s,0]),cm(ex(p+l),[c,0])]],st:[[z,l],[y,t],[z,p]]}}}}
+function rd(){const[a,c]=A,v=vf(A);
+$('st').textContent=`Start ${ST}, now |ψ⟩ = (${cs(a)})|0⟩ + (${cs(c)})|1⟩`;
+$('bv').textContent=`Bloch vector r = (${v.map(q=>q.toFixed(3)).join(', ')})`;
+$('pb').innerHTML=bar('P(|0⟩)',a[0]**2+a[1]**2)+bar('P(|1⟩)',c[0]**2+c[1]**2);
+$('mt').textContent=LM?`Last gate ${LN} = ${mf(LM)}`:'Press a gate to see its matrix.';
+$('ck').innerHTML=`<span>${ST}</span>`+CK.map(l=>`<span class="gb">${l}</span>`).join('')+'<span class="gb">M</span>';
+$('pr').textContent=CK.length>1?`Matrix product: U = ${CK.slice().reverse().join(' · ')} (last gate is written first)`:''}
+function ap(n){const d=k=>$(k).value,t=(n=='U'?d('ut'):d('ta'))*PI/180,p=d('up')*PI/180,l=d('ul')*PI/180,G=gt(n,t,p,l),lab=n=='U'?`U(${d('ut')}°,${d('up')}°,${d('ul')}°)`:/^R/.test(n)?`${n}(${d('ta')}°)`:n;
+HS.push({A,st:G.st});A=mv(G.m,A);CK.push(lab);LM=G.m;LN=lab;Q.push(...G.st);rd()}
+function undo(){const h=HS.pop();if(!h)return;A=h.A;CK.pop();LM=null;Q.push(...h.st.slice().reverse().map(([k,a])=>[k,-a]));rd()}
+function rst(k){A={'0':[O,Z0],'1':[Z0,O],'+':[[s2,0],[s2,0]],'i':[[s2,0],[0,s2]]}[k];ST={'0':'|0⟩','1':'|1⟩','+':'|+⟩','i':'|+i⟩'}[k];V=vf(A);HS=[];CK=[];Q=[];cur=null;AX=null;TR=[];LM=null;rd()}
+function seq(l,k){rst(k);l.forEach(n=>ap(n))}
+function loop(){if(on){tt+=.016;if(!dr)yaw+=.004}
+if(!cur&&Q.length){const[k,a]=Q.shift(),n=M.hypot(...k);cur={k:k.map(q=>q/n),a,v:V.slice(),p:0,d:.4+.5*M.abs(a)/PI};AX=cur.k}
+if(cur){cur.p+=.016/cur.d;const e=M.min(cur.p,1),s=e*e*(3-2*e);V=rot(cur.v,cur.k,cur.a*s);TR.push(V.slice());if(TR.length>45)TR.shift();if(cur.p>=1){cur=null;if(!Q.length){AX=null;V=vf(A)}}}else if(TR.length)TR.shift();
+draw();bgd();requestAnimationFrame(loop)}
+document.addEventListener('click',e=>{const t=e.target.closest('[data-g]');if(t)ap(t.dataset.g);const r=e.target.closest('.rn');if(r){seq(r.dataset.s.split(','),r.dataset.k);$('lab').scrollIntoView({behavior:'smooth'})}});
+['ta','ut','up','ul'].forEach(k=>$(k).oninput=e=>e.target.previousElementSibling.textContent=e.target.value);
+const cv=$('bl');cv.onpointerdown=e=>{dr=1;lx=e.clientX;ly=e.clientY;cv.setPointerCapture(e.pointerId)};cv.onpointermove=e=>{if(dr){yaw+=(e.clientX-lx)*.01;pit=M.max(-1.4,M.min(1.4,pit+(e.clientY-ly)*.01));lx=e.clientX;ly=e.clientY}};cv.onpointerup=cv.onpointercancel=()=>dr=0;
+const ID=[['H·X·H = Z',['H','X','H'],'Z',O],['H·Z·H = X',['H','Z','H'],'X',O],['S·S = Z',['S','S'],'Z',O],['T·T = S',['T','T'],'S',O],['X·X = I',['X','X'],'I',O],['X·Y = iZ',['X','Y'],'Z',Im],['Rx(180°) = −iX',['Rx180'],'X',[0,-1]]];
+$('iv').innerHTML=ID.map((x,i)=>`<option value="${i}">${x[0]}</option>`).join('');
+const gm=s=>/^R/.test(s)?gt(s.slice(0,2),+s.slice(2)*PI/180).m:gt(s).m;
+function vi(){const[,q,tg,k]=ID[$('iv').value],P=q.map(gm).reduce(mm),T=gm(tg).map(r=>r.map(c=>cm(k,c))),ok=P.every((r,i)=>r.every((c,j)=>M.abs(c[0]-T[i][j][0])+M.abs(c[1]-T[i][j][1])<1e-9));
+$('ir').textContent=`Left side  = ${mf(P)}\nRight side = ${mf(T)}\n${ok?'✓ Both sides are equal':'✗ Not equal'}`}
+$('iv').onchange=vi;vi();
+const cd=(id,a)=>$(id).innerHTML=a.map((l,i)=>`<div class="ln"><span>${i+1}</span><code>${E(l[0])}</code><small>${E(l[1])}</small></div>`).join('');
+cd('q1',[['from qiskit import QuantumCircuit','Import the class used to build circuits.'],['from qiskit.quantum_info import Statevector','Tool that computes the exact final state (no random shots).'],['from qiskit.visualization import plot_bloch_multivector','Function that draws the state on Bloch spheres (needs matplotlib).'],['qc = QuantumCircuit(1)','Create a circuit with 1 qubit. It starts in |0>.'],['qc.h(0)','Hadamard on qubit 0: |0> becomes |+>.'],['qc.t(0)','T gate: multiplies the |1> amplitude by e^(i*pi/4), a 45-degree turn about z.'],['print(qc.draw())','Print the circuit as a text diagram. Read it left to right.'],['state = Statevector.from_instruction(qc)','Multiply the gate matrices to get the final statevector.'],['print(state)','Print the amplitudes: about [0.707, 0.5+0.5j].'],['fig = plot_bloch_multivector(state)','Create a matplotlib figure of the Bloch sphere.'],['fig.savefig("bloch.png")','Save the picture. (In Jupyter the figure shows automatically.)']]);
+cd('q2',[['from qiskit.quantum_info import Operator','Operator turns a circuit into its 2x2 matrix.'],['chk = QuantumCircuit(1)','A new one-qubit circuit.'],['chk.h(0); chk.x(0); chk.h(0)','Gates in time order: H, X, H.'],['print(Operator(chk).data.round(3))','Prints [[1, 0], [0, -1]], which is Z. So HXH = Z.']]);
+function setT(v){document.documentElement.dataset.theme=v;const cs=getComputedStyle(document.documentElement);['a1','a2','tx','mu'].forEach(k=>C[k]=cs.getPropertyValue('--'+k).trim());try{localStorage.setItem('qt',v)}catch(e){}}
+let v;try{v=localStorage.getItem('qt');on=localStorage.getItem('qa')!='0'}catch(e){}
+if(matchMedia('(prefers-reduced-motion:reduce)').matches)on=0;
+v=$('th').querySelector(`[value="${v}"]`)?v:(matchMedia('(prefers-color-scheme:dark)').matches?'space':'light');
+$('th').value=v;setT(v);$('th').onchange=e=>setT(e.target.value);
+$('an').style.opacity=on?1:.5;$('an').onclick=()=>{on=!on;$('an').style.opacity=on?1:.5;try{localStorage.setItem('qa',on?1:0)}catch(e){}};
+const io=window.IntersectionObserver?new IntersectionObserver(es=>es.forEach(e=>e.isIntersecting&&e.target.classList.add('in')),{threshold:.05}):0;
+document.querySelectorAll('.rv').forEach(e=>io?io.observe(e):e.classList.add('in'));
+addEventListener('resize',rs);rs();rst('0');requestAnimationFrame(loop);
+</script>
+</body>
+</html>
