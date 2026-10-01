@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="aurora">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Unit 1: Introduction to Quantum Computing</title>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@600;800&family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0d1020;--bg2:#171b36;--card:#1b2042;--text:#e9ecff;--muted:#9aa3d6;--a:#7c8cff;--b:#3be3c8;--line:#2b3166}
+[data-theme=midnight]{--bg:#05070d;--bg2:#0b111d;--card:#0f1726;--text:#e6edf7;--muted:#8393ad;--a:#4da3ff;--b:#9f7aea;--line:#1d2a40}
+[data-theme=sunset]{--bg:#1f1020;--bg2:#321530;--card:#3a1a38;--text:#fff1e8;--muted:#e0aab0;--a:#ff8a5c;--b:#ffd166;--line:#5a2a50}
+[data-theme=ocean]{--bg:#06222e;--bg2:#0a3345;--card:#0d3d52;--text:#e6f8ff;--muted:#8fc5d8;--a:#2ec4f1;--b:#7af5c2;--line:#17607a}
+[data-theme=forest]{--bg:#0f1f14;--bg2:#183021;--card:#1b3825;--text:#eaf6ea;--muted:#9bc2a2;--a:#6fdc8c;--b:#e3d26f;--line:#2b5a3a}
+[data-theme=sakura]{--bg:#fff3f7;--bg2:#ffe3ee;--card:#fff;--text:#3b1f2b;--muted:#8a5a6b;--a:#d6336c;--b:#7b5cff;--line:#f3c2d4}
+[data-theme=paper]{--bg:#f6f4ee;--bg2:#ebe7dc;--card:#fffdf8;--text:#1d2433;--muted:#5d6678;--a:#1d4ed8;--b:#0f9d76;--line:#d8d2c2}
+[data-theme=cyber]{--bg:#0a0612;--bg2:#160a26;--card:#1b0d30;--text:#f4e9ff;--muted:#b79be0;--a:#ff2bd6;--b:#00f0ff;--line:#44207a}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;font:17px/1.7 'Atkinson Hyperlegible',system-ui,sans-serif;background:var(--bg);color:var(--text);transition:background .5s,color .5s}
+body:before{content:"";position:fixed;inset:0;z-index:-1;background:radial-gradient(600px 400px at 10% 10%,color-mix(in srgb,var(--a) 28%,transparent),transparent),radial-gradient(700px 500px at 90% 80%,color-mix(in srgb,var(--b) 22%,transparent),transparent);animation:dr 18s ease-in-out infinite alternate}
+@keyframes dr{to{transform:translate(-3%,2%) scale(1.08)}}
+h1,h2,h3{font-family:'Bricolage Grotesque',sans-serif;line-height:1.15;margin:0 0 .5em}
+h1{font-size:clamp(2.2rem,6vw,4rem);font-weight:800}h2{font-size:clamp(1.5rem,3.5vw,2.2rem)}h3{font-size:1.1rem;color:var(--b)}
+nav{position:sticky;top:0;z-index:10;display:flex;gap:12px;align-items:center;justify-content:space-between;flex-wrap:wrap;padding:10px 18px;background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+nav .l{display:flex;gap:11px;flex-wrap:wrap;font-size:.85rem}nav a{text-decoration:none;color:var(--muted)}nav a:hover{color:var(--text)}
+.th{display:flex;gap:7px}.th button{width:22px;height:22px;border-radius:50%;border:2px solid var(--line);cursor:pointer;padding:0}.th button.on{outline:2px solid var(--text);outline-offset:2px}
+main{max-width:980px;margin:auto;padding:0 20px 80px}section{padding:52px 0 6px}
+.hero{min-height:75vh;display:grid;grid-template-columns:1.2fr 1fr;gap:30px;align-items:center}.hero p{color:var(--muted);font-size:1.15rem}
+.orb{position:relative;width:min(300px,75vw);aspect-ratio:1;margin:auto}.orb i{position:absolute;inset:0;border:2px solid var(--a);border-radius:50%;animation:sp 7s linear infinite;opacity:.7}
+.orb i:nth-child(2){border-color:var(--b);animation:sp2 9s linear infinite}.orb i:nth-child(3){transform:rotateY(70deg);animation-duration:11s}
+.orb b{position:absolute;inset:38%;border-radius:50%;background:radial-gradient(circle at 35% 30%,var(--b),var(--a));box-shadow:0 0 50px var(--a);animation:pu 3s ease-in-out infinite}
+@keyframes sp{to{transform:rotate(360deg)}}@keyframes sp2{from{transform:rotateX(70deg) rotate(0)}to{transform:rotateX(70deg) rotate(360deg)}}@keyframes pu{50%{transform:scale(1.25)}}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:20px;margin:16px 0}
+.real{border-left:4px solid var(--b);background:color-mix(in srgb,var(--b) 10%,var(--card));padding:10px 16px;border-radius:0 12px 12px 0;margin:14px 0}
+.fm{font:1.2rem Georgia,serif;text-align:center;padding:10px;background:var(--bg2);border-radius:12px;margin:12px 0;overflow-x:auto}
+.ex{border:1px dashed var(--a);border-radius:14px;padding:12px 18px;margin:14px 0}.ex summary{cursor:pointer;font-weight:700;color:var(--a)}
+.btn{background:var(--a);color:var(--bg);border:0;border-radius:10px;padding:8px 14px;font:700 .95rem inherit;font-family:inherit;cursor:pointer;margin:4px 4px 4px 0}.btn.alt{background:transparent;color:var(--text);border:1px solid var(--line)}.btn:hover{filter:brightness(1.15)}
+input[type=range]{width:100%;accent-color:var(--a)}input[type=number]{width:80px;padding:6px;border-radius:8px;border:1px solid var(--line);background:var(--bg2);color:var(--text);font:inherit}
+canvas{max-width:100%;background:var(--bg2);border-radius:14px}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:16px;align-items:center}
+.rd{font-family:Georgia,serif;background:var(--bg2);padding:8px 12px;border-radius:10px;margin-top:8px}
+.coin{display:inline-grid;place-items:center;width:64px;height:64px;border-radius:50%;background:linear-gradient(135deg,var(--a),var(--b));font:800 1.6rem 'Bricolage Grotesque';color:var(--bg);margin:4px;box-shadow:0 0 22px var(--a)}.coin.f{animation:fl .8s}
+@keyframes fl{to{transform:rotateY(1440deg)}}
+.pb{height:26px;background:var(--bg2);border-radius:8px;overflow:hidden;margin:6px 0}.pb div{height:100%;width:0;background:linear-gradient(90deg,var(--a),var(--b));transition:width .4s;padding-left:8px;color:var(--bg);font-weight:700}
+table{border-collapse:collapse;width:100%;font-size:.9rem;display:block;overflow-x:auto}td,th{border:1px solid var(--line);padding:5px 9px;text-align:left}th{background:var(--bg2)}
+.r{opacity:0;transform:translateY(16px);transition:.7s}.r.in{opacity:1;transform:none}
+@media(max-width:760px){.hero,.g2{grid-template-columns:1fr}.hero{min-height:auto}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.r{opacity:1;transform:none}}
+:focus-visible{outline:3px solid var(--b);outline-offset:2px}
+</style></head>
+<body>
+<nav><div class="l"><a href="#qubit">Qubit</a><a href="#gates">Gates</a><a href="#interf">Interference</a><a href="#ent">Entanglement</a><a href="#clone">No-cloning</a><a href="#tele">Teleportation</a><a href="#crypto">Cryptography</a><a href="#grover">Grover</a><a href="#shor">Shor</a><a href="#supr">Supremacy</a><a href="#tunnel">Tunneling</a></div><div class="th" id="th"></div></nav>
+<main>
+<section class="hero"><div><h1>Unit 1: Introduction to Quantum Computing</h1><p>Qubits, superposition, measurement, gates, entanglement, teleportation, cryptography, Shor and Grover algorithms, supremacy, tunneling and more. Every topic has simple notes, a real-life example, worked numbers and a live simulation.</p><a href="#qubit"><button class="btn">Start learning</button></a></div><div class="orb" aria-hidden="true"><i></i><i></i><i></i><b></b></div></section>
+
+<section id="qubit" class="r"><h2>1. Qubits, superposition and measurement</h2>
+<p>A classical <b>bit</b> is 0 or 1, like a light switch. A <b>qubit</b> can be a blend of both, written <b>|ψ⟩ = α|0⟩ + β|1⟩</b>. This blend is <b>superposition</b>. α and β are <b>amplitudes</b>. When we <b>measure</b>, we get only 0 (probability |α|²) or 1 (probability |β|²), and the qubit <b>collapses</b> to that result.</p>
+<div class="fm">|α|² + |β|² = 1 &nbsp; (normalization)</div>
+<div class="real"><b>Real life:</b> A spinning coin is neither heads nor tails. When it lands (measurement) you see just one. A qubit is a spinning coin with exact numbers attached.</div>
+<details class="ex"><summary>Example: |ψ⟩ = 0.6|0⟩ + 0.8|1⟩</summary>P(0) = 0.6² = 0.36 = 36%. P(1) = 0.8² = 0.64 = 64%. Sum = 1 ✓. After measuring 1, the next measurement gives 1 with 100%.</details>
+<details class="ex"><summary>Example: find β if α = 1/2</summary>(1/2)² + β² = 1, so β² = 3/4 and β = √3/2 ≈ 0.866.</details>
+<div class="card g2"><div style="text-align:center"><canvas id="qc" width="260" height="260" aria-label="Qubit state on a circle"></canvas></div>
+<div><b>Simulation: prepare, then measure.</b><label>State angle t = <b id="tv">0</b>° (|ψ⟩ = cos t|0⟩ + sin t|1⟩)<input type="range" id="ts" min="0" max="360" value="0"></label>
+<div class="rd" id="qr"></div><div id="coin" class="coin">?</div><br>
+<button class="btn" id="m1">Measure once</button><button class="btn alt" id="m1k">1000 shots</button><div id="mt" style="color:var(--muted)"></div></div></div></section>
+
+<section id="gates" class="r"><h2>2. Quantum gates and their operation</h2>
+<p>A <b>gate</b> changes a qubit's state, like a logic gate changes bits. Gates are <b>reversible</b> and are described by 2×2 matrices. On the circle above they act like reflections or rotations.</p>
+<table><tr><th>Gate</th><th>Does</th><th>Matrix</th></tr><tr><td>X (NOT)</td><td>|0⟩↔|1⟩</td><td>[[0,1],[1,0]]</td></tr><tr><td>Z</td><td>|1⟩ → −|1⟩ (phase flip)</td><td>[[1,0],[0,−1]]</td></tr><tr><td>H (Hadamard)</td><td>|0⟩→(|0⟩+|1⟩)/√2, |1⟩→(|0⟩−|1⟩)/√2</td><td>(1/√2)[[1,1],[1,−1]]</td></tr><tr><td>CNOT (2 qubits)</td><td>flips target if control is 1</td><td>4×4</td></tr></table>
+<div class="real"><b>Real life:</b> A gate is a rotation of a compass needle. Applying H is a 45° turn that puts a certain answer into a 50/50 mix, and applying it again turns it back.</div>
+<details class="ex"><summary>Example: apply H, Z, H to |0⟩</summary>H|0⟩ = |+⟩. Z|+⟩ = |−⟩. H|−⟩ = |1⟩. So H·Z·H acts as X. Try it: reset, then press H, Z, H below.</details>
+<div class="card"><button class="btn" data-g="X">X</button><button class="btn" data-g="Z">Z</button><button class="btn" data-g="H">H</button><button class="btn alt" id="rs">Reset to |0⟩</button><span style="color:var(--muted)"> These gates act on the qubit in Section 1. Watch the arrow.</span></div></section>
+
+<section id="interf" class="r"><h2>3. Interference</h2>
+<p>Amplitudes can be negative. When two paths lead to the same result, their amplitudes <b>add</b> (constructive) or <b>cancel</b> (destructive). Quantum algorithms arrange this so wrong answers cancel and right ones grow. Circuit: H, then a phase φ on |1⟩, then H.</p>
+<div class="fm">P(0) = cos²(φ/2)</div>
+<div class="real"><b>Real life:</b> Noise-cancelling headphones add an opposite sound wave to cancel noise. Colours in soap bubbles are also interference.</div>
+<details class="ex"><summary>Example: φ = 90°</summary>P(0) = cos²(45°) = 0.5 → 50%. At φ = 0° P(0)=100%, at φ = 180° P(0)=0%.</details>
+<div class="card"><label>Phase φ = <b id="fv">0</b>°<input type="range" id="fs" min="0" max="360" value="0"></label><div>P(0)<div class="pb"><div id="f0"></div></div>P(1)<div class="pb"><div id="f1"></div></div></div></div></section>
+
+<section id="ent" class="r"><h2>4. Superposition and entanglement</h2>
+<p>Two qubits can be <b>entangled</b>: they share one state that cannot be split into separate states. The Bell state is <b>(|00⟩ + |11⟩)/√2</b>. Each qubit alone is random, but the two results always match, even far apart.</p>
+<div class="real"><b>Real life:</b> A pair of magic gloves. Each glove goes in a sealed box. Opening one shows "left", so you instantly know the other is "right". In quantum physics the outcome is not fixed in advance, yet the match is still perfect. No message is sent, so no faster-than-light communication.</div>
+<details class="ex"><summary>Example: Bell state probabilities</summary>P(00) = (1/√2)² = 1/2, P(11) = 1/2, P(01) = P(10) = 0. If Alice gets 1, Bob gets 1 with 100% certainty. Independent |+⟩|+⟩ gives each of 00, 01, 10, 11 a probability of 1/4.</details>
+<div class="card"><button class="btn alt on" id="mb">Bell pair</button><button class="btn alt" id="mi">Independent |+⟩|+⟩</button><br>
+<span class="coin" id="e1">?</span><span class="coin" id="e2">?</span><br><button class="btn" id="e1b">Measure one pair</button><button class="btn alt" id="e1k">1000 pairs</button><div class="rd" id="ec">00: 0 &nbsp; 01: 0 &nbsp; 10: 0 &nbsp; 11: 0</div></div></section>
+
+<section id="clone" class="r"><h2>5. No-cloning theorem</h2>
+<p>It is impossible to build a machine that copies an <b>unknown</b> quantum state. Proof idea: copying would need U|ψ⟩|0⟩ = |ψ⟩|ψ⟩, but quantum operations are linear.</p>
+<details class="ex"><summary>Example: why copying |+⟩ fails</summary>A true copy gives |+⟩|+⟩ = (|00⟩+|01⟩+|10⟩+|11⟩)/2. Linearity (copy |0⟩ and |1⟩ separately, then add) gives (|00⟩+|11⟩)/√2. These are different, so no copier exists. (Known states can be re-prepared; only unknown ones cannot be copied.)</details>
+<div class="real"><b>Real life:</b> You can photocopy a document, but you can never photocopy a live spinning coin without stopping it. This also makes quantum money and quantum cryptography secure, since an eavesdropper cannot copy the qubits.</div></section>
+
+<section id="tele" class="r"><h2>6. Quantum teleportation</h2>
+<p>Teleportation moves the <b>state</b> of a qubit (not matter) using one shared entangled pair plus <b>2 classical bits</b>. Steps: (1) Alice and Bob share a Bell pair. (2) Alice does CNOT and H on her unknown qubit and her half. (3) She measures both and gets two bits. (4) She sends the bits normally. (5) Bob applies X if the second bit is 1, then Z if the first is 1. Alice's original is destroyed, so no cloning happens.</p>
+<div class="real"><b>Real life:</b> Like faxing a design: the original is erased, and the copy appears after the paper (the 2 bits) arrives. Without the bits, Bob's qubit looks random.</div>
+<details class="ex"><summary>Example: the 4 outcomes</summary>Each of the bits 00, 01, 10, 11 occurs with probability 1/4. Correction: 00 → nothing, 01 → X, 10 → Z, 11 → X then Z.</details>
+<div class="card"><label>State to teleport: angle = <b id="tpv">30</b>°<input type="range" id="tp" min="0" max="360" value="30"></label><button class="btn" id="tgo">Run teleportation</button><div class="rd" id="tr">Press the button.</div></div></section>
+
+<section id="crypto" class="r"><h2>7. Quantum cryptography (BB84)</h2>
+<p>Alice sends random bits, each in a random basis (+ or ×). Bob measures in random bases. They publicly compare bases and keep bits where bases matched (about 50%). If Eve intercepts, she must guess bases, which disturbs the qubits and creates about <b>25% errors</b> that Alice and Bob can detect.</p>
+<div class="real"><b>Real life:</b> A letter in a special envelope that changes colour if someone peeks. Banks use quantum key distribution over fibre this way.</div>
+<details class="ex"><summary>Example: why 25%?</summary>Eve picks the wrong basis with probability 1/2. Then Bob (when bases match) errs with probability 1/2. Error = 1/2 × 1/2 = 1/4 = 25%. Without Eve the error is 0%.</details>
+<div class="card"><label><input type="checkbox" id="eve"> Eve is eavesdropping</label> <button class="btn" id="bgo">Send 200 qubits</button><div class="rd" id="bs"></div><table id="bt"></table></div></section>
+
+<section id="grover" class="r"><h2>8. Grover's algorithm</h2>
+<p>Grover searches an unsorted list of N items in about <b>(π/4)√N</b> steps, while a classical search needs about N/2 on average. Each step: (1) <b>oracle</b> flips the sign of the target's amplitude, (2) <b>diffusion</b> reflects all amplitudes about their average. The target amplitude grows slowly.</p>
+<div class="real"><b>Real life:</b> Finding one name in an unsorted phone book of 1,000,000 entries: about 500,000 checks classically, but only about 785 Grover steps.</div>
+<details class="ex"><summary>Example: N = 8</summary>Optimal steps = (π/4)√8 ≈ 2.22 → 2. With sinθ = 1/√8, θ ≈ 0.361 rad, success = sin²(5θ) = sin²(1.807) ≈ 94.5%. Doing a 3rd step overshoots and success drops.</details>
+<div class="card"><canvas id="gc" width="460" height="200"></canvas><br>Click a bar to choose the target.<br><button class="btn" id="gn">Next iteration</button><button class="btn alt" id="gr">Reset</button><div class="rd" id="gt"></div></div></section>
+
+<section id="shor" class="r"><h2>9. Shor's algorithm</h2>
+<p>Shor factors large numbers fast, which would break RSA encryption. The quantum part finds the <b>period r</b> of f(x) = aˣ mod N. Then, if r is even, the factors are gcd(a^(r/2) − 1, N) and gcd(a^(r/2) + 1, N). The rest is classical.</p>
+<div class="real"><b>Real life:</b> Multiplying two big primes is easy, un-multiplying is hard, like mixing paint. Shor "un-mixes" it using period finding.</div>
+<details class="ex"><summary>Example: factor 15 with a = 7</summary>7¹=7, 7²=49 mod 15=4, 7³=28 mod 15=13, 7⁴=91 mod 15=1 → r = 4. 7² = 49 → gcd(48,15)=3 and gcd(50,15)=5. So 15 = 3 × 5.</details>
+<div class="card">N = <input type="number" id="sn" value="15" min="4"> a = <input type="number" id="sa" value="7" min="2"> <button class="btn" id="sgo">Find period and factors</button><div class="rd" id="sr"></div></div></section>
+
+<section id="supr" class="r"><h2>10. Quantum supremacy</h2>
+<p><b>Quantum supremacy</b> means a quantum computer does a task that no classical computer can do in a reasonable time (the task need not be useful). n qubits need 2ⁿ amplitudes to describe, so classical simulation explodes. In 2019 Google's 53-qubit Sycamore ran a random-circuit sampling task, claiming about 200 seconds against thousands of years classically. Classical teams later challenged the estimate, so the debate continues.</p>
+<div class="real"><b>Real life:</b> Each extra qubit doubles the work, like folding paper: 42 folds reach the Moon.</div>
+<details class="ex"><summary>Example: 53 qubits</summary>2⁵³ ≈ 9.0 × 10¹⁵ amplitudes × 16 bytes ≈ 144 petabytes of memory, far beyond any laptop.</details>
+<div class="card"><label>Qubits n = <b id="nv">30</b><input type="range" id="ns" min="1" max="60" value="30"></label><div class="rd" id="nr"></div></div></section>
+
+<section id="tunnel" class="r"><h2>11. Quantum tunneling</h2>
+<p>A particle can pass through an energy barrier it classically could not climb, because its wavefunction leaks into the barrier. The chance falls exponentially with width: <b>T ≈ e<sup>−2κL</sup></b>. For an electron facing a 1 eV barrier, κ ≈ 5.12 nm⁻¹. Tunneling powers the Sun's fusion, flash memory and the scanning tunneling microscope, and superconducting qubits use it too.</p>
+<div class="real"><b>Real life:</b> A ball rolling at a hill that is too tall sometimes appears on the other side. For tiny particles and thin barriers, this actually happens.</div>
+<details class="ex"><summary>Example: L = 0.5 nm</summary>T = e^(−2 × 5.12 × 0.5) = e^(−5.12) ≈ 0.006 = 0.6%. At L = 0.3 nm T ≈ 4.6%. Halving the width helps enormously.</details>
+<div class="card"><canvas id="tc" width="500" height="150"></canvas><label>Barrier width L = <b id="lv">0.3</b> nm<input type="range" id="ls" min="0.1" max="1" step="0.05" value="0.3"></label><div class="rd" id="tt"></div></div></section>
+</main>
+<script>
+const $=s=>document.querySelector(s),$$=s=>document.querySelectorAll(s),rn=()=>Math.random(),rb=()=>rn()<.5?1:0,f=(n,d=2)=>(Math.abs(n)<5e-4?0:n).toFixed(d);
+const TH={aurora:['#7c8cff','#0d1020'],midnight:['#4da3ff','#05070d'],sunset:['#ff8a5c','#321530'],ocean:['#2ec4f1','#0a3345'],forest:['#6fdc8c','#183021'],sakura:['#d6336c','#ffe3ee'],paper:['#1d4ed8','#f6f4ee'],cyber:['#ff2bd6','#160a26']};
+function setT(t){document.documentElement.dataset.theme=t;$$('#th button').forEach(b=>b.classList.toggle('on',b.dataset.t===t));try{localStorage.setItem('q1t',t)}catch(e){}}
+for(const k in TH){const b=document.createElement('button');b.dataset.t=k;b.title=k;b.setAttribute('aria-label',k+' theme');b.style.background=`linear-gradient(135deg,${TH[k][0]} 50%,${TH[k][1]} 50%)`;b.onclick=()=>setT(k);$('#th').append(b)}
+try{setT(localStorage.getItem('q1t')||'aurora')}catch(e){setT('aurora')}
+const io=new IntersectionObserver(es=>es.forEach(e=>e.isIntersecting&&e.target.classList.add('in')),{threshold:.05});$$('.r').forEach(e=>io.observe(e));
+const col=n=>getComputedStyle(document.documentElement).getPropertyValue(n).trim(),flip=(el,v,fn)=>{el.classList.remove('f');void el.offsetWidth;el.classList.add('f');setTimeout(()=>{el.textContent=v;fn&&fn()},400)};
+/* 1+2 qubit & gates (real amplitudes) */
+let a=1,b=0,ca=1,cb=0;const S2=Math.SQRT1_2;
+function upd(){const t=Math.atan2(b,a)*180/Math.PI;$('#tv').textContent=Math.round((t+360)%360);$('#qr').innerHTML=`α = ${f(a)}, β = ${f(b)}<br>P(0) = ${f(a*a*100,1)}%, P(1) = ${f(b*b*100,1)}%`}
+$('#ts').oninput=e=>{const t=e.target.value*Math.PI/180;a=Math.cos(t);b=Math.sin(t);upd()};
+$$('[data-g]').forEach(x=>x.onclick=()=>{const g=x.dataset.g;[a,b]=g=='X'?[b,a]:g=='Z'?[a,-b]:[(a+b)*S2,(a-b)*S2];upd();$('#ts').value=(Math.atan2(b,a)*180/Math.PI+360)%360});
+$('#rs').onclick=()=>{a=1;b=0;upd();$('#ts').value=0};
+$('#m1').onclick=()=>{const r=rn()<a*a?0:1;flip($('#coin'),r,()=>{a=1-r;b=r;upd();$('#ts').value=r*90;$('#mt').textContent=`Got ${r}. The qubit collapsed to |${r}⟩, so measuring again always gives ${r}.`})};
+$('#m1k').onclick=()=>{let z=0;for(let i=0;i<1000;i++)if(rn()<a*a)z++;$('#mt').textContent=`1000 shots: ${z} zeros, ${1000-z} ones (predicted ${f(a*a*1000,0)} / ${f(b*b*1000,0)}).`};
+(function d(){const c=$('#qc').getContext('2d');c.clearRect(0,0,260,260);const L=col('--line'),A=col('--a'),B=col('--b');ca+=(a-ca)*.15;cb+=(b-cb)*.15;
+c.strokeStyle=L;c.lineWidth=2;c.beginPath();c.arc(130,130,100,0,7);c.stroke();c.beginPath();c.moveTo(10,130);c.lineTo(250,130);c.moveTo(130,10);c.lineTo(130,250);c.stroke();
+c.fillStyle=col('--text');c.font='15px Georgia';c.fillText('|0⟩',228,122);c.fillText('|1⟩',136,22);
+const x=130+100*ca,y=130-100*cb;c.strokeStyle=A;c.lineWidth=4;c.beginPath();c.moveTo(130,130);c.lineTo(x,y);c.stroke();c.fillStyle=B;c.shadowColor=B;c.shadowBlur=15;c.beginPath();c.arc(x,y,9,0,7);c.fill();c.shadowBlur=0;
+c.setLineDash([4,4]);c.strokeStyle=B;c.lineWidth=1;c.beginPath();c.moveTo(x,y);c.lineTo(x,130);c.stroke();c.setLineDash([]);requestAnimationFrame(d)})();upd();
+/* 3 interference */
+function fu(){const p=+$('#fs').value;$('#fv').textContent=p;const p0=Math.cos(p*Math.PI/360)**2;$('#f0').style.width=p0*100+'%';$('#f0').textContent=f(p0*100,1)+'%';$('#f1').style.width=(1-p0)*100+'%';$('#f1').textContent=f((1-p0)*100,1)+'%'}$('#fs').oninput=fu;fu();
+/* 4 entanglement */
+let bell=1,ec={'00':0,'01':0,'10':0,'11':0};
+const pair=()=>{const x=rb();return bell?[x,x]:[x,rb()]};
+const ecs=()=>$('#ec').innerHTML=Object.entries(ec).map(([k,v])=>`${k}: ${v}`).join(' &nbsp; ');
+const sm=m=>{bell=m;ec={'00':0,'01':0,'10':0,'11':0};ecs();$('#mb').classList.toggle('alt',!m);$('#mi').classList.toggle('alt',!!m)};
+$('#mb').onclick=()=>sm(1);$('#mi').onclick=()=>sm(0);
+$('#e1b').onclick=()=>{const p=pair();flip($('#e1'),p[0]);flip($('#e2'),p[1],()=>{ec[''+p[0]+p[1]]++;ecs()})};
+$('#e1k').onclick=()=>{for(let i=0;i<1000;i++){const p=pair();ec[''+p[0]+p[1]]++}ecs()};
+/* 6 teleportation */
+$('#tp').oninput=e=>$('#tpv').textContent=e.target.value;
+$('#tgo').onclick=()=>{const t=$('#tp').value*Math.PI/180;let x=Math.cos(t),y=Math.sin(t);const m1=rb(),m2=rb(),o=[x,y];
+ if(m1)y=-y;if(m2)[x,y]=[y,x];const s=(p,q)=>`${f(p)}|0⟩ + ${f(q)}|1⟩`;
+ $('#tr').innerHTML=`Original (Alice): ${s(...o)}<br>Alice measures bits <b>${m1}${m2}</b> and sends them.<br>Bob's qubit before fixing: ${s(x,y)}<br>Bob applies ${m2?'X':''}${m1?(m2?' then ':'')+'Z':''}${m1||m2?'':'nothing'}.<br>Bob's qubit after: <b>${s(...o)}</b> ✓ same as the original`};
+/* 7 BB84 */
+$('#bgo').onclick=()=>{const eve=$('#eve').checked;let k=0,er=0,h='<tr><th>#</th><th>Alice bit</th><th>A basis</th><th>B basis</th><th>Bob bit</th><th>Keep?</th></tr>';
+ for(let i=0;i<200;i++){const ab=rb(),aB=rb(),bB=rb();let s=ab,sb=aB;if(eve){const eB=rb();s=eB==aB?ab:rb();sb=eB}
+  const bo=bB==sb?s:rb(),keep=aB==bB;if(keep){k++;if(bo!=ab)er++}
+  if(i<10)h+=`<tr><td>${i+1}</td><td>${ab}</td><td>${aB?'×':'+'}</td><td>${bB?'×':'+'}</td><td>${bo}</td><td>${keep?(bo==ab?'✓':'✗ error'):'discard'}</td></tr>`}
+ $('#bt').innerHTML=h;const q=k?er/k*100:0;$('#bs').innerHTML=`Kept ${k} of 200 bits (about half). Errors: ${er} → error rate <b>${f(q,1)}%</b>. ${q>11?'<b>Eavesdropper detected!</b> Throw the key away.':'Channel looks safe. Use the key.'}`};
+/* 8 Grover */
+let gm=5,ga,gi;const N=8;function gr(){ga=Array(N).fill(1/Math.sqrt(N));gi=0;gd()}
+function gd(){const c=$('#gc').getContext('2d');c.clearRect(0,0,460,200);c.strokeStyle=col('--line');c.beginPath();c.moveTo(0,100);c.lineTo(460,100);c.stroke();c.font='13px Georgia';
+ ga.forEach((v,i)=>{c.fillStyle=i==gm?col('--a'):col('--b');c.fillRect(20+i*55,100,40,-v*90);c.fillStyle=col('--text');c.textAlign='center';c.fillText(i==gm?'target':i,40+i*55,194)});
+ $('#gt').innerHTML=`Iterations: ${gi}. Chance of finding target = ${f(ga[gm]**2*100,1)}%. Best: 2 iterations. Classical search averages 4.5 checks.`}
+$('#gn').onclick=()=>{ga[gm]*=-1;const m=ga.reduce((s,v)=>s+v)/N;ga=ga.map(v=>2*m-v);gi++;gd()};$('#gr').onclick=gr;
+$('#gc').onclick=e=>{const r=e.target.getBoundingClientRect(),x=(e.clientX-r.left)*460/r.width;gm=Math.max(0,Math.min(7,Math.floor((x-20)/55)));gr()};gr();
+/* 9 Shor */
+const gcd=(x,y)=>y?gcd(y,x%y):x;
+$('#sgo').onclick=()=>{const n=+$('#sn').value,a=+$('#sa').value,o=$('#sr');if(gcd(a,n)!=1){o.innerHTML=`gcd(${a},${n}) = ${gcd(a,n)}. Lucky: a shares a factor with N already.`;return}
+ let v=1,seq=[],r=0;for(let k=1;k<=200;k++){v=v*a%n;seq.push(v);if(v==1){r=k;break}}
+ if(!r){o.textContent='Period not found within 200 steps.';return}
+ let t=`a^k mod N for k = 1..${r}: ${seq.join(', ')}<br>Period r = <b>${r}</b>.<br>`;
+ if(r%2)t+='r is odd. Pick another a.';else{let h=1;for(let i=0;i<r/2;i++)h=h*a%n;if(h==n-1)t+='a^(r/2) ≡ −1 mod N. Pick another a.';else t+=`a^(r/2) mod N = ${h}. gcd(${h-1}, ${n}) = <b>${gcd(h-1,n)}</b>, gcd(${h+1}, ${n}) = <b>${gcd(h+1,n)}</b>.`}
+ o.innerHTML=t};$('#sgo').click();
+/* 10 supremacy */
+function su(){const n=+$('#ns').value;$('#nv').textContent=n;const am=2**n,by=am*16,u=['B','KB','MB','GB','TB','PB','EB'];let i=0,v=by;while(v>=1024&&i<6){v/=1024;i++}
+ $('#nr').innerHTML=`Amplitudes: ${am.toLocaleString('en',{notation:'compact',maximumFractionDigits:2})}<br>Memory to simulate classically: <b>${v.toFixed(1)} ${u[i]}</b><br>${n>=30?'Beyond a typical laptop (16 GB) at about 30 qubits.':'A laptop can simulate this easily.'}`}$('#ns').oninput=su;su();
+/* 11 tunneling */
+let ps=[],sent=0,pass=0,fr=0;const T=()=>Math.exp(-2*5.12*+$('#ls').value);
+function tu(){const L=+$('#ls').value;$('#lv').textContent=L.toFixed(2);const c=$('#tc').getContext('2d');c.clearRect(0,0,500,150);const bw=L*120,bx=250-bw/2;
+ c.fillStyle=col('--line');c.fillRect(bx,20,bw,110);c.strokeStyle=col('--a');c.strokeRect(bx,20,bw,110);
+ if(++fr%25==0&&ps.length<30){ps.push({x:10,y:30+rn()*90,v:2.5,t:null});sent++}
+ ps.forEach(p=>{p.x+=p.v;if(p.t===null&&p.x>=bx){p.t=rn()<T();if(p.t)pass++;else p.v=-2.5}if(p.t&&p.x>bx+bw&&p.v<4)p.v=2.5;c.fillStyle=p.t?col('--b'):col('--a');c.beginPath();c.arc(p.x,p.y,5,0,7);c.fill()});
+ ps=ps.filter(p=>p.x>0&&p.x<500);
+ $('#tt').innerHTML=`T = e^(−2×5.12×${L.toFixed(2)}) = <b>${f(T()*100,2)}%</b> chance to tunnel. Sent: ${sent}, tunneled: ${pass}.`;requestAnimationFrame(tu)}
+$('#ls').oninput=()=>{sent=0;pass=0};tu();
+</script></body></html>
