@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>TensorFlow from Zero: Visual Notes</title>
+<style>
+:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);--bg:#f7f8fb;--cd:#fff;--ink:#1c2230;--mu:#5d6779;--ac:#e8710a;--a2:#2563eb;--ln:#dfe3ec}
+html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + 96px)}
+@media(prefers-color-scheme:dark){:root:not([data-theme]){--bg:#0f1420;--cd:#171e2e;--ink:#e8ecf5;--mu:#98a3b8;--ac:#ff9a3c;--a2:#6ea8ff;--ln:#2a3550}}
+:root[data-theme=light]{--bg:#f7f8fb;--cd:#fff;--ink:#1c2230;--mu:#5d6779;--ac:#e8710a;--a2:#2563eb;--ln:#dfe3ec}
+:root[data-theme=dark]{--bg:#0f1420;--cd:#171e2e;--ink:#e8ecf5;--mu:#98a3b8;--ac:#ff9a3c;--a2:#6ea8ff;--ln:#2a3550}
+:root[data-theme=ocean]{--bg:#0b2a3d;--cd:#11384f;--ink:#e6f6ff;--mu:#8fb5c9;--ac:#2dd4bf;--a2:#60a5fa;--ln:#1d4b66}
+:root[data-theme=forest]{--bg:#10261b;--cd:#173627;--ink:#eaf7ee;--mu:#9bbfa8;--ac:#a3e635;--a2:#34d399;--ln:#285640}
+:root[data-theme=sunset]{--bg:#2b1220;--cd:#3a192b;--ink:#ffeef2;--mu:#d9a3b5;--ac:#fb923c;--a2:#f472b6;--ln:#5a2a42}
+:root[data-theme=violet]{--bg:#1b1033;--cd:#26164a;--ink:#f1e9ff;--mu:#b7a4dc;--ac:#c084fc;--a2:#818cf8;--ln:#3d2870}
+:root[data-theme=rose]{--bg:#fff1f2;--cd:#fff;--ink:#3b0a14;--mu:#8a4a57;--ac:#e11d48;--a2:#be185d;--ln:#fbcfd6}
+:root[data-theme=mono]{--bg:#fff;--cd:#f4f4f4;--ink:#111;--mu:#555;--ac:#111;--a2:#444;--ln:#ccc}
+:root[data-theme=midnight]{--bg:#000814;--cd:#0a1530;--ink:#e0f2ff;--mu:#7ea3c4;--ac:#4cc9f0;--a2:#7b61ff;--ln:#16305c}
+:root[data-theme=solar]{--bg:#fdf6e3;--cd:#fffdf5;--ink:#073642;--mu:#657b83;--ac:#b58900;--a2:#268bd2;--ln:#eee8d5}
+:root[data-theme=cyber]{--bg:#090909;--cd:#131313;--ink:#d7ffe9;--mu:#6fbf9b;--ac:#00ff9c;--a2:#ff2bd6;--ln:#1f3a2e}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 Georgia,"Times New Roman",serif}
+h1,h2,button,small,.tx,nav a{font-family:"Trebuchet MS",Verdana,sans-serif}
+header{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);border-bottom:1px solid var(--ln);padding:8px 14px}
+header .row{justify-content:space-between;max-width:900px;margin:auto}
+#th{display:flex;gap:5px;flex-wrap:wrap}
+#th button{width:22px;height:22px;border-radius:50%;border:2px solid var(--ln);padding:0}
+nav{display:flex;gap:6px;overflow-x:auto;max-width:900px;margin:6px auto 0;padding-bottom:4px}
+nav a{white-space:nowrap;font-size:.78rem;color:var(--ink);border:1px solid var(--ln);border-radius:20px;padding:2px 10px;text-decoration:none}
+main{counter-reset:s;max-width:900px;margin:auto;padding:0 14px 40px}
+.hero{padding:26px 0 6px}.hero h1{font-size:2rem;margin:0 0 6px}.hero p{color:var(--mu);margin:0}
+section{background:var(--cd);border:1px solid var(--ln);border-radius:14px;padding:18px;margin:18px 0}
+h2{margin:0 0 6px;font-size:1.25rem;display:flex;gap:10px;align-items:center}
+h2::before{counter-increment:s;content:counter(s);background:var(--ac);color:var(--bg);width:30px;height:30px;border-radius:50%;display:grid;place-items:center;font-size:.9rem;flex:none}
+.lead{margin:0 0 12px;color:var(--mu)}
+.k{border-left:4px solid var(--ac);background:color-mix(in srgb,var(--ac) 12%,transparent);padding:8px 12px;border-radius:6px;margin-top:14px}
+button{font:600 .85rem "Trebuchet MS",sans-serif;background:var(--ac);color:var(--bg);border:0;border-radius:8px;padding:7px 13px;cursor:pointer}
+button:focus-visible,input:focus-visible{outline:3px solid var(--a2);outline-offset:2px}
+.row{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.box{border:2px solid var(--ln);border-radius:10px;padding:8px 10px;text-align:center;transition:.3s;background:var(--bg)}
+.hot{border-color:var(--ac);background:color-mix(in srgb,var(--ac) 22%,var(--bg));transform:scale(1.05)}
+.g{display:grid;gap:2px}.g div{aspect-ratio:1;display:grid;place-items:center;font:.7rem sans-serif;background:var(--ln);border-radius:3px;color:var(--ink)}
+pre{background:var(--bg);border:1px solid var(--ln);padding:10px;border-radius:8px;overflow-x:auto;font-size:.8rem;margin:0;color:var(--ink)}
+svg{width:100%;height:auto;max-width:100%}.tx{fill:var(--ink);font-size:12px}
+.two{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px}
+input[type=range]{accent-color:var(--ac);vertical-align:middle}
+.cap{font-size:.85rem;color:var(--mu);margin:6px 0 0}
+.card{border:1px solid var(--ln);border-radius:10px;padding:8px 10px;background:var(--bg);font-size:.9rem}
+@media(prefers-reduced-motion:reduce){*{transition:none!important}}
+</style></head><body>
+<header><div class="row"><b>TensorFlow from Zero</b><div id="th" aria-label="Choose theme"></div></div><nav id="nv"></nav></header>
+<main>
+<div class="hero"><h1>TensorFlow, explained with pictures</h1><p>For a complete beginner. Use each chapter in three moves: look at the picture, press the buttons, read the yellow-line idea. Pick any of 11 colour themes at the top.</p></div>
+
+<section id="c1"><h2 data-s="Introduction">Introduction: what is TensorFlow?</h2>
+<p class="lead">AI is the big idea. TensorFlow is the free tool from Google that builds it.</p>
+<div class="two"><svg viewBox="0 0 320 220" role="img" aria-label="Nested circles: AI contains machine learning contains deep learning"><circle cx="160" cy="115" r="100" fill="var(--ac)" fill-opacity=".12" stroke="var(--ac)"/><circle cx="160" cy="125" r="72" fill="var(--a2)" fill-opacity=".15" stroke="var(--a2)"/><circle cx="160" cy="138" r="44" fill="var(--ac)" fill-opacity=".3" stroke="var(--ac)"><animate attributeName="r" values="44;48;44" dur="2.5s" repeatCount="indefinite"/></circle><text class="tx" x="160" y="30" text-anchor="middle">Artificial Intelligence</text><text class="tx" x="160" y="68" text-anchor="middle">Machine Learning</text><text class="tx" x="160" y="136" text-anchor="middle">Deep</text><text class="tx" x="160" y="150" text-anchor="middle">Learning</text></svg>
+<div><div class="card"><b>AI</b>: machines that act smart.</div><div class="card" style="margin-top:6px"><b>Machine Learning</b>: learn from examples, not rules.</div><div class="card" style="margin-top:6px"><b>Deep Learning</b>: many-layer neural networks.</div><div class="card" style="margin-top:6px"><b>TensorFlow</b>: the library you write them in.</div></div></div>
+<div class="row" style="margin-top:12px"><div class="box">Tensor<br><small>numbers in a grid</small></div><b>+</b><div class="box">Flow<br><small>moving through steps</small></div><b>=</b><div class="box hot">TensorFlow</div></div>
+<div class="k">A tensor is just a box of numbers. TensorFlow moves tensors through a chain of maths steps.</div></section>
+
+<section id="c2"><h2 data-s="AI Systems">Using TensorFlow for AI Systems</h2>
+<p class="lead">Every AI product follows the same five stages. Tap a stage.</p>
+<div class="row" id="pl"></div><p class="cap" id="pd"></p>
+<div class="row" style="margin-top:10px"><span class="card">🖼️ Photos</span><span class="card">🗣️ Speech</span><span class="card">🌐 Translation</span><span class="card">🎵 Recommendations</span></div>
+<div class="k">Learn this pipeline once: Data, Build, Train, Evaluate, Serve. The remaining chapters zoom into each stage.</div></section>
+
+<section id="c3"><h2 data-s="Up and Running">Up and Running with TensorFlow</h2>
+<p class="lead">Three commands and you are running.</p>
+<div class="row"><div class="box">1. Install Python</div>➜<div class="box"><code>pip install tensorflow</code></div>➜<div class="box">2. Write <code>hello.py</code></div>➜<div class="box">3. <code>python hello.py</code></div></div>
+<div class="two" style="margin-top:12px"><pre>import tensorflow as tf
+hello = tf.constant("Hello, TensorFlow!")
+print(hello.numpy())</pre><pre id="o3" style="min-height:70px">(press Run)</pre></div>
+<p class="row" style="margin-top:8px"><button id="r3">▶ Run</button><small>Book (TF 1.x) used <code>tf.Session().run(hello)</code>. Modern TF 2.x runs directly.</small></p>
+<div class="k">Check the install with <code>print(tf.__version__)</code>.</div></section>
+
+<section id="c4"><h2 data-s="Basics">Understanding TensorFlow Basics</h2>
+<p class="lead">You draw a graph of steps first. Then data flows through it. Move the sliders.</p>
+<div class="row"><div class="box" id="ga">a = <b id="va">2</b><br><input id="sa" type="range" min="0" max="9" value="2"></div><div class="box" id="gb">b = <b id="vb">3</b><br><input id="sb" type="range" min="0" max="9" value="3"></div>➜<div class="box" id="g1">add<br>c = a + b = <b id="vc">5</b></div>➜<div class="box" id="g2">multiply<br>d = c × b = <b id="vd">15</b></div></div>
+<p class="row"><button id="r4">▶ Flow the data</button></p>
+<div class="row" style="margin-top:6px"><div class="card"><b>Scalar</b> (rank 0)<br>7</div><div class="card"><b>Vector</b> (rank 1)<br>[1, 2, 3]</div><div class="card"><b>Matrix</b> (rank 2)<br>[[1,2],[3,4]]</div><div class="card"><b>3D tensor</b> (rank 3)<br>stack of matrices</div></div>
+<div class="k">Constants hold fixed numbers, variables hold learnable numbers, and operations connect them. Rank = how many dimensions.</div></section>
+
+<section id="c5"><h2 data-s="CNN">Convolutional Neural Networks</h2>
+<p class="lead">A CNN slides a small filter over a picture to find patterns such as edges.</p>
+<div class="row" style="align-items:flex-start"><div><small>Image 6×6</small><div id="ci" class="g" style="grid-template-columns:repeat(6,1fr);width:170px"></div></div><b>⊛</b><div><small>Filter 3×3</small><div id="ck" class="g" style="grid-template-columns:repeat(3,1fr);width:90px"></div></div><b>=</b><div><small>Output 4×4</small><div id="co" class="g" style="grid-template-columns:repeat(4,1fr);width:120px"></div></div></div>
+<p class="row"><button id="cp">▶ Slide the filter</button><button id="cr">Reset</button><small>Each output = multiply and add the 9 pixels under the filter.</small></p>
+<div class="row"><span class="card">Conv: find patterns</span>➜<span class="card">ReLU: keep positives</span>➜<span class="card">Pooling: shrink, keep strongest</span>➜<span class="card">Dense: decide the label</span></div>
+<div class="k">Big numbers in the output mark where the pattern (here, a vertical edge) was found.</div></section>
+
+<section id="c6"><h2 data-s="Text & Sequences">Working with Text and Sequences</h2>
+<p class="lead">An RNN reads one word at a time and keeps a memory (h) of what it has read.</p>
+<div class="row" id="rn"></div>
+<p class="row"><button id="rs">Next word ▶</button><button id="rr">Reset</button><small>Bar height = memory value h.</small></p>
+<div class="k">Rule: new memory = f(old memory, current word). The same cell is reused at every step, which is why it handles any sentence length.</div></section>
+
+<section id="c7"><h2 data-s="TensorBoard">TensorBoard Visualization</h2>
+<p class="lead">Training means rolling a ball down a loss hill. TensorBoard draws the loss curve on the right.</p>
+<div class="two"><svg viewBox="0 0 300 160"><path id="gp" fill="none" stroke="var(--a2)" stroke-width="3"/><circle id="gb" r="8" fill="var(--ac)"/><text class="tx" x="8" y="14">Loss hill (best w = 3)</text></svg><svg viewBox="0 0 300 160"><line x1="10" y1="150" x2="290" y2="150" stroke="var(--ln)"/><polyline id="gl" fill="none" stroke="var(--ac)" stroke-width="3"/><text class="tx" x="8" y="14">Loss vs. step (TensorBoard view)</text></svg></div>
+<p class="row">Learning rate <input id="lr" type="range" min=".05" max="1.1" step=".05" value=".2"> <b id="lv">0.20</b> <button id="gt">▶ Train</button></p>
+<p class="cap" id="gi"></p><p class="cap" id="gv"></p>
+<div class="k">Learning rate is the step size. Too small is slow, too big overshoots. Run <code>tensorboard --logdir logs</code> to see curves like this for real.</div></section>
+
+<section id="c8"><h2 data-s="Word Vectors">Word Vectors, Advanced RNN, Embedding Visualization</h2>
+<p class="lead">An embedding turns each word into coordinates. Similar words land close together. Click a word.</p>
+<svg id="es" viewBox="0 0 340 260" style="background:var(--bg);border:1px solid var(--ln);border-radius:10px"></svg>
+<p class="row"><button id="ea">king − man + woman = ?</button><small id="ei">Click any word to see its two nearest neighbours.</small></p>
+<div class="row"><span class="card">LSTM / GRU: an RNN with gates</span><span class="card">Forget gate: drop old memory</span><span class="card">Input gate: add new</span><span class="card">Output gate: reveal</span></div>
+<div class="k">Word2vec learns these coordinates from text. The TensorBoard Embedding Projector shows them in 3D.</div></section>
+
+<section id="c9"><h2 data-s="Abstractions">TensorFlow Abstractions and Simplifications</h2>
+<p class="lead">Same model, far less code. Layers hide the maths plumbing.</p>
+<div class="two"><div><small>Raw TensorFlow (many lines)</small><pre>W = tf.Variable(tf.random.normal([784,10]))
+b = tf.Variable(tf.zeros([10]))
+def model(x):
+  return tf.nn.softmax(x @ W + b)
+# write loss by hand
+# write the training loop</pre></div><div><small>tf.keras (few lines)</small><pre>m = tf.keras.Sequential([
+ tf.keras.layers.Dense(10,
+   activation="softmax")])
+m.compile("adam",
+  "sparse_categorical_crossentropy")
+m.fit(x, y, epochs=5)</pre></div></div>
+<div class="row" style="margin-top:10px"><span class="box">Input</span>➜<span class="box">Dense</span>➜<span class="box">ReLU</span>➜<span class="box">Dense</span>➜<span class="box hot">Softmax</span></div>
+<div class="k">The book covers contrib.learn and slim. Today, use tf.keras for the same idea.</div></section>
+
+<section id="c10"><h2 data-s="Queues & Data">Queues, Threads, and Reading Data</h2>
+<p class="lead">Slow disk reading can leave the GPU waiting. Reader threads fill a queue so batches are always ready.</p>
+<div class="row"><div class="box">📁 Files<br><span id="pt">🧵</span></div>➜<div><small>Queue (6 slots)</small><div class="row" id="qs" style="gap:4px"></div></div>➜<div class="box" id="qb">⚙️ Trainer<br><small>needs 3 per batch</small></div></div>
+<p class="row">Reader threads <input id="qn" type="range" min="1" max="4" value="1"> <b id="qv">1</b> <button id="qt">▶ Start</button><button id="qx">Reset</button></p>
+<p class="cap" id="qi"></p>
+<div class="k">More reader threads means a fuller queue and less waiting. The book uses QueueRunner; modern code uses <code>tf.data</code> with <code>prefetch</code>.</div></section>
+
+<section id="c11"><h2 data-s="Distributed">Distributed TensorFlow</h2>
+<p class="lead">Many machines train together. Workers send gradients up, the parameter server sends fresh weights down.</p>
+<svg id="ds" viewBox="0 0 300 180"></svg>
+<p class="row">Workers <input id="dn" type="range" min="1" max="6" value="3"> <b id="dv">3</b></p><p class="cap" id="di"></p>
+<div class="k">Speed-up is less than perfect because machines spend time talking. Today: <code>tf.distribute.Strategy</code>.</div></section>
+
+<section id="c12"><h2 data-s="Serving">Exporting and Serving Models</h2>
+<p class="lead">Save the trained model, then let apps ask it questions.</p>
+<div class="row" style="justify-content:space-between"><div class="box" id="s1">📱 Client<br><small>app or website</small></div>⇄<div class="box" id="s2">🖥️ Model server<br><small>TensorFlow Serving</small></div>⇄<div class="box" id="s3">💾 SavedModel<br><small>my_model/1/</small></div></div>
+<p class="row"><button id="sb2">▶ Send a photo 🐱</button><small id="sm">Press the button.</small></p>
+<pre>model.save("my_model/1")
+tensorflow_model_server --model_name=cat --model_base_path=/models/my_model</pre>
+<div class="k">Export once (SavedModel), serve many times, version folders (1, 2, 3) let you upgrade safely.</div></section>
+
+<section id="c13"><h2 data-s="Revision">Quick Revision Sheet</h2><div class="two" id="rv"></div></section>
+</main>
+<script>
+const $=s=>document.querySelector(s);
+// themes
+const T=[["light","#f7f8fb","#e8710a"],["dark","#0f1420","#ff9a3c"],["ocean","#0b2a3d","#2dd4bf"],["forest","#10261b","#a3e635"],["sunset","#2b1220","#fb923c"],["violet","#1b1033","#c084fc"],["rose","#fff1f2","#e11d48"],["mono","#ffffff","#111111"],["midnight","#000814","#4cc9f0"],["solar","#fdf6e3","#b58900"],["cyber","#090909","#00ff9c"]];
+const setT=n=>{document.documentElement.dataset.theme=n;try{localStorage.setItem('tfTheme',n)}catch(e){}};
+T.forEach(([n,b,a])=>{const x=document.createElement('button');x.title=n;x.setAttribute('aria-label',n+' theme');x.style.background=`linear-gradient(135deg,${b} 50%,${a} 50%)`;x.onclick=()=>setT(n);$('#th').append(x)});
+try{const s=localStorage.getItem('tfTheme');if(s)setT(s)}catch(e){}
+$('#nv').innerHTML=[...document.querySelectorAll('main h2')].map((h,i)=>`<a href="#${h.parentNode.id}">${i+1}. ${h.dataset.s}</a>`).join('');
+// 2 pipeline
+const ST=[["📦 Data","Collect and clean examples: images, text, numbers."],["🧱 Build","Stack layers to make the model (the graph)."],["🏋️ Train","Show data again and again; weights improve."],["✅ Evaluate","Test on unseen data. Is it good enough?"],["🚀 Serve","Put the model behind an API for apps."]];let pi=0;
+$('#pl').innerHTML=ST.map((s,i)=>`<div class="box" data-i="${i}" style="cursor:pointer">${s[0]}</div>`).join('<span>➜</span>');
+function pr(){document.querySelectorAll('#pl .box').forEach((b,i)=>b.classList.toggle('hot',i==pi));$('#pd').textContent=ST[pi][1]}
+$('#pl').onclick=e=>{const b=e.target.closest('.box');if(b){pi=+b.dataset.i;pr()}};pr();setInterval(()=>{pi=(pi+1)%5;pr()},2200);
+// 3 run
+$('#r3').onclick=()=>{const t="b'Hello, TensorFlow!'";let i=0;const o=$('#o3');o.textContent='';const iv=setInterval(()=>{o.textContent=t.slice(0,++i);if(i>=t.length)clearInterval(iv)},60)};
+// 4 graph
+function calc(){const a=+$('#sa').value,b=+$('#sb').value;$('#va').textContent=a;$('#vb').textContent=b;$('#vc').textContent=a+b;$('#vd').textContent=(a+b)*b}
+$('#sa').oninput=$('#sb').oninput=calc;
+$('#r4').onclick=()=>['ga','gb','g1','g2'].forEach((id,i)=>{setTimeout(()=>$('#'+id).classList.add('hot'),i*600);setTimeout(()=>$('#'+id).classList.remove('hot'),i*600+900)});
+// 5 conv
+const im=[],K=[1,0,-1];for(let r=0;r<6;r++)for(let c=0;c<6;c++)im.push(c<3?9:0);
+$('#ci').innerHTML=im.map(v=>`<div style="background:rgba(128,128,128,${v?.7:.12})">${v}</div>`).join('');
+$('#ck').innerHTML=[0,1,2].map(()=>K.map(v=>`<div>${v}</div>`).join('')).join('');
+const co0=()=>$('#co').innerHTML=Array(16).fill('<div>?</div>').join('');co0();let ci=0,ct;
+function cs(){if(ci>15){clearInterval(ct);return}const r=ci>>2,c=ci&3,I=$('#ci').children;let s=0;[...I].forEach(e=>e.style.outline='');
+for(let i=0;i<3;i++)for(let j=0;j<3;j++){I[(r+i)*6+c+j].style.outline='2px solid var(--ac)';s+=im[(r+i)*6+c+j]*K[j]}
+const o=$('#co').children[ci];o.textContent=s;o.style.background=`color-mix(in srgb,var(--a2) ${Math.min(100,Math.abs(s)*3.7)}%,var(--ln))`;ci++}
+$('#cp').onclick=()=>{clearInterval(ct);ct=setInterval(cs,450)};
+$('#cr').onclick=()=>{clearInterval(ct);ci=0;co0();[...$('#ci').children].forEach(e=>e.style.outline='')};
+// 6 rnn
+const WD=["I","love","deep","learning"],XV=[.2,.9,.5,.8],HV=[];let h=0;XV.forEach(x=>{h=Math.tanh(.5*h+1.3*x);HV.push(h)});let ri=0;
+$('#rn').innerHTML=WD.map(w=>`<div class="box"><b>"${w}"</b><div style="height:70px;display:flex;align-items:flex-end;justify-content:center"><div style="width:26px;height:0;background:var(--ac);transition:.5s"></div></div><small>h = <span>?</span></small></div>`).join('<span>➜</span>');
+$('#rs').onclick=()=>{const b=document.querySelectorAll('#rn .box');if(ri>3)return;b.forEach(x=>x.classList.remove('hot'));const x=b[ri];x.classList.add('hot');x.querySelector('div div').style.height=HV[ri]*70+'px';x.querySelector('span').textContent=HV[ri].toFixed(2);ri++};
+$('#rr').onclick=()=>{ri=0;document.querySelectorAll('#rn .box').forEach(x=>{x.classList.remove('hot');x.querySelector('div div').style.height='0';x.querySelector('span').textContent='?'})};
+// 7 gradient descent
+const P=w=>[20+w*43,150-Math.min((w-3)**2,10)*13];let d='';for(let w=-.4;w<=6.4;w+=.1)d+=(d?'L':'M')+P(w).join(',');$('#gp').setAttribute('d',d);
+let gw,GL,gt;const clampW=w=>Math.min(6.4,Math.max(-.4,w));
+function gd(){const q=P(clampW(gw));$('#gb').setAttribute('cx',q[0]);$('#gb').setAttribute('cy',q[1]);$('#gl').setAttribute('points',GL.map((l,i)=>`${10+i*11.2},${150-Math.min(l,9)/9*130}`).join(' '));$('#gi').textContent=`step ${GL.length-1} · w = ${gw.toFixed(2)} (target 3) · loss = ${GL[GL.length-1].toFixed(2)}`}
+function gr(){clearInterval(gt);gw=0;GL=[9];gd()}
+function gv(){const l=+$('#lr').value;$('#lv').textContent=l.toFixed(2);$('#gv').textContent=l<.2?"Too small: safe but slow.":l<.9?"Good: the loss falls smoothly.":l<1.05?"Bouncing: the ball jumps back and forth, never settling.":"Too big: the loss explodes!"}
+$('#lr').oninput=()=>{gv();gr()};$('#gt').onclick=()=>{gr();const l=+$('#lr').value;gt=setInterval(()=>{if(GL.length>25){clearInterval(gt);return}gw-=l*2*(gw-3);GL.push((gw-3)**2);gd()},180)};gv();gr();
+// 8 embeddings
+const WS={man:[2,2,0],woman:[3,3.2,0],king:[6,5,1],queen:[7,6.2,1],cat:[1.5,8,2],dog:[2.6,8.7,2],apple:[8.5,1.5,3],banana:[9.3,2.4,3]},CL=['var(--a2)','var(--ac)','#16a34a','#db2777'],X=x=>10+x*34,Y=y=>245-y*25;
+$('#es').innerHTML='<g id="el"></g>'+Object.entries(WS).map(([k,[x,y,g]])=>`<g style="cursor:pointer" data-k="${k}"><circle cx="${X(x)}" cy="${Y(y)}" r="7" fill="${CL[g]}"/><text class="tx" x="${X(x)+10}" y="${Y(y)+4}">${k}</text></g>`).join('');
+const near=(p,ex)=>Object.entries(WS).filter(([k])=>!ex.includes(k)).map(([k,v])=>[k,Math.hypot(v[0]-p[0],v[1]-p[1])]).sort((a,b)=>a[1]-b[1]);
+const ln=(a,b,c)=>`<line x1="${X(a[0])}" y1="${Y(a[1])}" x2="${X(b[0])}" y2="${Y(b[1])}" stroke="${c}" stroke-width="2.5" stroke-dasharray="5 3"/>`;
+$('#es').onclick=e=>{const g=e.target.closest('g[data-k]');if(!g)return;const k=g.dataset.k,n=near(WS[k],[k]).slice(0,2);$('#el').innerHTML=n.map(([m])=>ln(WS[k],WS[m],'var(--ac)')).join('');$('#ei').textContent=`Closest to "${k}": ${n.map(a=>a[0]).join(", ")}. Similar meaning means close together.`};
+$('#ea').onclick=()=>{const m=WS.man,w=WS.woman,k=WS.king,p=[k[0]-m[0]+w[0],k[1]-m[1]+w[1]],r=near(p,['king','man','woman'])[0][0];$('#el').innerHTML=ln(m,w,'var(--a2)')+ln(k,p,'var(--ac)')+`<circle cx="${X(p[0])}" cy="${Y(p[1])}" r="12" fill="none" stroke="var(--ac)" stroke-width="3"/>`;$('#ei').textContent=`Take the man→woman arrow and add it to king. You land next to "${r}".`};
+// 10 queue
+let q=[],qt,bz=0,tt=0;const qr=()=>{$('#qs').innerHTML=Array.from({length:6},(_,i)=>`<div class="box" style="width:34px;height:34px;padding:0;${i<q.length?'background:var(--a2);border-color:var(--a2)':''}"></div>`).join('');$('#pt').textContent='🧵'.repeat(+$('#qn').value);$('#qv').textContent=$('#qn').value;$('#qi').textContent=tt?`Trainer was busy ${Math.round(bz/tt*100)}% of the time (${bz} of ${tt} ticks).`:'Press Start and watch the trainer wait for data.'};
+$('#qn').oninput=qr;
+$('#qt').onclick=function(){if(qt){clearInterval(qt);qt=0;this.textContent='▶ Start';return}this.textContent='⏸ Pause';qt=setInterval(()=>{for(let i=0;i<+$('#qn').value;i++)if(q.length<6)q.push(1);tt++;const b=$('#qb');if(q.length>=3){q.splice(0,3);bz++;b.classList.add('hot')}else b.classList.remove('hot');qr()},500)};
+$('#qx').onclick=()=>{q=[];bz=tt=0;qr()};qr();
+// 11 distributed
+function ds(){const n=+$('#dn').value;let s='<circle cx="150" cy="90" r="24" fill="var(--ac)"/><text class="tx" x="150" y="94" text-anchor="middle" style="fill:var(--bg);font-weight:700">PS</text>';
+for(let i=0;i<n;i++){const a=2*Math.PI*i/n-Math.PI/2,x=(150+115*Math.cos(a)).toFixed(0),y=(90+70*Math.sin(a)).toFixed(0);
+s+=`<line x1="${x}" y1="${y}" x2="150" y2="90" stroke="var(--ln)" stroke-width="2"/><circle cx="${x}" cy="${y}" r="15" fill="var(--cd)" stroke="var(--a2)" stroke-width="2"/><text class="tx" x="${x}" y="${+y+4}" text-anchor="middle">W${i+1}</text><circle r="4" fill="var(--a2)"><animateMotion dur="1.6s" repeatCount="indefinite" path="M${x} ${y} L150 90"/></circle><circle r="4" fill="var(--ac)"><animateMotion dur="1.6s" begin=".8s" repeatCount="indefinite" path="M150 90 L${x} ${y}"/></circle>`}
+$('#ds').innerHTML=s;$('#dv').textContent=n;const t=60/n*(1+.12*(n-1));$('#di').textContent=`Blue dots = gradients going up, orange dots = new weights coming down. Epoch time ≈ ${t.toFixed(0)} s, speed-up ×${(60/t).toFixed(1)}.`}
+$('#dn').oninput=ds;ds();
+// 12 serving
+$('#sb2').onclick=()=>{const S=[['s1','1. The client sends the photo (REST or gRPC).'],['s2','2. The server receives it and runs the model.'],['s3','3. The model was loaded from the SavedModel folder.'],['s2','4. The server computes the answer.'],['s1','5. The client receives: cat, 94% sure.']];S.forEach(([id,t],i)=>{setTimeout(()=>{['s1','s2','s3'].forEach(x=>$('#'+x).classList.remove('hot'));$('#'+id).classList.add('hot');$('#sm').textContent=t},i*1100)});setTimeout(()=>['s1','s2','s3'].forEach(x=>$('#'+x).classList.remove('hot')),S.length*1100)};
+// revision
+$('#rv').innerHTML=[["🌐 Intro","AI ⊃ ML ⊃ DL. TensorFlow builds them."],["🔁 Pipeline","Data, Build, Train, Evaluate, Serve."],["⌨️ Setup","pip install tensorflow; tf.constant."],["🕸️ Basics","Graph of ops; tensors have rank."],["🖼️ CNN","Filter slides, finds edges; pool shrinks."],["📝 RNN","Memory h updated word by word."],["📉 TensorBoard","Loss curve; tune learning rate."],["🔤 Embeddings","Words as points; near means similar."],["🧩 Keras","Layers cut code to a few lines."],["🚰 Queues","Threads keep data ready for the GPU."],["🖧 Distributed","Workers send gradients to servers."],["📦 Serving","SavedModel + TF Serving + versions."]].map(([a,b])=>`<div class="card"><b>${a}</b><br>${b}</div>`).join('');
+</script></body></html>
