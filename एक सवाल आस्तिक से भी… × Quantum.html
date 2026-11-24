@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>एक सवाल आस्तिक से भी… × Quantum</title>
+<link href="https://fonts.googleapis.com/css2?family=Tiro+Devanagari+Hindi:ital@0;1&family=Space+Grotesk:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#06070f;--ink:#e9ecff;--dim:#9aa1c7;--card:#0f1226;--line:#2a2f5a;--glow:#7c8cff;--warm:#ffb86b;--q:#0b1630;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:light){:root:not([data-theme="dark"]){--bg:#f1f2fb;--ink:#14163a;--dim:#4c527f;--card:#ffffff;--line:#c9cdf0;--glow:#4655d8;--warm:#b3590a;--q:#e6ebff}}
+:root[data-theme="dark"]{--bg:#06070f;--ink:#e9ecff;--dim:#9aa1c7;--card:#0f1226;--line:#2a2f5a;--glow:#7c8cff;--warm:#ffb86b;--q:#0b1630}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"Tiro Devanagari Hindi","Noto Serif Devanagari",Georgia,serif;line-height:1.9;font-size:18px}
+#sky{position:fixed;inset:0;width:100%;height:100%;z-index:0}
+main,header,footer{position:relative;z-index:1}
+.hero{min-height:100vh;min-height:100svh;display:flex;flex-direction:column;justify-content:center;padding:40px 24px;max-width:900px;margin:auto}
+.hero h1{font-size:clamp(2.2rem,7vw,4.6rem);line-height:1.2;margin:0 0 20px;font-weight:400}
+.hero h1 i{color:var(--warm)}
+.hero p{font-family:"Space Grotesk",system-ui,sans-serif;color:var(--dim);max-width:560px;margin:0}
+.hero .by{margin-top:28px;font-size:.9rem}
+.wrap{max-width:820px;margin:auto;padding:0 20px}
+section{padding:70px 0 20px;border-top:1px solid var(--line)}
+section .hi{font-size:1.15rem;margin:0 0 22px;max-width:62ch}
+section .hi.big{font-size:1.5rem;color:var(--warm);line-height:1.6}
+.q{background:var(--q);border:1px solid var(--line);border-left:3px solid var(--glow);border-radius:6px;padding:22px 24px;margin:26px 0 10px;font-family:"Space Grotesk",system-ui,sans-serif;font-size:1rem;line-height:1.75}
+.q h3{margin:0 0 8px;font-size:1.35rem;font-weight:600;color:var(--glow)}
+.q p{margin:8px 0}
+.q b{color:var(--warm);font-weight:600}
+.lab{margin:34px 0 0;padding:20px;background:var(--card);border:1px solid var(--line);border-radius:6px;font-family:"Space Grotesk",system-ui,sans-serif}
+.lab h3{margin:0 0 6px;font-weight:600}
+.lab button{font:inherit;color:var(--ink);background:transparent;border:1px solid var(--glow);padding:10px 18px;border-radius:4px;cursor:pointer;margin:8px 8px 0 0}
+.lab button:hover,.lab button:focus-visible{background:var(--glow);color:var(--bg);outline:none}
+#orb{width:110px;height:110px;border-radius:50%;margin:14px 0;display:grid;place-items:center;font-size:2rem;border:2px solid var(--glow);background:radial-gradient(circle,var(--glow),transparent 70%);transition:background .5s,border-color .5s}
+#orb.spin{animation:sp 1s ease-in-out infinite}
+@keyframes sp{50%{transform:scale(1.15);filter:blur(2px)}}
+.tally{color:var(--dim);font-size:.95rem}
+.end{padding:90px 0 40px;text-align:center;font-size:1.35rem;line-height:1.8}
+.end strong{color:var(--warm);font-weight:400}
+footer{text-align:center;color:var(--dim);font-family:"Space Grotesk",system-ui,sans-serif;font-size:.9rem;padding:30px 20px 60px}
+.fade{animation:in 1.6s ease both}
+@keyframes in{from{opacity:0;transform:translateY(14px)}}
+@media (prefers-reduced-motion:reduce){.fade,#orb.spin{animation:none}}
+</style>
+</head>
+<body>
+<canvas id="sky" aria-hidden="true"></canvas>
+
+<header class="hero">
+<h1 class="fade">एक सवाल <i>आस्तिक</i> से भी…</h1>
+<p>An essay in Hindi about faith, unanswered prayers and silence, read alongside the strange rules of quantum physics. Every quantum idea below is explained in simple English with a real-life example.</p>
+<p class="by">Created by Vikash Patel</p>
+</header>
+
+<main class="wrap">
+
+<section>
+<p class="hi big">“तुमने मोह-माया तो छोड़ दी, लेकिन माँगोगे किससे? तुम तो नास्तिक हो।”</p>
+<p class="hi">मैंने मुस्कुराकर कहा, “चलो, मैं तो नास्तिक हूँ। लेकिन तुम तो आस्तिक हो ना! क्या तुम्हें वो सब मिला, जो तुमने उनसे माँगा था? क्या तुम्हारी हर मन्नत पूरी हुई?”</p>
+<div class="q">
+<h3>Superposition: yes and no at the same time</h3>
+<p>In quantum physics, a tiny particle (or a qubit in a quantum computer) can be in <b>many states at once</b> until someone checks it. Imagine a coin spinning in the air: it is neither heads nor tails yet, it is both possibilities together.</p>
+<p><b>Real-life example:</b> Result aane se pehle wali raat yaad karo. Dil mein ek saath “pass ho jaunga” aur “agar fail ho gaya toh?” dono chal rahe the. Neend nahi aayi, aur tum chhat par baithkar upar wale se bas ek hi cheez maang rahe the. Ya phir kisi ke liye socha hoga: “wo laut aayega ya nahi?” Us raat tum umeed bhi the aur dar bhi. Yahi superposition hai: umeed aur dar, dono ek hi dil mein, ek hi waqt par.</p>
+</div>
+</section>
+
+<section>
+<p class="hi">उसने भी कभी किसी मंदिर की चौखट पर खड़े होकर अपनी आँखें बंद की होंगी… किसी टूटते हुए रिश्ते को बचाने की दुआ की होगी… <b style="color:var(--warm);font-weight:400">लेकिन उसे कुछ नहीं मिला।</b></p>
+<div class="q">
+<h3>Measurement: the answer appears only when you look</h3>
+<p>A quantum system keeps all its possible outcomes open. The moment it is <b>measured</b>, it “collapses” into just one result. You cannot choose which one. You can only ask, and nature picks.</p>
+<p><b>Real-life example:</b> Tumne saalon mehnat ki, har roz dua ki, har Thursday mandir gaye, aur phir ek email aaya: “We regret to inform you…”. Us ek line ne saare possible jawab mita diye aur sirf ek bacha liya. Tumhari dua mein kami nahi thi. Bas jawab tum choose nahi karte. Aur sabse zyada dard tab hota hai jab jawab aata hai, kyunki tab pata chalta hai ki hum kitna kuch us ek jawab par daav lagakar baithe the.</p>
+</div>
+<div class="lab">
+<h3>Try it: measure a qubit</h3>
+<div>A fair qubit is 50% “0” and 50% “1”. Press the button to measure it, and notice that you cannot force the result.</div>
+<div id="orb" aria-live="polite">?</div>
+<button id="m">Measure the qubit</button><button id="r">Reset</button>
+<div class="tally" id="t">Measurements: 0 · zeros: 0 · ones: 0</div>
+</div>
+</section>
+
+<section>
+<p class="hi">हर बार उसने खुद को समझाया होगा कि शायद अभी सही वक्त नहीं आया… लेकिन एक वक्त ऐसा भी आया होगा, जब समझाते-समझाते उसका खुद पर से ही विश्वास उठ गया होगा। और शायद उसी दिन उसका विश्वास टूटा नहीं होगा, बल्कि धीरे-धीरे खामोश हो गया होगा।</p>
+<div class="q">
+<h3>Decoherence: fading slowly, not breaking suddenly</h3>
+<p>A qubit does not usually “crash”. Noise from the world around it (heat, vibration, stray signals) leaks in and its quantum state <b>fades gradually</b>. This is called decoherence, and it is the biggest enemy of quantum computers.</p>
+<p><b>Real-life example:</b> Ek purana dost yaad karo jo roz call karta tha. Phir hafte mein ek baar, phir mahine mein, phir sirf birthday par. Kabhi koi ladai nahi hui. Bas zindagi ka shor dheere-dheere beech mein aata gaya aur awaaz door hoti gayi. Waise hi ek insaan roz mandir jaata tha, phir kabhi-kabhi, phir bas bheed mein khada rehta, aur phir ek din usne chup rehna chuna. Wo bhagwan se ladd nahi gaya. Wo bas thak gaya tha.</p>
+</div>
+</section>
+
+<section>
+<p class="hi big">क्योंकि हर नास्तिक भगवान को न मानने के साथ पैदा नहीं होता, कुछ नास्तिक कभी बहुत गहरे आस्तिक हुआ करते थे।</p>
+<div class="q">
+<h3>Quantum leap: a sudden jump between two levels</h3>
+<p>An electron inside an atom cannot sit anywhere it likes. It can only stay on fixed energy levels, and when it moves it <b>jumps</b> from one level to another without passing through the space in between. This is the real meaning of “quantum leap”.</p>
+<p><b>Real-life example:</b> Ek ladka jo har Tuesday vrat rakhta tha, exam se pehle maa ke saath mandir jaata tha. Phir ek din kisi apne ka ilaaj fail ho gaya, aur usne mandir jaana band kar diya. Logon ne kaha, “achanak nastik ho gaya”. Par kuch bhi achanak nahi tha. Jaise LED bulb ki roshni se pehle electron mein energy jama hoti hai, waise uske andar har adhoori dua ke saath dard jama ho raha tha. Bahar se ek pal dikhta hai, par uske peeche saalon ka bhaar hota hai.</p>
+</div>
+</section>
+
+<section>
+<p class="hi">अगर सिर्फ माँगने से ही सब कुछ मिल जाता, तो फिर दुनिया में कोई अधूरा सपना नहीं होता। कोई माँ अपने बच्चे के लिए रोती नहीं… <b style="color:var(--warm);font-weight:400">प्रार्थना करने वाले हर इंसान की झोली नहीं भरती और झोली खाली रहने वाले हर इंसान का विश्वास कमज़ोर नहीं होता।</b></p>
+<div class="q">
+<h3>Probability and uncertainty: no guaranteed outcomes</h3>
+<p>Quantum physics does not promise one fixed result. It only gives <b>probabilities</b>. Heisenberg’s uncertainty principle even says we cannot know some pairs of things (like exact position and exact speed) perfectly at the same time.</p>
+<p><b>Real-life example:</b> Do dost, ek hi coaching, ek jaisi mehnat, ek jaisi raatein. Ek ka selection ho gaya, doosre ka nahi. Kya doosre ne kam padha? Kam roya? Kam dua ki? Nahi. Duniya probability par chalti hai, “jo mehnat karega wahi jeetega” ki guarantee par nahi. Jo khali haath laut aaya, uski aastha kamzor nahi thi. Uski kismat ka sample bas alag nikla.</p>
+<p><b>Another example:</b> Ek radioactive atom kab tootega, ye koi scientist nahi bata sakta. Waise hi hospital ke bahar baithe insaan ko bhi koi pakka nahi bata sakta ki andar kya hoga. Us waqt wo jo dua karta hai, wo kamzori nahi hoti. Wo uski insaaniyat hoti hai.</p>
+</div>
+</section>
+
+<section>
+<p class="hi">किसी के विश्वास को उसकी मजबूरी और किसी के अविश्वास को उसका अहंकार मत समझना।</p>
+<div class="q">
+<h3>Wave–particle duality: two true views of one thing</h3>
+<p>Light behaves like a <b>wave</b> in some experiments and like a stream of <b>particles</b> (photons) in others. Both descriptions are correct; which one you see depends on how you look at it.</p>
+<p><b>Real-life example:</b> Ek hi ghar mein ek bhai subah aarti karta hai, doosra subah gym jaata hai, aur dono apne-apne tareeke se sukoon dhoondh rahe hain. Rainbow light ka wave side dikhata hai, solar panel particle side, aur dono sach hain. Jab tum kisi ko “nastik hai, ghamandi hai” bol dete ho, tum sirf ek angle se dekh rahe hote ho. Ho sakta hai uska angle wahan se bana ho jahan tum kabhi khade hokar nahi dekhe.</p>
+</div>
+</section>
+
+<section>
+<p class="hi">कभी-कभी इंसान भगवान से नहीं, उन उम्मीदों से हार जाता है जिन्हें उसने भगवान के भरोसे छोड़ दिया था।</p>
+<div class="q">
+<h3>Entanglement: hope tied to another person</h3>
+<p>Two entangled particles share one combined state. If you measure one, the other one’s result is linked to it, even when they are very far apart. Einstein called it “spooky action at a distance”.</p>
+<p><b>Real-life example:</b> Beta door shehar ke hospital mein, maa gaon mein, aur phone par ek lafz bole bina maa ko pata chal jaata hai ki aaj kuch theek nahi hai. Ye wahi link hai. Hamari umeedein, hamari duaayein, kisi insaan se entangled hoti hain. Jab wo insaan chala jaata hai ya rishta toot jaata hai, toh sirf wo nahi jaata. Hamare andar ka ek hissa bhi kahin door baithe-baithe toot jaata hai. Isiliye kuch log bhagwan se nahi, apni kho chuki umeedon se rooth jaate hain.</p>
+</div>
+</section>
+
+<section>
+<div class="end">
+तुम भगवान को पाकर आस्तिक हो, यह तुम्हारा विश्वास है।<br>
+और कोई सब कुछ खोकर नास्तिक हुआ है, <strong>तो शायद यह उसकी कहानी है।</strong>
+<div class="q" style="text-align:left;font-size:.95rem;margin-top:40px">
+<h3>Final quantum thought</h3>
+<p>In quantum physics, scientists do not fight over which hidden state is “right” before measuring. They accept that many possibilities exist, observe carefully, and respect what each experiment shows. Before judging someone’s belief or disbelief, ask for their story first. Their measurement may have come from a very different experiment than yours.</p>
+</div>
+</div>
+</section>
+
+</main>
+<footer>किसी के विश्वास पर सवाल उठाने से पहले उसके टूटने की वजह जानने की कोशिश करना।<br>Created by Vikash Patel</footer>
+
+<script>
+(function(){
+var c=document.getElementById('sky'),x=c.getContext('2d'),S=[],w,h;
+function rs(){w=c.width=innerWidth;h=c.height=innerHeight;S=[];for(var i=0;i<90;i++)S.push({x:Math.random()*w,y:Math.random()*h,r:Math.random()*1.6+.3,v:Math.random()*.25+.05,p:Math.random()*6})}
+rs();addEventListener('resize',rs);
+var rm=matchMedia('(prefers-reduced-motion:reduce)').matches;
+function d(t){var col=getComputedStyle(document.documentElement).getPropertyValue('--glow').trim()||'#7c8cff';
+x.clearRect(0,0,w,h);x.fillStyle=col;
+S.forEach(function(s){s.y-=rm?0:s.v;if(s.y<0)s.y=h;x.globalAlpha=.25+.35*Math.abs(Math.sin(t/1500+s.p));x.beginPath();x.arc(s.x,s.y,s.r,0,6.3);x.fill()});
+x.globalAlpha=1;requestAnimationFrame(d)}
+requestAnimationFrame(d);
+var o=document.getElementById('orb'),t=document.getElementById('t'),n=0,z=0,u=0;
+document.getElementById('m').onclick=function(){
+o.textContent='~';o.classList.add('spin');
+setTimeout(function(){o.classList.remove('spin');var b=Math.random()<.5?0:1;n++;if(b)u++;else z++;
+o.textContent=b;o.style.borderColor=b?'var(--warm)':'var(--glow)';
+t.textContent='Measurements: '+n+' · zeros: '+z+' · ones: '+u},700)};
+document.getElementById('r').onclick=function(){n=z=u=0;o.textContent='?';o.style.borderColor='';t.textContent='Measurements: 0 · zeros: 0 · ones: 0'};
+})();
+</script>
+</body>
+</html>
